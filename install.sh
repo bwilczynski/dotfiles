@@ -10,6 +10,8 @@ echo "Install ohmyzsh"
 sh install/ohmyzsh.sh
 echo "Install sublime package manager"
 sh install/sublime.sh
+echo "Install git aliases"
+sh install/git.sh
 
 echo "Creating symlinks"
 ln -vsf "$SYMLINKS_ROOT/zshrc" ~/.zshrc
