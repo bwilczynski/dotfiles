@@ -12,6 +12,8 @@ echo "Install sublime package manager"
 sh install/sublime.sh
 echo "Install git aliases"
 sh install/git.sh
+echo "Install Powerline font"
+sh install/iterm.sh
 
 echo "Creating symlinks"
 ln -vsf "$SYMLINKS_ROOT/zshrc" ~/.zshrc
