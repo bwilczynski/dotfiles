@@ -51,7 +51,7 @@ plugins=(git gitignore heroku bower npm sublime brew osx pod autojump)
 
 # User configuration
 
-export PATH="/usr/local/sbin:~/bin:/Users/bwilczynski/.apportable/SDK/bin:/usr/local/heroku/bin:/Users/bwilczynski/.rbenv/shims:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/share/npm/bin"
+export PATH="/usr/local/sbin:~/bin:/usr/local/heroku/bin:~/.rbenv/shims:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/share/npm/bin"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
