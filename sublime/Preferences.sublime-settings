@@ -3,8 +3,8 @@
 	"font_size": 11,
 	"ignored_packages":
 	[
-		"Vintage",
-		"Tag"
+		"Tag",
+		"Vintage"
 	],
 	"indent_guide_options":
 	[

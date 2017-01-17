@@ -15,11 +15,18 @@
             "json": {
                 "@disable": false,
                 "args": [],
+                "excludes": [],
+                "strict": true
+            },
+            "lua": {
+                "@disable": false,
+                "args": [],
                 "excludes": []
             }
         },
         "mark_style": "outline",
         "no_column_highlights_line": false,
+        "passive_warnings": false,
         "paths": {
             "linux": [],
             "osx": [],

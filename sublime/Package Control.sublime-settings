@@ -1,4 +1,5 @@
 {
+	"bootstrapped": true,
 	"in_process_packages":
 	[
 	],
@@ -21,16 +22,19 @@
 		"Indent XML",
 		"Jade",
 		"JsFormat",
+		"Kotlin",
 		"LESS",
 		"LESS-build",
 		"Markdown Preview",
 		"Package Control",
 		"PowerShell",
 		"Pretty JSON",
+		"SqlBeautifier",
 		"SublimeLinter",
 		"SublimeLinter-jshint",
 		"SublimeLinter-json",
 		"SublimeLinter-lua",
+		"Swift",
 		"Tag"
 	]
 }
