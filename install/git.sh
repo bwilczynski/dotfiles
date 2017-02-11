@@ -13,3 +13,5 @@ git config --global alias.branch-name '!git symbolic-ref --short HEAD'
 git config --global alias.publish '!git push -u origin $(git branch-name)'
 git config --global alias.unpublish '!git push origin :$(git branch-name)'
 git config --global alias.cleanup '!git branch --merged | grep  -v "\\*\\|master\\|develop" | xargs -n 1 git branch -d'
+git config --global alias.purr pull --rebase
+git config --global alias.puff pull --ff-only
