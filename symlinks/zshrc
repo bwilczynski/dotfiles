@@ -80,3 +80,6 @@ fi
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 eval "$(rbenv init -)"
+export PATH="/usr/local/opt/unzip/bin:$PATH"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
