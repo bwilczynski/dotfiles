@@ -35,6 +35,7 @@
 		"SublimeLinter-json",
 		"SublimeLinter-lua",
 		"Swift",
-		"Tag"
+		"Tag",
+		"WakaTime"
 	]
 }
