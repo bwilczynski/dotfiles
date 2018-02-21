@@ -16,3 +16,6 @@ git config --global alias.cleanup '!git branch --merged | grep  -v "\\*\\|master
 git config --global alias.purr 'pull --rebase'
 git config --global alias.puff 'pull --ff-only'
 git config --global alias.cobf '!f() { git checkout -b feature/$1; }; f'
+git config --global merge.tool p4merge
+git config --global mergetool.keepTemporaries false
+git config --global mergetool.prompt false
