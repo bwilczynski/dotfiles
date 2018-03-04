@@ -14,3 +14,4 @@ echo "Creating symlinks"
 ln -vsf "$SYMLINKS_ROOT/zshrc" ~/.zshrc
 ln -vsf "$SYMLINKS_ROOT/vimrc" ~/.vimrc
 ln -vsf "$SYMLINKS_ROOT/p4merge.dms" /usr/local/bin/p4merge
+ln -vsf "$SYMLINKS_ROOT/git-replace-author" /usr/local/bin/git-replace-author
