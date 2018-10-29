@@ -89,3 +89,6 @@ export NVM_DIR="$HOME/.nvm"
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
+export LC_ALL=pl_PL.UTF-8
+export LANG=pl_PL.UTF-8
+
