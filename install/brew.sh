@@ -8,4 +8,4 @@ brew install autojump
 brew install git
 brew install python
 brew install rbenv
-
+brew install nvm
