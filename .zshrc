@@ -2,7 +2,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-export ZSH=/Users/bwilczynski/.oh-my-zsh
+export ZSH=~/.oh-my-zsh
 DEFAULT_USER=bwilczynski
 ZSH_THEME="powerlevel10k/powerlevel10k"
 plugins=(autojump colorize gitignore)
@@ -12,7 +12,7 @@ source $ZSH/oh-my-zsh.sh
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='vim'
 else
-  export EDITOR='vim'
+  export EDITOR='nvim'
 fi
 
 export LC_ALL=en_US.UTF-8
