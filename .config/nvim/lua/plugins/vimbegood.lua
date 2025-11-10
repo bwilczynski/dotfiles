@@ -1,4 +1,4 @@
 return {
   "ThePrimeagen/vim-be-good",
-  opts = {},
+  setup = function() end,
 }
