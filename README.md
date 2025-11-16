@@ -6,6 +6,6 @@ Install catppuccin theme for [tmux](https://github.com/catppuccin/tmux/blob/main
 
 Run stow to create symlinks:
 
-``sh
+```sh
 stow .
-``
+```
