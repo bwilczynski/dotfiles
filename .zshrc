@@ -15,6 +15,9 @@ else
   export EDITOR='nvim'
 fi
 
+# enable vi keybindings
+bindkey -v
+
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
