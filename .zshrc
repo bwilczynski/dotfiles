@@ -5,7 +5,7 @@ fi
 export ZSH=~/.oh-my-zsh
 DEFAULT_USER=bwilczynski
 ZSH_THEME="powerlevel10k/powerlevel10k"
-plugins=(autojump colorize gitignore)
+plugins=(autojump colorize gitignore direnv)
 
 source $ZSH/oh-my-zsh.sh
 
