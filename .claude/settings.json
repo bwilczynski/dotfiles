@@ -1,5 +1,5 @@
 {
-  "model": "sonnet",
+  "model": "opus",
   "enabledPlugins": {
     "obsidian@obsidian-skills": true,
     "superpowers@claude-plugins-official": true,
@@ -16,5 +16,6 @@
   },
   "effortLevel": "medium",
   "theme": "custom:catppuccin-mocha",
+  "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true
 }
