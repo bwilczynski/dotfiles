@@ -7,14 +7,15 @@ Replace Oh My Zsh and Powerlevel10k with a direct Zsh configuration and a minima
 ## Scope
 
 - Remove Oh My Zsh and Powerlevel10k initialization from `.zshrc`.
-- Preserve interactive completion, `autojump`, `direnv`, vi keybindings, editor selection, locale settings, fzf, devbox, kubectl, and the optional private `.zshrc.custom` file.
+- Preserve interactive completion, `direnv`, vi keybindings, editor selection, locale settings, fzf, kubectl, and the optional private `.zshrc.custom` file.
 - Add `.config/starship.toml` as the tracked Starship configuration.
 - Remove `.p10k.zsh` from the repository.
+- Remove `.devbox.zsh` from the repository and stop sourcing it.
 - Add Starship as a documented Homebrew prerequisite.
 
 ## Startup design
 
-`.zshrc` will initialize Zsh completion with `compinit`, then direct integrations for autojump and direnv. Existing optional module sourcing remains unchanged. `eval "$(starship init zsh)"` will be the final startup action so Starship owns the prompt after all shell behavior is configured.
+`.zshrc` will initialize Zsh completion with `compinit`, then a direct integration for direnv. It will no longer initialize autojump or source the devbox module. The fzf, kubectl, and private optional module sourcing remain unchanged. `eval "$(starship init zsh)"` will be the final startup action so Starship owns the prompt after all shell behavior is configured.
 
 The configuration assumes Starship is installed through Homebrew. A command-existence guard will leave the shell usable if Starship is temporarily unavailable.
 
@@ -29,7 +30,7 @@ The prompt will not add a blank line and will not enable language, package, clou
 
 ## Intentional removals and compatibility
 
-The Oh My Zsh `git` alias collection and `gitignore` plugin helper are intentionally not replaced. Native `git` commands and Starship Git status remain available. The user can later request specific aliases if any prove important.
+The Oh My Zsh `git` alias collection and `gitignore` plugin helper are intentionally not replaced. Native `git` commands and Starship Git status remain available. Autojump and the Docker-based `devbox` function are intentionally removed because they are no longer used. The user can later request specific Git aliases if any prove important.
 
 The repository will stop tracking P10k configuration. Any installed `~/.oh-my-zsh` or Powerlevel10k directory outside this repository remains untouched; optional manual cleanup will be provided only after successful verification.
 
