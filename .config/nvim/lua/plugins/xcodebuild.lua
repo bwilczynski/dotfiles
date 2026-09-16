@@ -5,9 +5,11 @@ return {
     "MunifTanjim/nui.nvim",
     "nvim-treesitter/nvim-treesitter",
   },
-  event = "VeryLazy",
-  ft = { "swift", "objective-c", "objective-cpp" },
-  opts = {},
+  config = function()
+    require("xcodebuild").setup({
+      -- put some options here or leave it empty to use default settings
+    })
+  end,
   keys = {
     { "<leader>X", "<cmd>XcodebuildPicker<cr>", desc = "Show Xcodebuild Actions" },
     { "<leader>xf", "<cmd>XcodebuildProjectManager<cr>", desc = "Show Project Manager Actions" },
