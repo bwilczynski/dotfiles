@@ -22,4 +22,5 @@ This symlinks all top-level dotfiles/directories (except ignored patterns) into 
 - **Tmux:** `.tmux.conf` with Catppuccin Mocha theme (plugin loaded from `~/.config/tmux/plugins/catppuccin/`)
 - **Hammerspoon:** `.hammerspoon/` provides app launcher hotkeys via hyper key (ctrl+alt+cmd+shift)
 - **Devbox:** `.devbox.zsh` defines a `devbox` function that runs a Docker-based dev environment
+- **macOS settings:** `.config/macos/defaults.sh` applies system preferences on a new machine (run by hand, not by stow); `.config/macos/keyremap.sh` remaps Caps Lock to Escape and Right Command to Right Option on the built-in keyboard only, kept applied by the `com.bwilczynski.keyremap` LaunchAgent
 - **Catppuccin Mocha** is the consistent theme across tmux, fzf, ghostty, and neovim
