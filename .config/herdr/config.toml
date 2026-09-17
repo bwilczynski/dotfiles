@@ -1,0 +1,8 @@
+onboarding = false
+
+[theme]
+# Catppuccin Mocha, matching ghostty, tmux, fzf and neovim
+name = "catppuccin"
+
+[ui.toast]
+delivery = "system"
