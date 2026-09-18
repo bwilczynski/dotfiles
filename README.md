@@ -2,11 +2,20 @@
 
 ## Installation
 
-Install the shell dependencies:
+Install the Homebrew dependencies:
 
 ```sh
-brew install starship direnv fzf kubectl kustomize
+brew bundle
 ```
+
+`Brewfile` contains only the bootstrap requirements. To install the optional
+tools configured in this repository, run:
+
+```sh
+brew bundle --file Brewfile.optional
+```
+
+`kubectx` also provides `kubens`.
 
 Install [TPM](https://github.com/tmux-plugins/tpm) (Tmux Plugin Manager):
 

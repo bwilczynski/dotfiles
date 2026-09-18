@@ -1,0 +1,17 @@
+# Optional packages for configurations tracked in this repository.
+
+# Kubernetes shell completions and aliases
+brew "kubectl"
+brew "kustomize"
+brew "kubectx" # also provides kubens
+
+# Terminal, editor, and source-control tools
+brew "tmux"
+brew "neovim"
+brew "lazygit"
+brew "jj"
+brew "difftastic"
+brew "herdr"
+
+# Terminal application referenced by configuration
+cask "ghostty"
