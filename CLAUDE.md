@@ -4,23 +4,32 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-This is a macOS dotfiles repository managed with [GNU Stow](https://www.gnu.org/software/stow/). Running `stow .` from the repo root creates symlinks in the home directory (`$HOME`) for all dotfiles. The `.stowrc` file excludes itself and `.DS_Store` from symlinking.
+This is a macOS dotfiles repository managed with [GNU Stow](https://www.gnu.org/software/stow/), organized as **one stow package per tool**. Each top-level package directory contains a home-relative tree; `stow <package>` symlinks it into `$HOME`. Because the repo lives at `~/.dotfiles`, stow's default target is already `$HOME`, so no `-t` flag is needed. `.stowrc` only ignores `.DS_Store`.
+
+Files at the repo root (`Brewfile`, `Brewfile.optional`, `README.md`, `CLAUDE.md`, `docs/`) sit outside every package and are never symlinked.
 
 ## Deployment
 
 ```sh
-stow .
+stow zsh tmux nvim starship        # install a subset
+stow -n -v nvim                    # dry run
+stow -D ghostty                    # uninstall a package
 ```
 
-This symlinks all top-level dotfiles/directories (except ignored patterns) into `$HOME`.
+## Packages
 
-## Structure
+- **`zsh`** — `.zshrc` (Oh My Zsh, Starship prompt, vi keybindings) plus the optional modules it sources: `.fzf.zsh`, `.kubectl.zsh`, and `.zshrc.custom` (not in this repo, machine-local)
+- **`tmux`** — `.tmux.conf` with Catppuccin Mocha (plugin loaded from `~/.config/tmux/plugins/catppuccin/`)
+- **`nvim`** — `.config/nvim/`, a LazyVim setup: plugins in `lua/plugins/`, config in `lua/config/`
+- **`ghostty`** — `.config/ghostty/config` (macOS only)
+- **`starship`** — `.config/starship.toml`
+- **`jj`** — `.config/jj/config.toml`
+- **`herdr`** — `.config/herdr/config.toml`
+- **`lazygit`** — `Library/Application Support/lazygit/` (macOS path)
+- **`claude`** — `.claude/settings.json` and themes
+- **`macos`** — `.config/macos/defaults.sh` (system preferences, run by hand) and `keyremap.sh` (Caps Lock → Escape, Right Command → Right Option, built-in keyboard only), kept applied by the `com.bwilczynski.keyremap` LaunchAgent that this package installs
 
-- **Shell (zsh):** `.zshrc` uses Oh My Zsh with Powerlevel10k theme, vi keybindings, and sources optional modules (`.fzf.zsh`, `.devbox.zsh`, `.kubectl.zsh`, `.zshrc.custom`)
-- **Editor (neovim):** `.config/nvim/` is a LazyVim setup — plugins go in `lua/plugins/`, config in `lua/config/`
-- **Terminal (Ghostty):** `.config/ghostty/config`
-- **Tmux:** `.tmux.conf` with Catppuccin Mocha theme (plugin loaded from `~/.config/tmux/plugins/catppuccin/`)
-- **Hammerspoon:** `.hammerspoon/` provides app launcher hotkeys via hyper key (ctrl+alt+cmd+shift)
-- **Devbox:** `.devbox.zsh` defines a `devbox` function that runs a Docker-based dev environment
-- **macOS settings:** `.config/macos/defaults.sh` applies system preferences on a new machine (run by hand, not by stow); `.config/macos/keyremap.sh` remaps Caps Lock to Escape and Right Command to Right Option on the built-in keyboard only, kept applied by the `com.bwilczynski.keyremap` LaunchAgent
-- **Catppuccin Mocha** is the consistent theme across tmux, fzf, ghostty, and neovim
+## Conventions
+
+- Adding a new tool means creating a new top-level package directory, not dropping files into an existing one.
+- **Catppuccin Mocha** is the consistent theme across tmux, fzf, ghostty, lazygit, jj, and neovim.
