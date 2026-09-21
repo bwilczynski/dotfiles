@@ -84,13 +84,20 @@ ending in an unusable login screen. The fix has two halves: the menu entry in
 `/etc/systemd/sleep.conf.d/99-no-hibernate-t2.conf`, which it cannot because
 stow only targets `$HOME`.
 
-`.config/omarchy/no-hibernate.sh` is a hand-run installer for that file,
+`.local/bin/omarchy-no-hibernate` is a hand-run installer for that file,
 following `macos/keyremap.sh` in shape: `set -euo pipefail`, `install` and
 `uninstall` subcommands, idempotent, and invoked with `sudo` because it is run
 interactively in a terminal. It embeds the existing diagnosis verbatim — the DMA
 queue desync, the three kernel oopses observed on 2026-09-19, and the reason
 plain S3 suspend remains safe — so that the analysis is versioned alongside the
 three configuration lines it justifies.
+
+It lives in `~/.local/bin` rather than `~/.config/omarchy/`. The `macos`
+precedent works because `~/.config/macos/` is ours end to end, whereas
+`~/.config/omarchy/` belongs to the distribution; `~/.local/bin` is ours and is
+already on PATH through Omarchy's `default/bash/env-bootstrap`. The `omarchy-`
+prefix does not enter the distribution's command namespace, because the
+`omarchy` CLI dispatches to `$OMARCHY_BIN_DIR` rather than searching PATH.
 
 ## Intentional exclusions
 
@@ -118,11 +125,20 @@ between the two `settings.json` files is left as-is by choice.
 
 ## Deployment
 
-Files are copied into the repository, the originals are removed, and `stow git
-mise omarchy` links them back. Stock `~/.config/git/config` is then restored
-with `omarchy refresh config git/config`, which backs up the current file first.
-Both the removal of originals and the refresh are confirmed with the user before
-running.
+Files are copied into the repository, the originals are removed, and
+`stow --no-folding git mise omarchy` links them back. Stock
+`~/.config/git/config` is then restored with `omarchy refresh config
+git/config`, which backs up the current file first. Both the removal of
+originals and the refresh are confirmed with the user before running.
+
+`--no-folding` is mandatory for the Linux packages. Stow links a whole directory
+whenever the target does not yet exist, so on a machine where `~/.config` is not
+yet populated, plain `stow omarchy` makes `~/.config` itself a symlink into this
+repository and every file Omarchy subsequently writes there appears in `git
+status` — the exact inversion of the delta principle above. Folding is safe only
+where the repository owns the whole directory, which holds for every macOS
+package and for none of the Linux ones, since `.config/hypr` and
+`.config/omarchy/extensions` are shared with the distribution by design.
 
 A consequence of symlinking the Hyprland overrides is that `omarchy refresh
 config` and future migrations, which write with `cp -f`, will write through the
