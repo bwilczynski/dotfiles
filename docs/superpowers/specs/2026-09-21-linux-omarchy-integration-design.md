@@ -1,0 +1,148 @@
+# Linux (Omarchy) Integration Design
+
+## Goal
+
+Extend the repository from a macOS-only dotfiles collection to a cross-platform
+one that also tracks the settings of an Omarchy 4.0.4 (Arch + Hyprland) machine,
+without taking ownership of configuration that Omarchy itself manages.
+
+## Scope
+
+- Add a `git` package providing `~/.gitconfig` with the commit identity.
+- Add a `mise` package providing `.config/mise/config.toml`.
+- Add an `omarchy` package providing the Hyprland and Omarchy overrides that
+  differ from Omarchy's shipped defaults, plus a hand-run script that installs
+  the system-level half of the hibernation fix.
+- Reframe `README.md` and `CLAUDE.md` as cross-platform and document which
+  packages apply to which platform.
+- Leave every existing package unchanged.
+
+## Delta principle
+
+Omarchy ships user-facing templates in `/usr/share/omarchy/config` and copies
+them into `~/.config` on install, then keeps them current through `omarchy
+update` migrations and re-renders several of them on `omarchy theme set`. The
+repository therefore tracks only the files whose content differs from those
+templates, and leaves the rest to the distribution.
+
+Comparing the whole of `~/.config` against `/usr/share/omarchy/config` yields
+seven differing files. Three are discarded: `omarchy/shell.json` differs only in
+key order after being rewritten by `omarchy bar`, `herdr/config.toml` differs
+only by a one-time `onboarding = false` dismissal, and
+`chromium/Default/Preferences` is browser state rather than configuration. The
+four that remain — `git/config`, `hypr/input.lua`, `hypr/monitors.lua`, and
+`omarchy/extensions/omarchy-menu.jsonc` — are the core of this change, joined by
+two files that the comparison does not reach: `~/.XCompose`, which lives outside
+`~/.config`, and `.config/mise/config.toml`, which Omarchy does not ship.
+
+This principle also settles the tools configured on both machines. The Linux
+copies of tmux, ghostty, starship, lazygit, herdr, and Neovim are Omarchy stock:
+they resolve their colors from the active theme at runtime and integrate with
+Omarchy's menus, while the macOS copies in this repository are hand-written and
+statically themed to Catppuccin Mocha. Stowing the macOS versions over them
+would break theme switching, the tmux keybinding menu, and Neovim's theme
+hot-reload. They stay unstowed on Linux.
+
+## Package design
+
+The `macos` package is the precedent: a platform-scoped package that carries
+both symlinked configuration and scripts that are run by hand. The `omarchy`
+package mirrors it, and the repository stays a flat one-package-per-tool tree.
+
+`omarchy` contains `.XCompose`, which adds name and email compose sequences on
+top of Omarchy's default file; `.config/hypr/input.lua`, which selects the
+Polish programmer keyboard layout and repeats `kb_options` because the override
+replaces Omarchy's defaults wholesale; `.config/hypr/monitors.lua`, which pins
+the monitor scale to 1.6 instead of `auto`; and
+`.config/omarchy/extensions/omarchy-menu.jsonc`, which hides the Hibernate menu
+row.
+
+`git` and `mise` are ordinary cross-platform tool packages and are not
+Omarchy-specific.
+
+## Git identity layering
+
+The commit identity currently lives appended to Omarchy's stock
+`~/.config/git/config`, which prevents `omarchy update` from safely improving
+that file. Git reads both `$XDG_CONFIG_HOME/git/config` and `~/.gitconfig`, and
+a single-valued variable in `~/.gitconfig` wins. `~/.gitconfig` does not
+currently exist on the Linux machine.
+
+The `git` package therefore provides `~/.gitconfig` containing only the `[user]`
+block, and deployment restores the stock `~/.config/git/config`. Omarchy owns
+its configuration again and the identity is tracked once for both platforms.
+
+On macOS a `~/.gitconfig` may already exist and would collide. Reconciling it is
+a manual step for the user; this change does not modify the macOS machine.
+
+## Hibernation script
+
+Hibernation is disabled on this Apple T2 Mac because the out-of-tree t2bce
+driver stack does not survive resume from S4, corrupting kernel memory and
+ending in an unusable login screen. The fix has two halves: the menu entry in
+`omarchy-menu.jsonc`, which stow can carry, and
+`/etc/systemd/sleep.conf.d/99-no-hibernate-t2.conf`, which it cannot because
+stow only targets `$HOME`.
+
+`.config/omarchy/no-hibernate.sh` is a hand-run installer for that file,
+following `macos/keyremap.sh` in shape: `set -euo pipefail`, `install` and
+`uninstall` subcommands, idempotent, and invoked with `sudo` because it is run
+interactively in a terminal. It embeds the existing diagnosis verbatim — the DMA
+queue desync, the three kernel oopses observed on 2026-09-19, and the reason
+plain S3 suspend remains safe — so that the analysis is versioned alongside the
+three configuration lines it justifies.
+
+## Intentional exclusions
+
+`~/.config/systemd/user/voxtype.service` is generated by `voxtype setup systemd`
+at the end of `omarchy-voxtype-install`, not hand-written, and the voxtype
+configuration is byte-identical to Omarchy's default. Tracking a generated unit
+would risk drifting from future voxtype versions, which expect a
+`voxtype.service.d/gpu.conf` drop-in. Dictation is restored by running
+`omarchy-voxtype-install`, which the README will note.
+
+`~/.config/environment.d/omarchy-firefox-wayland.conf` sets `MOZ_ENABLE_WAYLAND=1`,
+which Omarchy already sets in `default/hypr/envs.lua`. It is redundant, but at
+the user's direction it is left in place rather than deleted; it is simply not
+tracked.
+
+The three `Hidden=true` stubs in `~/.config/autostart` are excluded for now at
+the user's request and can be added later.
+
+No Arch package manifest is added. Of 173 explicitly installed packages, nearly
+all come from the Omarchy base installation, which Omarchy itself reproduces.
+The Homebrew manifests remain macOS-only.
+
+The `claude` package stays macOS-only and is not stowed on Linux; the drift
+between the two `settings.json` files is left as-is by choice.
+
+## Deployment
+
+Files are copied into the repository, the originals are removed, and `stow git
+mise omarchy` links them back. Stock `~/.config/git/config` is then restored
+with `omarchy refresh config git/config`, which backs up the current file first.
+Both the removal of originals and the refresh are confirmed with the user before
+running.
+
+A consequence of symlinking the Hyprland overrides is that `omarchy refresh
+config` and future migrations, which write with `cp -f`, will write through the
+symlink into the repository. This is an improvement over the current state: a
+migration that clobbers the Polish layout becomes visible in `git status`
+instead of being lost silently.
+
+## Validation
+
+Validation is configuration-oriented:
+
+- `stow -n -v git mise omarchy` confirms there are no conflicts before linking.
+- `hyprctl reload` followed by `hyprctl configerrors` confirms the Hyprland
+  overrides still parse once symlinked.
+- `git config --get user.email` confirms the identity resolves from
+  `~/.gitconfig` after the stock git config is restored.
+- `mise config ls` confirms `~/.config/mise/config.toml` is still read and
+  still resolves its four tools.
+- Opening the Omarchy menu confirms the extension still parses and that no
+  Hibernate row appears.
+- `sudo .config/omarchy/no-hibernate.sh install` run twice confirms
+  idempotence, and `systemd-analyze cat-config systemd/sleep.conf` confirms the
+  drop-in is in effect.

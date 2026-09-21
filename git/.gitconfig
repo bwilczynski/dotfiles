@@ -1,0 +1,7 @@
+# Git reads both $XDG_CONFIG_HOME/git/config and this file, and a single-valued
+# variable set here wins. On Omarchy that leaves the distribution's shipped
+# ~/.config/git/config untouched and updatable, while the identity stays tracked
+# here for every machine.
+[user]
+	name = Bartlomiej Wilczynski
+	email = me@bwilczynski.com
