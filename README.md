@@ -20,7 +20,7 @@ stow package per tool, so each machine installs only what it needs.
 | `claude`   | `.claude/` settings and themes                  | macOS    |
 | `macos`    | `.config/macos/` and the keyremap LaunchAgent   | macOS    |
 | `mise`     | `.config/mise/config.toml`                      | Linux    |
-| `omarchy`  | Hyprland and Omarchy overrides, `.XCompose`     | Linux    |
+| `omarchy`  | Hyprland/Omarchy overrides, `.XCompose`, `bin/` | Linux    |
 
 The macOS-only rows are not a portability limitation. Omarchy ships its own
 configuration for tmux, ghostty, starship, lazygit, herdr, and Neovim, and
@@ -100,14 +100,23 @@ Omarchy installs and updates almost everything else itself, so only three
 packages apply:
 
 ```sh
-stow git mise omarchy
+stow --no-folding git mise omarchy
 ```
+
+`--no-folding` is required on Linux and is not optional. Without it, stow
+symlinks a whole *directory* whenever the target does not already exist — on a
+fresh machine that makes `~/.config` itself a symlink into this repo, and every
+file Omarchy writes there afterwards (`omarchy/shell.json`, the active theme
+symlink, `current/`) lands in `git status`. The macOS packages do not need the
+flag because each of them owns its directory outright; the `omarchy` package is
+the only one that shares directories with a distribution that also writes to
+them.
 
 Then install the system half of the hibernation fix, which stow cannot place
 because it lives outside `$HOME`:
 
 ```sh
-sudo ~/.config/omarchy/no-hibernate.sh install
+sudo omarchy-no-hibernate install
 ```
 
 Dictation is not tracked here; restore it with `omarchy-voxtype-install`.
@@ -130,7 +139,7 @@ everything else:
 - `.config/hypr/monitors.lua` — monitor scale pinned to 1.6 instead of `auto`.
 - `.config/omarchy/extensions/omarchy-menu.jsonc` — hides the Hibernate row.
 - `.XCompose` — name and email compose sequences, on top of Omarchy's defaults.
-- `.config/omarchy/no-hibernate.sh` — run by hand, not by stow. Installs
+- `.local/bin/omarchy-no-hibernate` — run by hand, not by stow. Installs
   `/etc/systemd/sleep.conf.d/99-no-hibernate-t2.conf`, which is what actually
   blocks S4 on this Apple T2 machine; the menu entry above only hides the row.
   The file it writes carries the full diagnosis.

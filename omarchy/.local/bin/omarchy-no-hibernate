@@ -1,14 +1,20 @@
 #!/usr/bin/env bash
 # Disable hibernation on this Apple T2 Mac.
 #
-# Run by hand after `stow omarchy`:
-#   sudo ~/.config/omarchy/no-hibernate.sh install
+# Run by hand after `stow --no-folding omarchy`, from anywhere on PATH:
+#   sudo omarchy-no-hibernate install
+#
+# Lives in ~/.local/bin, which this repository owns and Omarchy puts on PATH in
+# default/bash/env-bootstrap. It is deliberately not under ~/.config/omarchy/,
+# which belongs to the distribution. The omarchy- prefix is safe: the omarchy
+# CLI dispatches to $OMARCHY_BIN_DIR, not to PATH, so this does not enter its
+# command namespace.
 #
 # Stow only targets $HOME, so it can carry the companion menu entry in
-# .config/omarchy/extensions/omarchy-menu.jsonc but not this file. The menu
-# entry only hides the Hibernate row; this is what actually blocks S4, so a
-# machine rebuilt from this repository needs both. The reasoning is kept in the
-# installed file itself, where anyone debugging suspend will find it.
+# .config/omarchy/extensions/omarchy-menu.jsonc but not the file this installs.
+# The menu entry only hides the Hibernate row; this is what actually blocks S4,
+# so a machine rebuilt from this repository needs both. The reasoning is kept in
+# the installed file itself, where anyone debugging suspend will find it.
 #
 # Idempotent — running it twice is a no-op.
 

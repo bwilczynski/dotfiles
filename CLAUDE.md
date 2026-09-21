@@ -12,7 +12,7 @@ Files at the repo root (`Brewfile`, `Brewfile.optional`, `README.md`, `CLAUDE.md
 
 ```sh
 stow git zsh tmux nvim starship    # install a subset (macOS)
-stow git mise omarchy              # everything that applies on Omarchy
+stow --no-folding git mise omarchy # everything that applies on Omarchy
 stow -n -v nvim                    # dry run
 stow -D ghostty                    # uninstall a package
 ```
@@ -33,7 +33,7 @@ stow -D ghostty                    # uninstall a package
   `~/.gitconfig.local` for machine-specific settings (untracked, wins over the
   tracked values, absence is not an error); cross-platform
 - **`mise`** — `.config/mise/config.toml`; Linux
-- **`omarchy`** — Hyprland and Omarchy overrides plus `.XCompose`, and `.config/omarchy/no-hibernate.sh` (run by hand); Linux
+- **`omarchy`** — Hyprland and Omarchy overrides plus `.XCompose`, and `.local/bin/omarchy-no-hibernate` (run by hand); Linux
 
 Everything else is macOS-only. `zsh`, `tmux`, `ghostty`, `starship`, `jj`, `herdr`, `lazygit`, `nvim`, and `claude` are **not** stowed on Omarchy — see the conventions below.
 
@@ -44,4 +44,6 @@ Everything else is macOS-only. `zsh`, `tmux`, `ghostty`, `starship`, `jj`, `herd
 - **Track deltas, not distro config.** Omarchy ships user-facing templates in `/usr/share/omarchy/config`, copies them into `~/.config`, keeps them current through `omarchy update` migrations, and re-renders several on `omarchy theme set`. The `omarchy` package tracks only files whose content differs from those templates. Before adding a Linux file, diff it against `/usr/share/omarchy/config/<path>`; if it matches, it does not belong here.
 - Omarchy's own configs for tmux, ghostty, starship, lazygit, herdr, and neovim are theme-dynamic and menu-integrated. Do not stow the macOS packages over them.
 - **Machine-local settings go in an untracked tail file**, sourced or included last so it wins: `zsh/.zshrc` sources `~/.zshrc.custom`, `git/.gitconfig` includes `~/.gitconfig.local`. Absolute paths and credentials belong there, never in a tracked file.
-- Files outside `$HOME` cannot be stowed. Install them from a hand-run script in the owning package, as `macos/.config/macos/defaults.sh` and `omarchy/.config/omarchy/no-hibernate.sh` do.
+- Files outside `$HOME` cannot be stowed. Install them from a hand-run script in the owning package, as `macos/.config/macos/defaults.sh` and `omarchy/.local/bin/omarchy-no-hibernate` do.
+- **Always stow the Linux packages with `--no-folding`.** Stow links a whole directory when the target does not exist, so on a fresh machine `stow omarchy` would make `~/.config` itself a symlink into this repo and pull Omarchy's own runtime state into `git status`. Folding is safe only where the repo owns the entire directory, which is true of every macOS package and of none of the Linux ones.
+- Repo-owned scripts do not go in distro-owned directories. `~/.config/omarchy/` belongs to Omarchy; `~/.local/bin` (on PATH via Omarchy's `default/bash/env-bootstrap`) belongs to us. An `omarchy-` prefix there is safe because the omarchy CLI dispatches to `$OMARCHY_BIN_DIR`, not PATH.
