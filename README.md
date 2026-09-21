@@ -8,7 +8,7 @@ stow package per tool, so each machine installs only what it needs.
 
 | Package    | Installs                                        | Platform |
 | ---------- | ----------------------------------------------- | -------- |
-| `git`      | `.gitconfig` (commit identity)                  | both     |
+| `git`      | `.gitconfig` (identity and aliases)             | both     |
 | `zsh`      | `.zshrc`, `.fzf.zsh`, `.kubectl.zsh`            | macOS    |
 | `tmux`     | `.tmux.conf`                                    | macOS    |
 | `nvim`     | `.config/nvim/` (LazyVim)                       | macOS    |
@@ -68,9 +68,25 @@ package with `stow -D <package>`.
 
 Start tmux and press `prefix + I` to install plugins.
 
-If `~/.gitconfig` already exists on the machine, `stow git` will report a
-conflict. Merge the existing file into `git/.gitconfig` by hand first; stow will
-not overwrite it.
+### Git config layering
+
+`git/.gitconfig` holds the commit identity and the aliases — everything that is
+the same on every machine. It ends with an include of `~/.gitconfig.local`,
+which is not tracked and is where machine-specific settings go: absolute paths,
+credentials, per-host overrides. The include is last, so those values win. A
+missing `~/.gitconfig.local` is not an error, so a fresh machine needs no setup.
+
+This mirrors how `.zshrc` sources `~/.zshrc.custom`.
+
+If `~/.gitconfig` already exists, `stow git` reports a conflict and **aborts the
+entire command** — the other packages named alongside it are not stowed either.
+Split the existing file first: the portable parts into `git/.gitconfig`, the
+machine-specific ones into `~/.gitconfig.local`, then remove `~/.gitconfig` and
+stow again.
+
+Check for a stray `~/.config/git/config` too. Git reads it *before*
+`~/.gitconfig`, so an identity left there is shadowed by the tracked one and
+serves only to confuse; delete it once its contents are accounted for.
 
 ## Installation — Omarchy
 

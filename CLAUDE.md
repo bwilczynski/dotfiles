@@ -29,7 +29,9 @@ stow -D ghostty                    # uninstall a package
 - **`lazygit`** — `Library/Application Support/lazygit/` (macOS path)
 - **`claude`** — `.claude/settings.json` and themes
 - **`macos`** — `.config/macos/defaults.sh` (system preferences, run by hand) and `keyremap.sh` (Caps Lock → Escape, Right Command → Right Option, built-in keyboard only), kept applied by the `com.bwilczynski.keyremap` LaunchAgent that this package installs
-- **`git`** — `.gitconfig`, the commit identity only; cross-platform
+- **`git`** — `.gitconfig`: commit identity and aliases, plus a trailing include of
+  `~/.gitconfig.local` for machine-specific settings (untracked, wins over the
+  tracked values, absence is not an error); cross-platform
 - **`mise`** — `.config/mise/config.toml`; Linux
 - **`omarchy`** — Hyprland and Omarchy overrides plus `.XCompose`, and `.config/omarchy/no-hibernate.sh` (run by hand); Linux
 
@@ -41,4 +43,5 @@ Everything else is macOS-only. `zsh`, `tmux`, `ghostty`, `starship`, `jj`, `herd
 - **Catppuccin Mocha** is the consistent theme across tmux, fzf, ghostty, lazygit, jj, and neovim — on macOS. On Omarchy the theme is whatever `omarchy theme set` selects, and the repo does not fight it.
 - **Track deltas, not distro config.** Omarchy ships user-facing templates in `/usr/share/omarchy/config`, copies them into `~/.config`, keeps them current through `omarchy update` migrations, and re-renders several on `omarchy theme set`. The `omarchy` package tracks only files whose content differs from those templates. Before adding a Linux file, diff it against `/usr/share/omarchy/config/<path>`; if it matches, it does not belong here.
 - Omarchy's own configs for tmux, ghostty, starship, lazygit, herdr, and neovim are theme-dynamic and menu-integrated. Do not stow the macOS packages over them.
+- **Machine-local settings go in an untracked tail file**, sourced or included last so it wins: `zsh/.zshrc` sources `~/.zshrc.custom`, `git/.gitconfig` includes `~/.gitconfig.local`. Absolute paths and credentials belong there, never in a tracked file.
 - Files outside `$HOME` cannot be stowed. Install them from a hand-run script in the owning package, as `macos/.config/macos/defaults.sh` and `omarchy/.config/omarchy/no-hibernate.sh` do.
