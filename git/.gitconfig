@@ -1,7 +1,35 @@
-# Git reads both $XDG_CONFIG_HOME/git/config and this file, and a single-valued
-# variable set here wins. On Omarchy that leaves the distribution's shipped
-# ~/.config/git/config untouched and updatable, while the identity stays tracked
-# here for every machine.
+# Git reads both $XDG_CONFIG_HOME/git/config and this file, in that order, and
+# a single-valued variable set here wins. On Omarchy that leaves the
+# distribution's shipped ~/.config/git/config untouched and updatable, while
+# the identity and aliases stay tracked here for every machine.
+#
+# Machine-specific settings — absolute paths, credentials, per-host overrides —
+# go in ~/.gitconfig.local, which is not tracked. The include is last so those
+# values win, mirroring how .zshrc sources ~/.zshrc.custom.
+
 [user]
 	name = Bartlomiej Wilczynski
 	email = me@bwilczynski.com
+
+[alias]
+	cp = cherry-pick
+	st = status
+	ci = commit
+	br = branch
+	co = checkout
+	cob = checkout -b
+	df = diff
+	lg = log --graph --oneline --all --decorate
+	cm = !git add -A && git commit -m
+	branch-name = !git symbolic-ref --short HEAD
+	publish = !git push -u origin $(git branch-name)
+	unpublish = !git push origin :$(git branch-name)
+	cleanup = !git branch --merged | grep  -v \"\\\\*\\\\|master\\\\|main\\\\|develop\" | xargs -n 1 git branch -d
+	purr = pull --rebase
+	puff = pull --ff-only
+	cobf = "!f() { git checkout -b feature/$1; }; f"
+
+# Keep last: machine-local values override everything above. A missing file is
+# not an error.
+[include]
+	path = ~/.gitconfig.local
