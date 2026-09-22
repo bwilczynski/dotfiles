@@ -86,9 +86,10 @@ also a secondary tmux prefix).
 | Create / rename / close session or workspace | `prefix+Shift+c/r/k` |
 | Previous / next session or workspace | `prefix+Shift+p/n` |
 
-`prefix+1..9` always selects a window or tab. `Option+1..9` is also enabled as
-an experiment; remove its Ghostty, tmux, and Herdr entries together if it
-interferes with symbol input.
+`prefix+1..9` always selects a window or tab. `Option+1..9` does the same
+directly and coexists with Polish Option-letter input. It binds physical digit
+keys, so if another layout ever makes it collide with symbol input, remove its
+Ghostty, tmux, and Herdr entries together.
 
 macOS deliberately keeps every Option-arrow chord for native word movement and
 selection, so it does not copy Omarchy's direct Alt-arrow navigation. Ghostty
