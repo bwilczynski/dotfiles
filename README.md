@@ -93,11 +93,10 @@ interferes with symbol input.
 macOS deliberately keeps every Option-arrow chord for native word movement and
 selection, so it does not copy Omarchy's direct Alt-arrow navigation. Ghostty
 also keeps Option in native macOS mode, preserving Option-letter Polish
-characters. Closing a session or workspace asks for confirmation, unlike on
-Omarchy, because Herdr prompts by default and tmux should not be the one place
-where a single keystroke discards running work. Omarchy continues to own its
-Linux configs and dynamic theming; do not stow the macOS `tmux`, `herdr`, or
-`ghostty` packages there.
+characters. Pane, window/tab, and session/workspace close actions do not ask
+for confirmation, matching Omarchy. Omarchy continues to own its Linux configs
+and dynamic theming; do not stow the macOS `tmux`, `herdr`, or `ghostty`
+packages there.
 
 ### Git config layering
 

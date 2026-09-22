@@ -54,8 +54,9 @@ previous_workspace = "prefix+shift+p"
 next_workspace = "prefix+shift+n"
 
 [ui]
-# Create tabs immediately; rename later with prefix+r.
+# Match Omarchy: create tabs immediately and close without confirmation.
 prompt_new_tab_name = false
+confirm_close = false
 
 [ui.toast]
 delivery = "system"
