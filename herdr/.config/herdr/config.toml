@@ -53,5 +53,9 @@ close_workspace = "prefix+shift+k"
 previous_workspace = "prefix+shift+p"
 next_workspace = "prefix+shift+n"
 
+[ui]
+# Create tabs immediately; rename later with prefix+r.
+prompt_new_tab_name = false
+
 [ui.toast]
 delivery = "system"
