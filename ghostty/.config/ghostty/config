@@ -1,2 +1,24 @@
 font-family = Fira Code Nerd Font Mono
 theme = Catppuccin Mocha
+
+# Preserve Option+letter for Polish characters and native macOS text input.
+macos-option-as-alt = false
+
+# Multiplexer pane controls. Modified Enter needs CSI-u so Shift remains
+# distinct; Escape needs it because ESC ESC is ambiguous with a bare Escape
+# press and Herdr decodes it as plain Esc.
+keybind = alt+enter=csi:13;3u
+keybind = alt+shift+enter=csi:13;4u
+keybind = alt+escape=csi:27;3u
+
+# Experimental direct window/tab selection. Use physical digit keys so the
+# active keyboard layout cannot change which keys trigger these bindings.
+keybind = alt+digit_1=text:\x1b1
+keybind = alt+digit_2=text:\x1b2
+keybind = alt+digit_3=text:\x1b3
+keybind = alt+digit_4=text:\x1b4
+keybind = alt+digit_5=text:\x1b5
+keybind = alt+digit_6=text:\x1b6
+keybind = alt+digit_7=text:\x1b7
+keybind = alt+digit_8=text:\x1b8
+keybind = alt+digit_9=text:\x1b9

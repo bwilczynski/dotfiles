@@ -68,6 +68,37 @@ package with `stow -D <package>`.
 
 Start tmux and press `prefix + I` to install plugins.
 
+### tmux and Herdr keybindings
+
+On macOS, tmux sessions map to Herdr workspaces, tmux windows to Herdr tabs,
+and panes to panes. Both tools use `Ctrl+Space` as their prefix (`Ctrl+B` is
+also a secondary tmux prefix).
+
+| Action | Binding |
+| ------ | ------- |
+| Split top/bottom | `Option+Enter` or `prefix+h` |
+| Split side-by-side | `Option+Shift+Enter` or `prefix+v` |
+| Close pane | `Option+Escape` or `prefix+x` |
+| Focus pane | `Ctrl+Option+arrows` |
+| Resize pane | `Ctrl+Option+Shift+arrows` |
+| Create / rename / close window or tab | `prefix+c` / `prefix+r` / `prefix+k` |
+| Previous / next window or tab | `prefix+p` / `prefix+n` |
+| Create / rename / close session or workspace | `prefix+Shift+c/r/k` |
+| Previous / next session or workspace | `prefix+Shift+p/n` |
+
+`prefix+1..9` always selects a window or tab. `Option+1..9` does the same
+directly and coexists with Polish Option-letter input. It binds physical digit
+keys, so if another layout ever makes it collide with symbol input, remove its
+Ghostty, tmux, and Herdr entries together.
+
+macOS deliberately keeps every Option-arrow chord for native word movement and
+selection, so it does not copy Omarchy's direct Alt-arrow navigation. Ghostty
+also keeps Option in native macOS mode, preserving Option-letter Polish
+characters. Pane, window/tab, and session/workspace close actions do not ask
+for confirmation, matching Omarchy. Omarchy continues to own its Linux configs
+and dynamic theming; do not stow the macOS `tmux`, `herdr`, or `ghostty`
+packages there.
+
 ### Git config layering
 
 `git/.gitconfig` holds the commit identity and the aliases — everything that is
