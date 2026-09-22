@@ -39,7 +39,7 @@
 
 **Interfaces:**
 - Consumes: macOS Option key events under the Polish keyboard layout.
-- Produces: CSI-u `13;3u` for Option-Enter, CSI-u `13;4u` for Option-Shift-Enter, two ESC bytes for Option-Escape, and ESC-prefixed digits for physical Option-1 through Option-9.
+- Produces: CSI-u `13;3u` for Option-Enter, CSI-u `13;4u` for Option-Shift-Enter, CSI-u `27;3u` for Option-Escape, and ESC-prefixed digits for physical Option-1 through Option-9.
 
 - [ ] **Step 1: Demonstrate that the transport contract is absent**
 
@@ -63,7 +63,7 @@ macos-option-as-alt = false
 # Multiplexer pane controls. Modified Enter needs CSI-u so Shift remains distinct.
 keybind = alt+enter=csi:13;3u
 keybind = alt+shift+enter=csi:13;4u
-keybind = alt+escape=text:\x1b\x1b
+keybind = alt+escape=csi:27;3u
 
 # Experimental direct window/tab selection. Use physical digit keys so the
 # active keyboard layout cannot change which keys trigger these bindings.

@@ -134,7 +134,7 @@ Specific keybindings encode only the selected direct multiplexer chords:
 
 - Option-Enter and Option-Shift-Enter produce distinct CSI-u sequences so tmux
   and Herdr can distinguish the two split directions.
-- Option-Escape produces the terminal Meta-Escape input expected by the direct
+- Option-Escape produces CSI-u `27;3u`, the encoding expected by the direct
   close binding.
 - Physical Option-1 through Option-9 produce terminal Alt-number sequences for
   the trial direct window/tab selectors.
