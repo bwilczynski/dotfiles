@@ -1,13 +1,5 @@
-# Setup fzf
-if [[ ! "$PATH" == */opt/homebrew/opt/fzf/bin* ]]; then
-  export PATH="$PATH:/opt/homebrew/opt/fzf/bin"
-fi
-
-# Auto-completion
-[[ $- == *i* ]] && source "/opt/homebrew/opt/fzf/shell/completion.zsh" 2> /dev/null
-
-# Key bindings
-source "/opt/homebrew/opt/fzf/shell/key-bindings.zsh"
+# Setup fzf, including shell completion and key bindings.
+source <(fzf --zsh)
 
 # Catppuccin fzf theme
 export FZF_DEFAULT_OPTS=" \
@@ -16,4 +8,3 @@ export FZF_DEFAULT_OPTS=" \
 --color=marker:#B4BEFE,fg+:#CDD6F4,prompt:#CBA6F7,hl+:#F38BA8 \
 --color=selected-bg:#45475A \
 --color=border:#6C7086,label:#CDD6F4"
-

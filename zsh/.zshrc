@@ -1,3 +1,6 @@
+# Allow selecting among multiple completion candidates with Tab or arrow keys.
+zstyle ':completion:*' menu select
+
 autoload -Uz compinit
 compinit
 
