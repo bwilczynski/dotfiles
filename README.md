@@ -65,7 +65,28 @@ stow git zsh tmux nvim ghostty starship \
 Preview before committing to it with `stow -n -v <package>`, and remove a
 package with `stow -D <package>`.
 
-Start tmux and press `prefix + I` to install plugins.
+### Switching themes
+
+`theme/.config/theme/current` is a symlink to one of the theme directories
+under `theme/`. To switch, repoint it from inside the repo and commit the
+change:
+
+```sh
+ln -sfn <theme-name> theme/.config/theme/current
+```
+
+Restart ghostty and Neovim to pick up the new palette. A Claude Code session
+already running will not retint until it is restarted either — its theme is
+reached through a symlink inside the repo rather than through a watched
+`~/.config` directory, so it has no way to notice the change while running.
+
+Start tmux and press `prefix + I` to install plugins. If this machine
+previously used the `catppuccin/tmux` plugin, remove its clone by hand —
+nothing references it any more, but stow won't clean it up:
+
+```sh
+rm -rf ~/.tmux/plugins/catppuccin
+```
 
 ### tmux and Herdr keybindings
 

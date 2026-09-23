@@ -294,6 +294,12 @@ EOF
 - Consumes: `~/.config/theme/current/neovim.lua` from Task 1, which returns a LazyVim plugin spec table.
 - Produces: nothing other tasks depend on.
 
+Note (recorded after the fact): this task's hardcoded-colour audit covered
+only `nvim/.config/nvim/lua/plugins/`. `lua/config/lazy.lua` also had a
+hardcoded `vim.cmd.colorscheme("catppuccin-mocha")` call, which this audit
+missed and which had to be removed later, in commit bc28880 (amended to
+fc83061). `lua/config/` must be audited too, not just `lua/plugins/`.
+
 - [ ] **Step 1: Verify the current plugin file names the theme**
 
 Run: `cat nvim/.config/nvim/lua/plugins/catppuccin.lua`
@@ -663,7 +669,15 @@ Expected: `6`
 
 - [ ] **Step 2: Replace the whole file**
 
-Write `starship/.config/starship.toml` with exactly:
+Copy `/usr/share/omarchy/config/starship.toml` byte-for-byte to
+`starship/.config/starship.toml` (e.g. `cp /usr/share/omarchy/config/starship.toml
+starship/.config/starship.toml`). Do not retype it from the listing below: the
+`git_status` table's `conflicted`, `up_to_date`, and `modified` values contain
+Nerd Font glyphs in the private use area, and those glyphs cannot be
+transcribed through this document — they did not survive being pasted into
+this plan and show below as bare `" "`. The listing is illustrative only, to
+show the file's shape; the shipped config (copied byte-for-byte from Omarchy)
+is correct.
 
 ```toml
 add_newline = true
@@ -699,8 +713,6 @@ staged     = ""
 renamed    = ""
 deleted    = ""
 ```
-
-The `git_status` values contain Nerd Font glyphs in the private use area; copy them byte for byte rather than retyping.
 
 - [ ] **Step 3: Verify starship renders the prompt with no hexes**
 

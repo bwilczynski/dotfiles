@@ -45,7 +45,9 @@ conventions below.
 - **The terminal carries the palette.** `theme/` holds one directory per theme
   and a tracked `current` symlink; only tools that cannot read ANSI colours
   (ghostty, neovim, Claude Code) get a file there, and they include it from
-  `~/.config/theme/current/`. Everything else uses ANSI colour names and
+  `~/.config/theme/current/` — except Claude Code, whose theme is a
+  repo-internal symlink resolving inside `theme/` rather than through
+  `~/.config/theme`. Everything else uses ANSI colour names and
   inherits the terminal's palette for free. Adding a tool means checking
   whether it reads ANSI before theming it — usually the answer is that it needs
   no theme config at all. On Omarchy the theme is whatever `omarchy theme set`

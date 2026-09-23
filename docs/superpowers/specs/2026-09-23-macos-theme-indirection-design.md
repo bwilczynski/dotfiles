@@ -105,9 +105,13 @@ sets no colorscheme at all, so this is also a small behaviour gain.
 
 **claude** — `themes/catppuccin-mocha.json` is deleted and replaced by a
 relative symlink `themes/theme.json` pointing at
-`../../.config/theme/current/claude.json`; `settings.json` gets
+`../../../theme/.config/theme/current/claude.json`; `settings.json` gets
 `"theme": "custom:theme"`. The accent moves mauve → blue, matching Omarchy's
-`claude.json`.
+`claude.json`. Three levels of `..` are needed, not two: stow replaces
+`claude/.claude/themes/theme.json` with a symlink *inside the repo*, so the
+stored relative target resolves from `<repo>/claude/.claude/themes/`, not
+from `$HOME`; two `..` would land on `<repo>/claude/.config/…`, which
+doesn't exist.
 
 ### Rewritten to ANSI, adopting Omarchy's config
 
