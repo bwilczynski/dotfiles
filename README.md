@@ -80,12 +80,33 @@ already running will not retint until it is restarted either — its theme is
 reached through a symlink inside the repo rather than through a watched
 `~/.config` directory, so it has no way to notice the change while running.
 
-Start tmux and press `prefix + I` to install plugins. If this machine
-previously used the `catppuccin/tmux` plugin, remove its clone by hand —
-nothing references it any more, but stow won't clean it up:
+Start tmux and press `prefix + I` to install plugins.
+
+### Upgrading a machine that predates the theme package
+
+Two leftovers need clearing by hand; stow won't do either.
+
+The `lazygit` package is gone, so a machine that stowed it is left with a
+dangling `config.yml` symlink, and lazygit refuses to start against one
+(`config.yml: no such file or directory`). Unstow it *before* pulling, while
+the package still exists:
 
 ```sh
-rm -rf ~/.tmux/plugins/catppuccin
+stow -D lazygit      # before pulling
+```
+
+If you have already pulled, delete the dangling link instead:
+
+```sh
+rm ~/Library/Application\ Support/lazygit/config.yml
+```
+
+The `catppuccin/tmux` plugin is no longer listed, so TPM stops sourcing it, but
+its clone stays on disk. It is named after the repo, not the org, so the
+directory is `tmux`:
+
+```sh
+rm -rf ~/.tmux/plugins/tmux ~/.config/tmux/plugins/catppuccin
 ```
 
 ### tmux and Herdr keybindings
