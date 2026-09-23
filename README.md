@@ -16,17 +16,16 @@ stow package per tool, so each machine installs only what it needs.
 | `starship` | `.config/starship.toml`                         | macOS    |
 | `jj`       | `.config/jj/`                                   | macOS    |
 | `herdr`    | `.config/herdr/`                                | macOS    |
-| `lazygit`  | `Library/Application Support/lazygit/`          | macOS    |
 | `claude`   | `.claude/` settings and themes                  | macOS    |
+| `theme`    | `.config/theme/` (palettes + `current` symlink) | macOS    |
 | `macos`    | `.config/macos/` and the keyremap LaunchAgent   | macOS    |
 | `mise`     | `.config/mise/config.toml`                      | Linux    |
 | `omarchy`  | Hyprland/Omarchy overrides, `.XCompose`, `bin/` | Linux    |
 
 The macOS-only rows are not a portability limitation. Omarchy ships its own
-configuration for tmux, ghostty, starship, lazygit, herdr, and Neovim, and
-re-renders several of them on `omarchy theme set`; stowing the statically themed
-macOS versions over them would break theme switching and Omarchy's menus. See
-"Omarchy" below.
+configuration for tmux, ghostty, starship, herdr, and Neovim, and re-renders
+several of them on `omarchy theme set`; stowing the macOS versions over them
+would break theme switching and Omarchy's menus. See "Omarchy" below.
 
 Everything else at the repo root — `Brewfile`, `README.md`, `CLAUDE.md`,
 `docs/` — is repo-only and never symlinked.
@@ -58,9 +57,9 @@ Stow the packages you want. The repo lives at `~/.dotfiles`, so stow's default
 target is `$HOME` and no flags are needed:
 
 ```sh
-stow git zsh tmux nvim starship            # minimal / remote box
+stow git zsh tmux nvim starship theme      # minimal / remote box
 stow git zsh tmux nvim ghostty starship \
-     jj herdr lazygit claude macos         # full macOS workstation
+     jj herdr claude theme macos           # full macOS workstation
 ```
 
 Preview before committing to it with `stow -n -v <package>`, and remove a
