@@ -97,10 +97,11 @@ which reads the theme's `neovim.lua` through a guarded `dofile`. If
 `~/.config/theme` is absent the spec degrades to LazyVim's default colorscheme
 rather than erroring at startup.
 
-Omarchy's catppuccin theme sets `colorscheme = "catppuccin-nvim"`, which is not
-a name the catppuccin plugin obviously registers. Implementation must confirm
-it loads; if it does not, the theme file uses `catppuccin-mocha`. Today our
-nvim sets no colorscheme at all, so this is also a small behaviour gain.
+Omarchy's catppuccin theme sets `colorscheme = "catppuccin-nvim"`. This is a
+real colorscheme: the plugin ships `colors/catppuccin-nvim.vim`, whose entire
+body is `lua require("catppuccin").load()`, so it loads whichever flavour the
+plugin is configured for — mocha by default. It is used as-is. Today our nvim
+sets no colorscheme at all, so this is also a small behaviour gain.
 
 **claude** — `themes/catppuccin-mocha.json` is deleted and replaced by a
 relative symlink `themes/theme.json` pointing at
