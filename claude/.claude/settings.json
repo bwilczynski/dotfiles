@@ -15,7 +15,7 @@
     }
   },
   "effortLevel": "medium",
-  "theme": "custom:catppuccin-mocha",
+  "theme": "custom:theme",
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true
 }

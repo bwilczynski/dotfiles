@@ -16,17 +16,16 @@ stow package per tool, so each machine installs only what it needs.
 | `starship` | `.config/starship.toml`                         | macOS    |
 | `jj`       | `.config/jj/`                                   | macOS    |
 | `herdr`    | `.config/herdr/`                                | macOS    |
-| `lazygit`  | `Library/Application Support/lazygit/`          | macOS    |
 | `claude`   | `.claude/` settings and themes                  | macOS    |
+| `theme`    | `.config/theme/` (palettes + `current` symlink) | macOS    |
 | `macos`    | `.config/macos/` and the keyremap LaunchAgent   | macOS    |
 | `mise`     | `.config/mise/config.toml`                      | Linux    |
 | `omarchy`  | Hyprland/Omarchy overrides, `.XCompose`, `bin/` | Linux    |
 
 The macOS-only rows are not a portability limitation. Omarchy ships its own
-configuration for tmux, ghostty, starship, lazygit, herdr, and Neovim, and
-re-renders several of them on `omarchy theme set`; stowing the statically themed
-macOS versions over them would break theme switching and Omarchy's menus. See
-"Omarchy" below.
+configuration for tmux, ghostty, starship, herdr, and Neovim, and re-renders
+several of them on `omarchy theme set`; stowing the macOS versions over them
+would break theme switching and Omarchy's menus. See "Omarchy" below.
 
 Everything else at the repo root — `Brewfile`, `README.md`, `CLAUDE.md`,
 `docs/` — is repo-only and never symlinked.
@@ -58,15 +57,67 @@ Stow the packages you want. The repo lives at `~/.dotfiles`, so stow's default
 target is `$HOME` and no flags are needed:
 
 ```sh
-stow git zsh tmux nvim starship            # minimal / remote box
+stow git zsh tmux nvim starship theme      # minimal / remote box
 stow git zsh tmux nvim ghostty starship \
-     jj herdr lazygit claude macos         # full macOS workstation
+     jj herdr claude theme macos           # full macOS workstation
 ```
 
 Preview before committing to it with `stow -n -v <package>`, and remove a
 package with `stow -D <package>`.
 
+### Switching themes
+
+`theme/.config/theme/current` is a symlink to one of the theme directories
+under `theme/`. To switch, repoint it from inside the repo and commit the
+change:
+
+```sh
+ln -sfn <theme-name> theme/.config/theme/current
+```
+
+Restart ghostty and Neovim to pick up the new palette. A Claude Code session
+already running will not retint until it is restarted either — its theme is
+reached through a symlink inside the repo rather than through a watched
+`~/.config` directory, so it has no way to notice the change while running.
+
 Start tmux and press `prefix + I` to install plugins.
+
+### Upgrading a machine that predates the theme package
+
+Two leftovers need clearing by hand; stow won't do either.
+
+The `lazygit` package is gone, so a machine that stowed it is left with a
+dangling `config.yml` symlink, and lazygit refuses to start against one
+(`config.yml: no such file or directory`). Unstow it *before* pulling, while
+the package still exists:
+
+```sh
+stow -D lazygit      # before pulling
+```
+
+If you have already pulled, delete the dangling link instead:
+
+```sh
+rm ~/Library/Application\ Support/lazygit/config.yml
+```
+
+The `catppuccin/tmux` plugin is no longer listed, so TPM stops sourcing it, but
+its clone stays on disk. Two paths hold it, and neither says "catppuccin" where
+you would expect:
+
+- `~/.tmux/plugins/tmux` — TPM names a clone after the **repo**, and
+  catppuccin's repo is called `tmux`, so the org name never appears. This is
+  one plugin sitting beside `tmux-continuum`, `tmux-resurrect`,
+  `tmux-sensible` and `tpm`, not the plugins directory itself.
+- `~/.config/tmux/plugins/catppuccin/tmux` — a leftover from an older layout
+  that nested org-then-repo.
+
+Confirm the first one before deleting, since the name is easy to misread:
+
+```sh
+git -C ~/.tmux/plugins/tmux remote get-url origin   # → catppuccin/tmux
+rm -rf ~/.tmux/plugins/tmux ~/.config/tmux/plugins/catppuccin
+```
 
 ### tmux and Herdr keybindings
 
