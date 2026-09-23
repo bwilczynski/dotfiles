@@ -102,10 +102,20 @@ rm ~/Library/Application\ Support/lazygit/config.yml
 ```
 
 The `catppuccin/tmux` plugin is no longer listed, so TPM stops sourcing it, but
-its clone stays on disk. It is named after the repo, not the org, so the
-directory is `tmux`:
+its clone stays on disk. Two paths hold it, and neither says "catppuccin" where
+you would expect:
+
+- `~/.tmux/plugins/tmux` — TPM names a clone after the **repo**, and
+  catppuccin's repo is called `tmux`, so the org name never appears. This is
+  one plugin sitting beside `tmux-continuum`, `tmux-resurrect`,
+  `tmux-sensible` and `tpm`, not the plugins directory itself.
+- `~/.config/tmux/plugins/catppuccin/tmux` — a leftover from an older layout
+  that nested org-then-repo.
+
+Confirm the first one before deleting, since the name is easy to misread:
 
 ```sh
+git -C ~/.tmux/plugins/tmux remote get-url origin   # → catppuccin/tmux
 rm -rf ~/.tmux/plugins/tmux ~/.config/tmux/plugins/catppuccin
 ```
 
