@@ -1,5 +1,5 @@
 font-family = Fira Code Nerd Font Mono
-theme = Catppuccin Mocha
+config-file = ?"~/.config/theme/current/ghostty.conf"
 
 # Preserve Option+letter for Polish characters and native macOS text input.
 macos-option-as-alt = false
