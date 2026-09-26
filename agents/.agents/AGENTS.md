@@ -65,3 +65,46 @@ herdr pane run <new-pane-id> "\${EDITOR:-nvim} <path/to/spec.md>"
 Keep focus in your own pane and tell the user to navigate over. If you edit the
 file afterwards, say so — their buffer needs `:e` to reload. If the tab is
 already split, do not split again; just give the path.
+
+## Offering a diff review
+
+The user reviews changes in a terminal diff viewer. Pick it by what is installed,
+in this order, and do not ask which one: `hunk`, then `lazygit`, then plain
+`git diff` as the last resort.
+
+Offer a review at two points. Offer, wait for a yes, and do not open a viewer
+unasked:
+
+1. **Live review, after the spec is approved and before the first edit.** Ask
+   whether they want to watch the diff build up as you work:
+   `hunk diff --watch` reloads on every change. With lazygit, its working-tree
+   view refreshes on its own, so it serves the same purpose.
+2. **After the change is complete** — unless a live review from step 1 is already
+   running, in which case say the work is done and let them look, rather than
+   opening a second viewer.
+
+Inside Herdr, put the viewer beside you rather than in your own pane, same rule
+as a spec: check `herdr pane layout --pane <my-pane>` first, and if the tab is
+not already split,
+
+```
+herdr pane split --current --direction right --cwd <repo-root> --no-focus
+herdr pane run <new-pane-id> "hunk diff --watch"
+```
+
+Keep focus in your own pane and tell the user to navigate over. Outside Herdr,
+just give them the command to run.
+
+Gotchas, learned the hard way:
+
+- **These viewers are full-screen TUIs.** A second `herdr pane run` types into
+  the running viewer instead of the shell. Send `q` with `herdr pane send-keys`
+  first, confirm the prompt is back, then run the next command.
+- **`pane read` only sees the rendered viewport.** A long changeset scrolls off;
+  do not conclude from a read that files are missing from the diff. Confirm the
+  file list with `git diff --stat` instead.
+- **`hunk diff <rev>` renders that one revision, not a range.** To review several
+  commits together, pipe a patch: `git diff <base> HEAD | hunk patch`.
+- **In a jj-colocated repo (a `.jj` directory next to `.git`), hunk resolves
+  revsets through jj**, so git spellings like `HEAD~2` fail. lazygit shows only
+  git's view there and does not understand jj at all.
