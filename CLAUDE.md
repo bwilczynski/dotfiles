@@ -12,7 +12,7 @@ Files at the repo root (`Brewfile`, `Brewfile.optional`, `README.md`, `CLAUDE.md
 
 ```sh
 stow git zsh tmux nvim starship theme # install a subset (macOS)
-stow --no-folding codex               # Codex instructions (either platform)
+stow --no-folding codex mise          # cross-platform: agent instructions, tool versions
 stow --no-folding git mise omarchy    # everything that applies on Omarchy
 stow -n -v nvim                       # dry run
 stow -D ghostty                       # uninstall a package
@@ -39,13 +39,16 @@ stow -D ghostty                       # uninstall a package
 - **`git`** — `.gitconfig`: commit identity and aliases, plus a trailing include of
   `~/.gitconfig.local` for machine-specific settings (untracked, wins over the
   tracked values, absence is not an error); cross-platform
-- **`mise`** — `.config/mise/config.toml`; Linux
+- **`mise`** — `.config/mise/config.toml`, the global tool list: Claude Code,
+  Codex, `gh`, Node. Cross-platform; `zsh/.zshrc` activates mise when the binary
+  is present, and Omarchy activates it itself
 - **`omarchy`** — Hyprland and Omarchy overrides plus `.XCompose`, and `.local/bin/omarchy-no-hibernate` (run by hand); Linux
 
 Everything else is macOS-only. `zsh`, `tmux`, `ghostty`, `starship`, `jj`,
 `herdr`, `nvim`, `claude`, and `theme` are **not** stowed on Omarchy — see the
-conventions below. `codex` is cross-platform: it carries no theme or palette, so
-it applies wherever Codex runs. `agents` is never stowed anywhere.
+conventions below. `codex` and `mise` are cross-platform: neither carries a
+theme or palette, so they apply wherever Codex and mise run. `agents` is never
+stowed anywhere.
 
 ## Conventions
 
@@ -69,7 +72,14 @@ it applies wherever Codex runs. `agents` is never stowed anywhere.
   anything genuinely harness-specific in that harness's own package instead.
   Skills need no such wiring: both harnesses read `~/.agents/skills/` natively,
   which is installer-managed and outside this repo.
+- **Tools that outrun Homebrew go in the `mise` package, not a Brewfile.** Claude
+  Code and Codex release several times a week and their casks lag, so
+  `mise/.config/mise/config.toml` pins them and Homebrew installs only `mise`
+  itself. A tool tracked by mise must not also be in a Brewfile — a Homebrew
+  binary in `/opt/homebrew/bin` shadows the mise shim — and its own self-updater
+  has to be off, which is what `"autoUpdates": false` does in
+  `claude/.claude/settings.json`.
 - **Machine-local settings go in an untracked tail file**, sourced or included last so it wins: `zsh/.zshrc` sources `~/.zshrc.custom`, `git/.gitconfig` includes `~/.gitconfig.local`. Absolute paths and credentials belong there, never in a tracked file.
 - Files outside `$HOME` cannot be stowed. Install them from a hand-run script in the owning package, as `macos/.config/macos/defaults.sh` and `omarchy/.local/bin/omarchy-no-hibernate` do.
-- **Always stow the Linux packages with `--no-folding`.** Stow links a whole directory when the target does not exist, so on a fresh machine `stow omarchy` would make `~/.config` itself a symlink into this repo and pull Omarchy's own runtime state into `git status`. Folding is safe only where the repo owns the entire directory, which is true of every macOS package and of none of the Linux ones.
+- **Always stow the Linux packages with `--no-folding`.** Stow links a whole directory when the target does not exist, so on a fresh machine `stow omarchy` would make `~/.config` itself a symlink into this repo and pull Omarchy's own runtime state into `git status`. Folding is safe only where the repo owns the entire directory, which is true of every macOS package except `codex` and `mise` — the tool itself writes into `~/.codex` and `~/.config/mise`, so those two want `--no-folding` on macOS as well — and of none of the Linux ones.
 - Repo-owned scripts do not go in distro-owned directories. `~/.config/omarchy/` belongs to Omarchy; `~/.local/bin` (on PATH via Omarchy's `default/bash/env-bootstrap`) belongs to us. An `omarchy-` prefix there is safe because the omarchy CLI dispatches to `$OMARCHY_BIN_DIR`, not PATH.

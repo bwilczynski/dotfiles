@@ -6,5 +6,8 @@ brew "starship"
 brew "direnv"
 brew "fzf"
 
+# Installs and pins the tools listed in the mise package, coding agents included
+brew "mise"
+
 # Font referenced by the terminal configuration
 cask "font-fira-code-nerd-font"

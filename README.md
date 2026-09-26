@@ -18,9 +18,9 @@ stow package per tool, so each machine installs only what it needs.
 | `herdr`    | `.config/herdr/`                                | macOS    |
 | `claude`   | `.claude/` settings, instructions, themes       | macOS    |
 | `codex`    | `.codex/AGENTS.md` (agent instructions)         | both     |
+| `mise`     | `.config/mise/config.toml` (global tool list)   | both     |
 | `theme`    | `.config/theme/` (palettes + `current` symlink) | macOS    |
 | `macos`    | `.config/macos/` and the keyremap LaunchAgent   | macOS    |
-| `mise`     | `.config/mise/config.toml`                      | Linux    |
 | `omarchy`  | Hyprland/Omarchy overrides, `.XCompose`, `bin/` | Linux    |
 
 The macOS-only rows are not a portability limitation. Omarchy ships its own
@@ -52,6 +52,22 @@ brew bundle --file Brewfile.optional
 
 `kubectx` also provides `kubens`.
 
+Neither Brewfile carries the coding agents. Claude Code and Codex cut releases
+far more often than their Homebrew casks follow, so the `mise` package pins them
+instead:
+
+```sh
+stow --no-folding mise
+mise install
+```
+
+`mise/.config/mise/config.toml` is the global tool list — Claude Code, Codex,
+`gh`, Node. `.zshrc` activates mise only when the binary is on `PATH`, so a
+machine without it is unaffected. Upgrade with `mise up claude codex`. Claude
+Code's own auto-updater is off (`autoUpdates: false` in
+`claude/.claude/settings.json`) so the running binary cannot drift away from the
+version mise installed.
+
 Install [TPM](https://github.com/tmux-plugins/tpm) (Tmux Plugin Manager):
 
 ```sh
@@ -63,8 +79,9 @@ target is `$HOME` and no flags are needed:
 
 ```sh
 stow git zsh tmux nvim starship theme      # minimal / remote box
-stow git zsh tmux nvim ghostty starship \
-     jj herdr claude theme macos           # full macOS workstation
+stow git zsh tmux nvim ghostty starship jj \
+     herdr claude codex theme macos        # full macOS workstation
+stow --no-folding mise                     # mise also writes to ~/.config/mise
 ```
 
 Preview before committing to it with `stow -n -v <package>`, and remove a
@@ -86,6 +103,20 @@ reached through a symlink inside the repo rather than through a watched
 `~/.config` directory, so it has no way to notice the change while running.
 
 Start tmux and press `prefix + I` to install plugins.
+
+### Upgrading a machine that installed the agents from Homebrew
+
+The casks are gone from `Brewfile.optional`, but `brew bundle` never removes
+anything, so a machine that installed them still has them — and
+`/opt/homebrew/bin/claude` shadows the mise shim on `PATH`. Drop them once mise
+has its own copies:
+
+```sh
+mise install
+brew uninstall --cask claude-code codex
+hash -r                    # or open a new shell
+which claude codex         # → ~/.local/share/mise/shims/...
+```
 
 ### Upgrading a machine that predates the theme package
 

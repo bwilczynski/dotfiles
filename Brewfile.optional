@@ -32,6 +32,5 @@ brew "xcodegen"
 # Terminal application referenced by configuration
 cask "ghostty"
 
-# Coding agents configured by the claude and codex packages
-cask "claude-code"
-cask "codex"
+# The coding agents are not here on purpose: Claude Code and Codex release far
+# more often than their Homebrew casks, so the mise package pins them instead.

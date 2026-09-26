@@ -1,3 +1,6 @@
+# Global tool versions, on macOS and on Omarchy alike. Claude Code and Codex
+# live here rather than in a Brewfile because both release far more often than
+# their Homebrew casks follow; mise tracks upstream directly.
 [tools]
 claude = "latest"
 codex = "latest"
