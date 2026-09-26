@@ -16,7 +16,8 @@ stow package per tool, so each machine installs only what it needs.
 | `starship` | `.config/starship.toml`                         | macOS    |
 | `jj`       | `.config/jj/`                                   | macOS    |
 | `herdr`    | `.config/herdr/`                                | macOS    |
-| `claude`   | `.claude/` settings and themes                  | macOS    |
+| `claude`   | `.claude/` settings, instructions, themes       | macOS    |
+| `codex`    | `.codex/AGENTS.md` (agent instructions)         | both     |
 | `theme`    | `.config/theme/` (palettes + `current` symlink) | macOS    |
 | `macos`    | `.config/macos/` and the keyremap LaunchAgent   | macOS    |
 | `mise`     | `.config/mise/config.toml`                      | Linux    |
@@ -26,6 +27,10 @@ The macOS-only rows are not a portability limitation. Omarchy ships its own
 configuration for tmux, ghostty, starship, herdr, and Neovim, and re-renders
 several of them on `omarchy theme set`; stowing the macOS versions over them
 would break theme switching and Omarchy's menus. See "Omarchy" below.
+
+The `agents` package is the exception to the table: it holds the global agent
+instructions that `claude` and `codex` both symlink to, and is never stowed
+itself.
 
 Everything else at the repo root — `Brewfile`, `README.md`, `CLAUDE.md`,
 `docs/` — is repo-only and never symlinked.

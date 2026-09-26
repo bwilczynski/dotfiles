@@ -12,6 +12,7 @@ Files at the repo root (`Brewfile`, `Brewfile.optional`, `README.md`, `CLAUDE.md
 
 ```sh
 stow git zsh tmux nvim starship theme # install a subset (macOS)
+stow --no-folding codex               # Codex instructions (either platform)
 stow --no-folding git mise omarchy    # everything that applies on Omarchy
 stow -n -v nvim                       # dry run
 stow -D ghostty                       # uninstall a package
@@ -26,7 +27,13 @@ stow -D ghostty                       # uninstall a package
 - **`starship`** — `.config/starship.toml`
 - **`jj`** — `.config/jj/config.toml`
 - **`herdr`** — `.config/herdr/config.toml`
-- **`claude`** — `.claude/settings.json` and a `themes/theme.json` symlink into the `theme` package
+- **`claude`** — `.claude/settings.json`, a `CLAUDE.md` symlink into the `agents`
+  package, and a `themes/theme.json` symlink into the `theme` package
+- **`codex`** — `.codex/AGENTS.md`, a symlink into the `agents` package; only the
+  instruction file is tracked, not `config.toml` (Codex rewrites it with per-project
+  trust levels and TUI state)
+- **`agents`** — `.agents/AGENTS.md`, the harness-neutral global agent instructions;
+  source only, never stowed
 - **`theme`** — `.config/theme/`: one directory per theme plus a tracked `current` symlink; macOS only
 - **`macos`** — `.config/macos/defaults.sh` (system preferences, run by hand) and `keyremap.sh` (Caps Lock → Escape, Right Command → Right Option, built-in keyboard only), kept applied by the `com.bwilczynski.keyremap` LaunchAgent that this package installs
 - **`git`** — `.gitconfig`: commit identity and aliases, plus a trailing include of
@@ -37,7 +44,8 @@ stow -D ghostty                       # uninstall a package
 
 Everything else is macOS-only. `zsh`, `tmux`, `ghostty`, `starship`, `jj`,
 `herdr`, `nvim`, `claude`, and `theme` are **not** stowed on Omarchy — see the
-conventions below.
+conventions below. `codex` is cross-platform: it carries no theme or palette, so
+it applies wherever Codex runs. `agents` is never stowed anywhere.
 
 ## Conventions
 
@@ -54,6 +62,13 @@ conventions below.
   selects, and the repo does not fight it.
 - **Track deltas, not distro config.** Omarchy ships user-facing templates in `/usr/share/omarchy/config`, copies them into `~/.config`, keeps them current through `omarchy update` migrations, and re-renders several on `omarchy theme set`. The `omarchy` package tracks only files whose content differs from those templates. Before adding a Linux file, diff it against `/usr/share/omarchy/config/<path>`; if it matches, it does not belong here.
 - Omarchy's own configs for tmux, ghostty, starship, herdr, and neovim are theme-dynamic and menu-integrated. Do not stow the macOS packages over them.
+- **One instruction file, many harnesses.** Global agent instructions live once in
+  `agents/.agents/AGENTS.md`; `claude/.claude/CLAUDE.md` and `codex/.codex/AGENTS.md`
+  are repo-internal symlinks to it, so Claude Code and Codex read the same text.
+  Keep it harness-neutral — say "the shell tool", not "the Bash tool" — and put
+  anything genuinely harness-specific in that harness's own package instead.
+  Skills need no such wiring: both harnesses read `~/.agents/skills/` natively,
+  which is installer-managed and outside this repo.
 - **Machine-local settings go in an untracked tail file**, sourced or included last so it wins: `zsh/.zshrc` sources `~/.zshrc.custom`, `git/.gitconfig` includes `~/.gitconfig.local`. Absolute paths and credentials belong there, never in a tracked file.
 - Files outside `$HOME` cannot be stowed. Install them from a hand-run script in the owning package, as `macos/.config/macos/defaults.sh` and `omarchy/.local/bin/omarchy-no-hibernate` do.
 - **Always stow the Linux packages with `--no-folding`.** Stow links a whole directory when the target does not exist, so on a fresh machine `stow omarchy` would make `~/.config` itself a symlink into this repo and pull Omarchy's own runtime state into `git status`. Folding is safe only where the repo owns the entire directory, which is true of every macOS package and of none of the Linux ones.
