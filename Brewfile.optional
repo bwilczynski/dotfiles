@@ -10,8 +10,28 @@ brew "tmux"
 brew "neovim"
 brew "lazygit"
 brew "jj"
-brew "difftastic"
+brew "difftastic" # provides difft, jj's diff formatter
 brew "herdr"
+
+# Diff viewer the global agent instructions reach for first
+tap "modem-dev/tap"
+brew "modem-dev/tap/hunk"
+
+# Required by the LazyVim pickers and grep in the nvim package
+brew "ripgrep"
+brew "fd"
+
+# Language servers the nvim package configures explicitly
+brew "vacuum" # OpenAPI LSP wired up in lua/plugins/lspconfig.lua
+
+# Companions for xcodebuild.nvim (sourcekit-lsp itself comes from Xcode)
+brew "xcbeautify"
+brew "xcode-build-server"
+brew "xcodegen"
 
 # Terminal application referenced by configuration
 cask "ghostty"
+
+# Coding agents configured by the claude and codex packages
+cask "claude-code"
+cask "codex"
