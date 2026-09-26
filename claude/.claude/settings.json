@@ -17,6 +17,5 @@
   "effortLevel": "medium",
   "theme": "custom:theme",
   "agentPushNotifEnabled": true,
-  "skipAutoPermissionPrompt": true,
   "autoUpdates": false
 }
