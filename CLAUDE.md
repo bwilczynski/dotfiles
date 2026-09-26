@@ -20,7 +20,7 @@ stow -D ghostty                       # uninstall a package
 
 ## Packages
 
-- **`zsh`** — `.zshrc` (Oh My Zsh, Starship prompt, vi keybindings) plus the optional modules it sources: `.fzf.zsh`, `.kubectl.zsh`, and `.zshrc.custom` (not in this repo, machine-local)
+- **`zsh`** — `.zshrc` (no framework: native `compinit` completion, `direnv` hook, Starship prompt, vi keybindings) plus the optional modules it sources: `.fzf.zsh`, `.kubectl.zsh`, and `.zshrc.custom` (not in this repo, machine-local)
 - **`tmux`** — `.tmux.conf`; ANSI colours only, so it follows the terminal's palette
 - **`nvim`** — `.config/nvim/`, a LazyVim setup: plugins in `lua/plugins/`, config in `lua/config/`
 - **`ghostty`** — `.config/ghostty/config` (macOS only)
