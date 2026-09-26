@@ -97,14 +97,26 @@ just give them the command to run.
 
 Gotchas, learned the hard way:
 
+- **A working-tree viewer goes blank the moment you commit.**
+  `hunk diff --watch` and lazygit's working-tree view both show *uncommitted*
+  changes only, so committing during a review empties the pane the user is
+  watching. Either hold the commit until they have looked, or repoint the pane at
+  the commit — and say which you did, because a blank pane reads as "nothing
+  happened".
 - **These viewers are full-screen TUIs.** A second `herdr pane run` types into
   the running viewer instead of the shell. Send `q` with `herdr pane send-keys`
-  first, confirm the prompt is back, then run the next command.
+  first, then `pane read` to confirm the prompt is actually back — the viewer may
+  have already exited on its own, in which case the `q` is now sitting on the
+  command line and needs a `ctrl+c` before the next `pane run`.
+- **Send those keys to the viewer's pane id, never to an agent name.** Your own
+  session is a named agent too, so `herdr agent send-keys <name>` can resolve to
+  you and type into your own prompt. Use `herdr pane send-keys <pane-id>`.
 - **`pane read` only sees the rendered viewport.** A long changeset scrolls off;
   do not conclude from a read that files are missing from the diff. Confirm the
   file list with `git diff --stat` instead.
-- **`hunk diff <rev>` renders that one revision, not a range.** To review several
-  commits together, pipe a patch: `git diff <base> HEAD | hunk patch`.
-- **In a jj-colocated repo (a `.jj` directory next to `.git`), hunk resolves
-  revsets through jj**, so git spellings like `HEAD~2` fail. lazygit shows only
-  git's view there and does not understand jj at all.
+- **Pipe a patch rather than naming a revision.** `hunk diff <rev>` renders that
+  one revision and not a range, and in a jj-colocated repo (a `.jj` directory
+  next to `.git`) hunk resolves revsets through jj, so git spellings like
+  `HEAD~2` fail outright. `git show <rev> | hunk patch` for one commit and
+  `git diff <base> HEAD | hunk patch` for a range work in every repo. lazygit
+  shows only git's view in a colocated repo and does not understand jj at all.
