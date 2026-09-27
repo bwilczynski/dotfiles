@@ -20,7 +20,7 @@ stow -D ghostty                       # uninstall a package
 
 ## Packages
 
-- **`zsh`** — `.zshrc` (no framework: native `compinit` completion, `direnv` hook, Starship prompt, vi keybindings) plus the optional modules it sources: `.fzf.zsh` and `.zshrc.custom` (not in this repo, machine-local)
+- **`zsh`** — `.zprofile` (login-shell environment: Homebrew's `shellenv` and the Obsidian CLI on `PATH`, each guarded by an existence check) and `.zshrc` (no framework: native `compinit` completion, `direnv` hook, Starship prompt, vi keybindings) plus the optional modules it sources: `.fzf.zsh` and `.zshrc.custom` (not in this repo, machine-local)
 - **`tmux`** — `.tmux.conf`; ANSI colours only, so it follows the terminal's palette
 - **`nvim`** — `.config/nvim/`, a LazyVim setup: plugins in `lua/plugins/`, config in `lua/config/`
 - **`ghostty`** — `.config/ghostty/config` (macOS only)
@@ -38,7 +38,9 @@ stow -D ghostty                       # uninstall a package
 - **`macos`** — `.config/macos/defaults.sh` (system preferences, run by hand) and `keyremap.sh` (Caps Lock → Escape, Right Command → Right Option, built-in keyboard only), kept applied by the `com.bwilczynski.keyremap` LaunchAgent that this package installs
 - **`git`** — `.gitconfig`: commit identity and aliases, plus a trailing include of
   `~/.gitconfig.local` for machine-specific settings (untracked, wins over the
-  tracked values, absence is not an error); cross-platform
+  tracked values, absence is not an error); and `.config/git/ignore`, the global
+  ignore patterns, which git reads by default — setting `core.excludesfile`
+  anywhere replaces it rather than adding to it; cross-platform
 - **`mise`** — `.config/mise/config.toml`, the global tool list: the coding
   agents, `gh`, and the language runtimes (Node, Python, Go). Cross-platform;
   `zsh/.zshrc` activates mise when the binary is present, and Omarchy activates

@@ -8,8 +8,8 @@ stow package per tool, so each machine installs only what it needs.
 
 | Package    | Installs                                        | Platform |
 | ---------- | ----------------------------------------------- | -------- |
-| `git`      | `.gitconfig` (identity and aliases)             | both     |
-| `zsh`      | `.zshrc`, `.fzf.zsh`                            | macOS    |
+| `git`      | `.gitconfig`, `.config/git/ignore`              | both     |
+| `zsh`      | `.zprofile`, `.zshrc`, `.fzf.zsh`               | macOS    |
 | `tmux`     | `.tmux.conf`                                    | macOS    |
 | `nvim`     | `.config/nvim/` (LazyVim)                       | macOS    |
 | `ghostty`  | `.config/ghostty/`                              | macOS    |
@@ -210,6 +210,12 @@ entire command** — the other packages named alongside it are not stowed either
 Split the existing file first: the portable parts into `git/.gitconfig`, the
 machine-specific ones into `~/.gitconfig.local`, then remove `~/.gitconfig` and
 stow again.
+
+Global ignore patterns live in `git/.config/git/ignore`, the path git reads
+by default. Do not set `core.excludesfile` in `~/.gitconfig.local`: it replaces
+that file instead of adding to it, silently dropping every tracked pattern. A
+pre-existing `~/.config/git/ignore` makes `stow git` conflict; fold its
+patterns into the tracked file and delete it first.
 
 Check for a stray `~/.config/git/config` too. Git reads it *before*
 `~/.gitconfig`, so an identity left there is shadowed by the tracked one and

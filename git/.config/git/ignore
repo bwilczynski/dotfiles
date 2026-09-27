@@ -1,0 +1,12 @@
+# Global ignore patterns. Git reads this file by default, so no
+# core.excludesfile is needed — and setting one replaces this file, not adds
+# to it.
+
+# macOS
+.DS_Store
+
+# vi backups
+*~
+
+# Claude Code per-project local overrides
+**/.claude/settings.local.json
