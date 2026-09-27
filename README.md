@@ -77,12 +77,6 @@ Code's own auto-updater is off (`autoUpdates: false` in
 `claude/.claude/settings.json`) so the running binary cannot drift away from the
 version mise installed.
 
-Install [TPM](https://github.com/tmux-plugins/tpm) (Tmux Plugin Manager):
-
-```sh
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-```
-
 Stow the packages you want. The repo lives at `~/.dotfiles`, so stow's default
 target is `$HOME` and no flags are needed:
 
@@ -110,8 +104,6 @@ Restart ghostty and Neovim to pick up the new palette. A Claude Code session
 already running will not retint until it is restarted either — its theme is
 reached through a symlink inside the repo rather than through a watched
 `~/.config` directory, so it has no way to notice the change while running.
-
-Start tmux and press `prefix + I` to install plugins.
 
 ### Upgrading a machine that installed the agents from Homebrew
 
@@ -146,22 +138,11 @@ If you have already pulled, delete the dangling link instead:
 rm ~/Library/Application\ Support/lazygit/config.yml
 ```
 
-The `catppuccin/tmux` plugin is no longer listed, so TPM stops sourcing it, but
-its clone stays on disk. Two paths hold it, and neither says "catppuccin" where
-you would expect:
-
-- `~/.tmux/plugins/tmux` — TPM names a clone after the **repo**, and
-  catppuccin's repo is called `tmux`, so the org name never appears. This is
-  one plugin sitting beside `tmux-continuum`, `tmux-resurrect`,
-  `tmux-sensible` and `tpm`, not the plugins directory itself.
-- `~/.config/tmux/plugins/catppuccin/tmux` — a leftover from an older layout
-  that nested org-then-repo.
-
-Confirm the first one before deleting, since the name is easy to misread:
+The tmux config no longer uses plugins or TPM, but plugin clones from an older
+setup remain on disk. Remove the plugin directory:
 
 ```sh
-git -C ~/.tmux/plugins/tmux remote get-url origin   # → catppuccin/tmux
-rm -rf ~/.tmux/plugins/tmux ~/.config/tmux/plugins/catppuccin
+rm -rf ~/.tmux/plugins
 ```
 
 ### tmux and Herdr keybindings
