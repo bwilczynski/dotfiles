@@ -1,11 +1,24 @@
 # Global tool versions, on macOS and on Omarchy alike. Claude Code and Codex
 # live here rather than in a Brewfile because both release far more often than
-# their Homebrew casks follow; mise tracks upstream directly.
+# their Homebrew casks follow; mise tracks upstream directly. Language runtimes
+# live here too, so Homebrew never carries a second copy; anything a single
+# project needs is pinned in that project's own mise.toml instead.
 [tools]
+# Coding agents
 claude = "latest"
 codex = "latest"
+opencode = "latest"
 gh = "latest"
+
+# Language runtimes
 node = "26.8.2"
+python = "3.14"
+go = "latest"
+
+# CLIs published to a language registry or as release binaries
+"npm:prettier" = "latest"
+"npm:@bitwarden/cli" = "latest"
+"aqua:grafana/loki/logcli" = "latest"
 
 [settings.upgrade]
 auto_prune = false

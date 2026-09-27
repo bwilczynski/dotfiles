@@ -25,7 +25,6 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-[ -f ~/.kubectl.zsh ] && source ~/.kubectl.zsh
 [ -f ~/.zshrc.custom ] && source ~/.zshrc.custom
 
 if command -v starship >/dev/null 2>&1; then

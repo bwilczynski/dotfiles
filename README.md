@@ -9,7 +9,7 @@ stow package per tool, so each machine installs only what it needs.
 | Package    | Installs                                        | Platform |
 | ---------- | ----------------------------------------------- | -------- |
 | `git`      | `.gitconfig` (identity and aliases)             | both     |
-| `zsh`      | `.zshrc`, `.fzf.zsh`, `.kubectl.zsh`            | macOS    |
+| `zsh`      | `.zshrc`, `.fzf.zsh`                            | macOS    |
 | `tmux`     | `.tmux.conf`                                    | macOS    |
 | `nvim`     | `.config/nvim/` (LazyVim)                       | macOS    |
 | `ghostty`  | `.config/ghostty/`                              | macOS    |
@@ -43,26 +43,35 @@ Install the Homebrew dependencies:
 brew bundle
 ```
 
-`Brewfile` contains only the bootstrap requirements. To install the optional
-tools configured in this repository, run:
+`Brewfile` contains only the bootstrap requirements. `Brewfile.optional` holds
+everything else Homebrew owns on the workstation: the tools the tracked configs
+use, general CLIs, and applications. Install it with:
 
 ```sh
 brew bundle --file Brewfile.optional
 ```
 
-`kubectx` also provides `kubens`.
+Because the two files together list every package meant to be there, they also
+prune whatever is not. Preview first, since the cleanup uninstalls:
 
-Neither Brewfile carries the coding agents. Claude Code and Codex cut releases
-far more often than their Homebrew casks follow, so the `mise` package pins them
-instead:
+```sh
+cat Brewfile Brewfile.optional | brew bundle cleanup --file=-          # dry run
+cat Brewfile Brewfile.optional | brew bundle cleanup --file=- --force
+```
+
+Neither Brewfile carries the coding agents or language runtimes. Claude Code
+and Codex cut releases far more often than their Homebrew casks follow, and a
+runtime in Homebrew is a second copy beside the one a project pins, so the
+`mise` package owns both:
 
 ```sh
 stow --no-folding mise
 mise install
 ```
 
-`mise/.config/mise/config.toml` is the global tool list — Claude Code, Codex,
-`gh`, Node. `.zshrc` activates mise only when the binary is on `PATH`, so a
+`mise/.config/mise/config.toml` is the global tool list — the coding agents,
+`gh`, Node, Python, Go, and a few CLIs installed from npm or release binaries.
+Tools a single project needs belong in that project's own `mise.toml`. `.zshrc` activates mise only when the binary is on `PATH`, so a
 machine without it is unaffected. Upgrade with `mise up claude codex`. Claude
 Code's own auto-updater is off (`autoUpdates: false` in
 `claude/.claude/settings.json`) so the running binary cannot drift away from the

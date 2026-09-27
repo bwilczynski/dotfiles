@@ -1,9 +1,6 @@
-# Optional packages for configurations tracked in this repository.
-
-# Kubernetes shell completions and aliases
-brew "kubectl"
-brew "kustomize"
-brew "kubectx" # also provides kubens
+# Optional packages: tools the tracked configurations use, plus the rest of the
+# workstation that Homebrew owns. Language runtimes and fast-moving CLIs are not
+# here; the mise package pins them instead.
 
 # Terminal, editor, and source-control tools
 brew "tmux"
@@ -20,6 +17,7 @@ brew "modem-dev/tap/hunk"
 # Required by the LazyVim pickers and grep in the nvim package
 brew "ripgrep"
 brew "fd"
+brew "tree-sitter-cli" # nvim-treesitter's main branch builds parsers with it
 
 # Language servers the nvim package configures explicitly
 brew "vacuum" # OpenAPI LSP wired up in lua/plugins/lspconfig.lua
@@ -29,8 +27,62 @@ brew "xcbeautify"
 brew "xcode-build-server"
 brew "xcodegen"
 
+# Git, SSH, and hardware keys
+brew "git"
+brew "git-crypt"
+brew "git-lfs"
+brew "forgejo-cli"
+brew "openssh" # FIDO2 key support that Apple's build lacks
+brew "ssh-copy-id"
+brew "gnupg"
+brew "pinentry-mac" # gpg-agent.conf points pinentry-program here
+brew "ykman"
+
+# General command-line tools
+brew "jq"
+brew "wget"
+brew "htop"
+brew "asitop"
+brew "speedtest-cli"
+brew "gnu-tar"
+brew "p7zip"
+brew "cloc"
+
+# Media
+brew "ffmpeg"
+brew "imagemagick"
+brew "exiftool"
+
+tap "bwilczynski/tap"
+brew "bwilczynski/tap/hlctl"
+
 # Terminal application referenced by configuration
 cask "ghostty"
+
+# Applications
+cask "adobe-acrobat-reader"
+cask "bitwarden"
+cask "discord"
+cask "disk-inventory-x"
+cask "dropbox"
+cask "firefox"
+cask "google-chrome"
+cask "insta360-link-controller"
+cask "logi-options+"
+cask "makemkv"
+cask "microsoft-office"
+cask "microsoft-auto-update" # Office's updater; brew bundle cleanup removes it otherwise
+cask "moom"
+cask "obsidian"
+cask "philips-hue-sync"
+cask "slack"
+cask "sonos"
+cask "spotify"
+cask "synology-drive"
+cask "tailscale-app"
+cask "visual-studio-code"
+cask "vlc"
+cask "yubico-yubikey-manager"
 
 # The coding agents are not here on purpose: Claude Code and Codex release far
 # more often than their Homebrew casks, so the mise package pins them instead.

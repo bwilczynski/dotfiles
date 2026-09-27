@@ -20,7 +20,7 @@ stow -D ghostty                       # uninstall a package
 
 ## Packages
 
-- **`zsh`** — `.zshrc` (no framework: native `compinit` completion, `direnv` hook, Starship prompt, vi keybindings) plus the optional modules it sources: `.fzf.zsh`, `.kubectl.zsh`, and `.zshrc.custom` (not in this repo, machine-local)
+- **`zsh`** — `.zshrc` (no framework: native `compinit` completion, `direnv` hook, Starship prompt, vi keybindings) plus the optional modules it sources: `.fzf.zsh` and `.zshrc.custom` (not in this repo, machine-local)
 - **`tmux`** — `.tmux.conf`; ANSI colours only, so it follows the terminal's palette
 - **`nvim`** — `.config/nvim/`, a LazyVim setup: plugins in `lua/plugins/`, config in `lua/config/`
 - **`ghostty`** — `.config/ghostty/config` (macOS only)
@@ -39,9 +39,10 @@ stow -D ghostty                       # uninstall a package
 - **`git`** — `.gitconfig`: commit identity and aliases, plus a trailing include of
   `~/.gitconfig.local` for machine-specific settings (untracked, wins over the
   tracked values, absence is not an error); cross-platform
-- **`mise`** — `.config/mise/config.toml`, the global tool list: Claude Code,
-  Codex, `gh`, Node. Cross-platform; `zsh/.zshrc` activates mise when the binary
-  is present, and Omarchy activates it itself
+- **`mise`** — `.config/mise/config.toml`, the global tool list: the coding
+  agents, `gh`, and the language runtimes (Node, Python, Go). Cross-platform;
+  `zsh/.zshrc` activates mise when the binary is present, and Omarchy activates
+  it itself
 - **`omarchy`** — Hyprland and Omarchy overrides plus `.XCompose`, and `.local/bin/omarchy-no-hibernate` (run by hand); Linux
 
 Everything else is macOS-only. `zsh`, `tmux`, `ghostty`, `starship`, `jj`,
@@ -72,10 +73,11 @@ stowed anywhere.
   anything genuinely harness-specific in that harness's own package instead.
   Skills need no such wiring: both harnesses read `~/.agents/skills/` natively,
   which is installer-managed and outside this repo.
-- **Tools that outrun Homebrew go in the `mise` package, not a Brewfile.** Claude
-  Code and Codex release several times a week and their casks lag, so
-  `mise/.config/mise/config.toml` pins them and Homebrew installs only `mise`
-  itself. A tool tracked by mise must not also be in a Brewfile — a Homebrew
+- **Language runtimes and tools that outrun Homebrew go in the `mise` package,
+  not a Brewfile.** Claude Code and Codex release several times a week and their
+  casks lag, so `mise/.config/mise/config.toml` pins them and Homebrew installs
+  only `mise` itself. Runtimes follow the same rule so there is one copy of each;
+  a tool only one project needs goes in that project's `mise.toml`, not here. A tool tracked by mise must not also be in a Brewfile — a Homebrew
   binary in `/opt/homebrew/bin` shadows the mise shim — and its own self-updater
   has to be off, which is what `"autoUpdates": false` does in
   `claude/.claude/settings.json`.
