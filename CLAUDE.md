@@ -27,6 +27,7 @@ stow -D ghostty                       # uninstall a package
 - **`starship`** — `.config/starship.toml`
 - **`jj`** — `.config/jj/config.toml`
 - **`herdr`** — `.config/herdr/config.toml`
+- **`bat`** — `.config/bat/config`; `--theme=ansi`, so it follows the terminal's palette
 - **`claude`** — `.claude/settings.json`, a `CLAUDE.md` symlink into the `agents`
   package, and a `themes/theme.json` symlink into the `theme` package
 - **`codex`** — `.codex/AGENTS.md`, a symlink into the `agents` package; only the
@@ -48,7 +49,7 @@ stow -D ghostty                       # uninstall a package
 - **`omarchy`** — Hyprland and Omarchy overrides plus `.XCompose`, and `.local/bin/omarchy-no-hibernate` (run by hand); Linux
 
 Everything else is macOS-only. `zsh`, `tmux`, `ghostty`, `starship`, `jj`,
-`herdr`, `nvim`, `claude`, and `theme` are **not** stowed on Omarchy — see the
+`herdr`, `bat`, `nvim`, `claude`, and `theme` are **not** stowed on Omarchy — see the
 conventions below. `codex` and `mise` are cross-platform: neither carries a
 theme or palette, so they apply wherever Codex and mise run. `agents` is never
 stowed anywhere.

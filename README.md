@@ -16,6 +16,7 @@ stow package per tool, so each machine installs only what it needs.
 | `starship` | `.config/starship.toml`                         | macOS    |
 | `jj`       | `.config/jj/`                                   | macOS    |
 | `herdr`    | `.config/herdr/`                                | macOS    |
+| `bat`      | `.config/bat/config`                            | macOS    |
 | `claude`   | `.claude/` settings, instructions, themes       | macOS    |
 | `codex`    | `.codex/AGENTS.md` (agent instructions)         | both     |
 | `mise`     | `.config/mise/config.toml` (global tool list)   | both     |
@@ -83,7 +84,7 @@ target is `$HOME` and no flags are needed:
 ```sh
 stow git zsh tmux nvim starship theme      # minimal / remote box
 stow git zsh tmux nvim ghostty starship jj \
-     herdr claude codex theme macos        # full macOS workstation
+     herdr bat claude codex theme macos    # full macOS workstation
 stow --no-folding mise                     # mise also writes to ~/.config/mise
 ```
 

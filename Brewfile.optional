@@ -39,6 +39,7 @@ brew "pinentry-mac" # gpg-agent.conf points pinentry-program here
 brew "ykman"
 
 # General command-line tools
+brew "bat"
 brew "jq"
 brew "wget"
 brew "htop"

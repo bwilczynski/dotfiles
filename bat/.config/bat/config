@@ -1,0 +1,2 @@
+# ANSI colours only, so bat follows the terminal's palette like everything else.
+--theme=ansi
