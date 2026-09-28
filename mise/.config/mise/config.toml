@@ -20,6 +20,7 @@ go = "latest"
 "npm:@bitwarden/cli" = "latest"
 "aqua:grafana/loki/logcli" = "latest"
 "aqua:modem-dev/hunk" = "latest"
+"github:bwilczynski/homelab-cli" = "latest" # hlctl
 
 [settings.upgrade]
 auto_prune = false

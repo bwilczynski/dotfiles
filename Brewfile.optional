@@ -50,9 +50,6 @@ brew "ffmpeg"
 brew "imagemagick"
 brew "exiftool"
 
-tap "bwilczynski/tap"
-brew "bwilczynski/tap/hlctl"
-
 # Terminal application referenced by configuration
 cask "ghostty"
 
