@@ -11,9 +11,10 @@ Files at the repo root (`Brewfile`, `Brewfile.optional`, `README.md`, `CLAUDE.md
 ## Deployment
 
 ```sh
-stow git zsh tmux nvim starship theme # install a subset (macOS)
-stow --no-folding codex mise          # cross-platform: agent instructions, tool versions
-stow --no-folding git mise omarchy    # everything that applies on Omarchy
+stow git zsh tmux nvim starship       # install a subset (macOS)
+stow --no-folding theme               # macOS: palettes, plus Claude Code's theme in ~/.claude
+stow --no-folding claude codex mise   # cross-platform: agent settings and instructions, tool versions
+stow --no-folding git claude codex mise omarchy # everything that applies on Omarchy
 stow -n -v nvim                       # dry run
 stow -D ghostty                       # uninstall a package
 ```
@@ -28,14 +29,16 @@ stow -D ghostty                       # uninstall a package
 - **`jj`** — `.config/jj/config.toml`
 - **`herdr`** — `.config/herdr/config.toml`
 - **`bat`** — `.config/bat/config`; `--theme=ansi`, so it follows the terminal's palette
-- **`claude`** — `.claude/settings.json`, a `CLAUDE.md` symlink into the `agents`
-  package, and a `themes/theme.json` symlink into the `theme` package
+- **`claude`** — `.claude/settings.json` and a `CLAUDE.md` symlink into the
+  `agents` package; no theme file, so it is cross-platform. `settings.json`
+  selects `custom:omarchy` on both platforms — see the theme convention below
 - **`codex`** — `.codex/AGENTS.md`, a symlink into the `agents` package; only the
   instruction file is tracked, not `config.toml` (Codex rewrites it with per-project
   trust levels and TUI state)
 - **`agents`** — `.agents/AGENTS.md`, the harness-neutral global agent instructions;
   source only, never stowed
-- **`theme`** — `.config/theme/`: one directory per theme plus a tracked `current` symlink; macOS only
+- **`theme`** — `.config/theme/`: one directory per theme plus a tracked `current` symlink,
+  and `.claude/themes/omarchy.json`, Claude Code's theme; macOS only
 - **`macos`** — `.config/macos/defaults.sh` (system preferences, run by hand) and `keyremap.sh` (Caps Lock → Escape, Right Command → Right Option, built-in keyboard only), kept applied by the `com.bwilczynski.keyremap` LaunchAgent that this package installs
 - **`git`** — `.gitconfig`: commit identity and aliases, plus a trailing include of
   `~/.gitconfig.local` for machine-specific settings (untracked, wins over the
@@ -49,9 +52,9 @@ stow -D ghostty                       # uninstall a package
 - **`omarchy`** — Hyprland and Omarchy overrides plus `.XCompose`, and `.local/bin/omarchy-no-hibernate` (run by hand); Linux
 
 Everything else is macOS-only. `zsh`, `tmux`, `ghostty`, `starship`, `jj`,
-`herdr`, `bat`, `nvim`, `claude`, and `theme` are **not** stowed on Omarchy — see the
-conventions below. `codex` and `mise` are cross-platform: neither carries a
-theme or palette, so they apply wherever Codex and mise run. `agents` is never
+`herdr`, `bat`, `nvim`, and `theme` are **not** stowed on Omarchy — see the
+conventions below. `claude`, `codex`, and `mise` are cross-platform: none of
+them carries a theme or palette, so they apply wherever their tools run. `agents` is never
 stowed anywhere.
 
 ## Conventions
@@ -60,9 +63,13 @@ stowed anywhere.
 - **The terminal carries the palette.** `theme/` holds one directory per theme
   and a tracked `current` symlink; only tools that cannot read ANSI colours
   (ghostty, neovim, Claude Code) get a file there, and they include it from
-  `~/.config/theme/current/` — except Claude Code, whose theme is a
-  repo-internal symlink resolving inside `theme/` rather than through
-  `~/.config/theme`. Everything else uses ANSI colour names and
+  `~/.config/theme/current/` — except Claude Code, whose theme is
+  `theme/.claude/themes/omarchy.json`, a repo-internal symlink resolving inside
+  `theme/` rather than through `~/.config/theme`. It is named `omarchy` because
+  Omarchy generates `~/.claude/themes/omarchy.json` itself and writes
+  `"theme": "custom:omarchy"` into `settings.json`, which is shared between
+  platforms; using Omarchy's name on macOS too keeps that setting identical
+  everywhere. Everything else uses ANSI colour names and
   inherits the terminal's palette for free. Adding a tool means checking
   whether it reads ANSI before theming it — usually the answer is that it needs
   no theme config at all. On Omarchy the theme is whatever `omarchy theme set`
@@ -86,5 +93,5 @@ stowed anywhere.
   `claude/.claude/settings.json`.
 - **Machine-local settings go in an untracked tail file**, sourced or included last so it wins: `zsh/.zshrc` sources `~/.zshrc.custom`, `git/.gitconfig` includes `~/.gitconfig.local`. Absolute paths and credentials belong there, never in a tracked file.
 - Files outside `$HOME` cannot be stowed. Install them from a hand-run script in the owning package, as `macos/.config/macos/defaults.sh` and `omarchy/.local/bin/omarchy-no-hibernate` do.
-- **Always stow the Linux packages with `--no-folding`.** Stow links a whole directory when the target does not exist, so on a fresh machine `stow omarchy` would make `~/.config` itself a symlink into this repo and pull Omarchy's own runtime state into `git status`. Folding is safe only where the repo owns the entire directory, which is true of every macOS package except `codex` and `mise` — the tool itself writes into `~/.codex` and `~/.config/mise`, so those two want `--no-folding` on macOS as well — and of none of the Linux ones.
+- **Always stow the Linux packages with `--no-folding`.** Stow links a whole directory when the target does not exist, so on a fresh machine `stow omarchy` would make `~/.config` itself a symlink into this repo and pull Omarchy's own runtime state into `git status`. Folding is safe only where the repo owns the entire directory, which is true of every macOS package except `claude`, `codex`, `mise`, and `theme` — Claude Code, Codex, and mise write into `~/.claude`, `~/.codex`, and `~/.config/mise`, and `theme` places a file in `~/.claude/themes`, so those four want `--no-folding` on macOS as well — and of none of the Linux ones.
 - Repo-owned scripts do not go in distro-owned directories. `~/.config/omarchy/` belongs to Omarchy; `~/.local/bin` (on PATH via Omarchy's `default/bash/env-bootstrap`) belongs to us. An `omarchy-` prefix there is safe because the omarchy CLI dispatches to `$OMARCHY_BIN_DIR`, not PATH.

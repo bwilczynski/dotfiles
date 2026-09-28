@@ -15,7 +15,7 @@
     }
   },
   "effortLevel": "medium",
-  "theme": "custom:theme",
+  "theme": "custom:omarchy",
   "agentPushNotifEnabled": true,
   "autoUpdates": false
 }

@@ -17,10 +17,10 @@ stow package per tool, so each machine installs only what it needs.
 | `jj`       | `.config/jj/`                                   | macOS    |
 | `herdr`    | `.config/herdr/`                                | macOS    |
 | `bat`      | `.config/bat/config`                            | macOS    |
-| `claude`   | `.claude/` settings, instructions, themes       | macOS    |
+| `claude`   | `.claude/` settings and instructions            | both     |
 | `codex`    | `.codex/AGENTS.md` (agent instructions)         | both     |
 | `mise`     | `.config/mise/config.toml` (global tool list)   | both     |
-| `theme`    | `.config/theme/` (palettes + `current` symlink) | macOS    |
+| `theme`    | `.config/theme/`, `.claude/themes/omarchy.json` | macOS    |
 | `macos`    | `.config/macos/` and the keyremap LaunchAgent   | macOS    |
 | `omarchy`  | Hyprland/Omarchy overrides, `.XCompose`, `bin/` | Linux    |
 
@@ -82,10 +82,10 @@ Stow the packages you want. The repo lives at `~/.dotfiles`, so stow's default
 target is `$HOME` and no flags are needed:
 
 ```sh
-stow git zsh tmux nvim starship theme      # minimal / remote box
+stow git zsh tmux nvim starship            # minimal / remote box
 stow git zsh tmux nvim ghostty starship jj \
-     herdr bat claude codex theme macos    # full macOS workstation
-stow --no-folding mise                     # mise also writes to ~/.config/mise
+     herdr bat macos                       # full macOS workstation, plus:
+stow --no-folding claude codex mise theme  # the tools write into these directories
 ```
 
 Preview before committing to it with `stow -n -v <package>`, and remove a
@@ -211,21 +211,29 @@ Stow is not part of the Omarchy base install:
 omarchy pkg add stow
 ```
 
-Omarchy installs and updates almost everything else itself, so only three
+Omarchy installs and updates almost everything else itself, so only these
 packages apply:
 
 ```sh
-stow --no-folding git mise omarchy
+stow --no-folding git claude codex mise omarchy
 ```
+
+`claude` carries no theme: Omarchy generates `~/.claude/themes/omarchy.json` on
+every `omarchy theme set`, and the tracked `settings.json` already selects it
+as `custom:omarchy` — the name macOS uses for its own theme too, so the shared
+setting is right on both. Avoid `omarchy-theme-set-claude --activate`: it
+rewrites `settings.json` with `mv`, which replaces the stow symlink with a
+plain file. If `ls -l ~/.claude/settings.json` ever shows one, delete it and
+re-run `stow --no-folding claude`.
 
 `--no-folding` is required on Linux and is not optional. Without it, stow
 symlinks a whole *directory* whenever the target does not already exist — on a
 fresh machine that makes `~/.config` itself a symlink into this repo, and every
 file Omarchy writes there afterwards (`omarchy/shell.json`, the active theme
-symlink, `current/`) lands in `git status`. The macOS packages do not need the
-flag because each of them owns its directory outright; the `omarchy` package is
-the only one that shares directories with a distribution that also writes to
-them.
+symlink, `current/`) lands in `git status`. Most macOS packages do not need the
+flag because each of them owns its directory outright; the exceptions are the
+ones whose tool also writes there (`claude`, `codex`, `mise`, and `theme`, which
+places a file in `~/.claude/themes`).
 
 Then install the system half of the hibernation fix, which stow cannot place
 because it lives outside `$HOME`:
