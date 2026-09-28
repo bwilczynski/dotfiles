@@ -108,17 +108,22 @@ reached through a symlink inside the repo rather than through a watched
 
 ### Upgrading a machine that installed the agents from Homebrew
 
-The casks are gone from `Brewfile.optional`, but `brew bundle` never removes
-anything, so a machine that installed them still has them — and
+The casks are gone from `Brewfile.optional`, and so is hunk, but `brew bundle`
+never removes anything, so a machine that installed them still has them — and
 `/opt/homebrew/bin/claude` shadows the mise shim on `PATH`. Drop them once mise
 has its own copies:
 
 ```sh
 mise install
 brew uninstall --cask claude-code codex
+brew uninstall hunk && brew untap modem-dev/tap
 hash -r                    # or open a new shell
-which claude codex         # → ~/.local/share/mise/shims/...
+which claude codex hunk    # → ~/.local/share/mise/shims/...
 ```
+
+hunk is tracked as `aqua:modem-dev/hunk` because Omarchy installs it under that
+name and its `~/.local/bin/hunk` wrapper re-adds that exact entry to the global
+mise config on every run; any other spelling would end up listed twice.
 
 ### Upgrading a machine that predates the theme package
 

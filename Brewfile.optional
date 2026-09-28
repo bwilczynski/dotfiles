@@ -10,10 +10,6 @@ brew "jj"
 brew "difftastic" # provides difft, jj's diff formatter
 brew "herdr"
 
-# Diff viewer the global agent instructions reach for first
-tap "modem-dev/tap"
-brew "modem-dev/tap/hunk"
-
 # Required by the LazyVim pickers and grep in the nvim package
 brew "ripgrep"
 brew "fd"
