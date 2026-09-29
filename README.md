@@ -20,7 +20,7 @@ stow package per tool, so each machine installs only what it needs.
 | `claude`   | `.claude/` settings and instructions            | both     |
 | `codex`    | `.codex/AGENTS.md` (agent instructions)         | both     |
 | `mise`     | `.config/mise/config.toml` (global tool list)   | both     |
-| `theme`    | `.config/theme/`, `.claude/themes/omarchy.json` | macOS    |
+| `theme`    | `.config/theme/`, Claude's theme, `theme-set`   | macOS    |
 | `macos`    | `.config/macos/` and the keyremap LaunchAgent   | macOS    |
 | `omarchy`  | Hyprland/Omarchy overrides, `.XCompose`, `bin/` | Linux    |
 
@@ -93,13 +93,18 @@ package with `stow -D <package>`.
 
 ### Switching themes
 
-`theme/.config/theme/current` is a symlink to one of the theme directories
-under `theme/`. To switch, repoint it from inside the repo and commit the
-change:
+`theme/.config/theme/current` is a tracked symlink to one of the theme
+directories under `theme/`. `theme-set`, installed into `~/.local/bin` by the
+`theme` package, repoints it; commit the change afterwards to keep it:
 
 ```sh
-ln -sfn <theme-name> theme/.config/theme/current
+theme-set                # list the themes, marking the current one
+theme-set tokyo-night    # switch
 ```
+
+A machine that stowed `theme` before `theme-set` existed needs one
+`stow -R --no-folding theme` to link it, and a new login shell to put
+`~/.local/bin` on `PATH`.
 
 Restart ghostty and Neovim to pick up the new palette. A Claude Code session
 already running will not retint until it is restarted either — its theme is
@@ -238,7 +243,7 @@ file Omarchy writes there afterwards (`omarchy/shell.json`, the active theme
 symlink, `current/`) lands in `git status`. Most macOS packages do not need the
 flag because each of them owns its directory outright; the exceptions are the
 ones whose tool also writes there (`claude`, `codex`, `mise`, and `theme`, which
-places a file in `~/.claude/themes`).
+places files in `~/.claude/themes` and `~/.local/bin`).
 
 Then install the system half of the hibernation fix, which stow cannot place
 because it lives outside `$HOME`:

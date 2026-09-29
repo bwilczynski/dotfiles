@@ -7,6 +7,11 @@ if [ -x /opt/homebrew/bin/brew ]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
+# Scripts stowed from this repo, such as theme-set.
+if [ -d "$HOME/.local/bin" ]; then
+  export PATH="$HOME/.local/bin:$PATH"
+fi
+
 # Obsidian's CLI, used by the obsidian agent skills.
 if [ -d /Applications/Obsidian.app/Contents/MacOS ]; then
   export PATH="$PATH:/Applications/Obsidian.app/Contents/MacOS"

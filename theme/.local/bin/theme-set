@@ -1,0 +1,46 @@
+#!/bin/sh
+# Switch the macOS theme by repointing the tracked `current` symlink.
+#
+#   theme-set          list the themes, marking the current one
+#   theme-set <name>   make <name> the current theme
+#
+# The themes live in the repo, found through this script's own stow link, so
+# the change shows up in `git status` there like any other edit.
+
+set -eu
+
+self=$(readlink -f "$0")
+themes=$(cd "$(dirname "$self")/../../.config/theme" && pwd)
+current=$(readlink "$themes/current" 2>/dev/null || true)
+
+list() {
+  for dir in "$themes"/*/; do
+    name=$(basename "$dir")
+    [ "$name" = current ] && continue
+    if [ "$name" = "$current" ]; then
+      echo "* $name"
+    else
+      echo "  $name"
+    fi
+  done
+}
+
+if [ $# -eq 0 ]; then
+  list
+  exit 0
+fi
+
+if [ $# -gt 1 ] || [ "$1" = current ] || [ ! -d "$themes/$1" ]; then
+  echo "theme-set: unknown theme '$*'; available:" >&2
+  list >&2
+  exit 1
+fi
+
+if [ "$1" = "$current" ]; then
+  echo "$1 is already the current theme."
+  exit 0
+fi
+
+ln -sfn "$1" "$themes/current"
+echo "Switched to $1. Restart ghostty, Neovim and Claude Code to pick it up."
+echo "The change is in $(cd "$themes/../../.." && pwd); commit it to keep it."

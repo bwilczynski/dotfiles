@@ -38,7 +38,8 @@ stow -D ghostty                       # uninstall a package
 - **`agents`** — `.agents/AGENTS.md`, the harness-neutral global agent instructions;
   source only, never stowed
 - **`theme`** — `.config/theme/`: one directory per theme plus a tracked `current` symlink,
-  and `.claude/themes/omarchy.json`, Claude Code's theme; macOS only
+  `.claude/themes/omarchy.json`, Claude Code's theme, and `.local/bin/theme-set`,
+  which repoints `current` inside the repo; macOS only
 - **`macos`** — `.config/macos/defaults.sh` (system preferences, run by hand) and `keyremap.sh` (Caps Lock → Escape, Right Command → Right Option, built-in keyboard only), kept applied by the `com.bwilczynski.keyremap` LaunchAgent that this package installs
 - **`git`** — `.gitconfig`: commit identity and aliases, plus a trailing include of
   `~/.gitconfig.local` for machine-specific settings (untracked, wins over the
@@ -93,5 +94,5 @@ stowed anywhere.
   `claude/.claude/settings.json`.
 - **Machine-local settings go in an untracked tail file**, sourced or included last so it wins: `zsh/.zshrc` sources `~/.zshrc.custom`, `git/.gitconfig` includes `~/.gitconfig.local`. Absolute paths and credentials belong there, never in a tracked file.
 - Files outside `$HOME` cannot be stowed. Install them from a hand-run script in the owning package, as `macos/.config/macos/defaults.sh` and `omarchy/.local/bin/omarchy-no-hibernate` do.
-- **Always stow the Linux packages with `--no-folding`.** Stow links a whole directory when the target does not exist, so on a fresh machine `stow omarchy` would make `~/.config` itself a symlink into this repo and pull Omarchy's own runtime state into `git status`. Folding is safe only where the repo owns the entire directory, which is true of every macOS package except `claude`, `codex`, `mise`, and `theme` — Claude Code, Codex, and mise write into `~/.claude`, `~/.codex`, and `~/.config/mise`, and `theme` places a file in `~/.claude/themes`, so those four want `--no-folding` on macOS as well — and of none of the Linux ones.
+- **Always stow the Linux packages with `--no-folding`.** Stow links a whole directory when the target does not exist, so on a fresh machine `stow omarchy` would make `~/.config` itself a symlink into this repo and pull Omarchy's own runtime state into `git status`. Folding is safe only where the repo owns the entire directory, which is true of every macOS package except `claude`, `codex`, `mise`, and `theme` — Claude Code, Codex, and mise write into `~/.claude`, `~/.codex`, and `~/.config/mise`, and `theme` places files in `~/.claude/themes` and `~/.local/bin`, so those four want `--no-folding` on macOS as well — and of none of the Linux ones.
 - Repo-owned scripts do not go in distro-owned directories. `~/.config/omarchy/` belongs to Omarchy; `~/.local/bin` (on PATH via Omarchy's `default/bash/env-bootstrap`) belongs to us. An `omarchy-` prefix there is safe because the omarchy CLI dispatches to `$OMARCHY_BIN_DIR`, not PATH.
