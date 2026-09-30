@@ -33,7 +33,7 @@ return {
     { "<leader>x<cr>", "<cmd>XcodebuildPreviewToggle<cr>", desc = "Toggle Preview" },
 
     { "<leader>xd", "<cmd>XcodebuildSelectDevice<cr>", desc = "Select Device" },
-    { "<leader>xq", "<cmd>Telescope quickfix<cr>", desc = "Show QuickFix List" },
+    { "<leader>xq", function() Snacks.picker.qflist() end, desc = "Show QuickFix List" },
 
     { "<leader>xx", "<cmd>XcodebuildQuickfixLine<cr>", desc = "Quickfix Line" },
     { "<leader>xa", "<cmd>XcodebuildCodeActions<cr>", desc = "Show Code Actions" },
