@@ -14,6 +14,7 @@ brew "herdr"
 brew "ripgrep"
 brew "fd"
 brew "tree-sitter-cli" # nvim-treesitter's main branch builds parsers with it
+brew "plantuml" # renders diagrams for :PumlPreview in lua/plugins/plantuml.lua
 
 # Language servers the nvim package configures explicitly
 brew "vacuum" # OpenAPI LSP wired up in lua/plugins/lspconfig.lua
