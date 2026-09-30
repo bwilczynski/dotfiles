@@ -29,7 +29,7 @@ brew "xcodegen"
 brew "yazi"
 brew "poppler" # PDF previews
 brew "resvg" # SVG previews
-brew "zoxide" # `z` in the shell and in yazi, initialised in zsh/.zshrc
+brew "zoxide" # `z` in the shell and `Z` in yazi, initialised in zsh/.zshrc
 
 # Git, SSH, and hardware keys
 brew "git"
