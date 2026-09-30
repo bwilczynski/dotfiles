@@ -8,7 +8,7 @@
 # values win, mirroring how .zshrc sources ~/.zshrc.custom.
 
 [user]
-	name = Bartlomiej Wilczynski
+	name = Bartłomiej Wilczyński
 	email = me@bwilczynski.com
 
 [alias]
