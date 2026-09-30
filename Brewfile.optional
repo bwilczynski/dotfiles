@@ -24,6 +24,13 @@ brew "xcbeautify"
 brew "xcode-build-server"
 brew "xcodegen"
 
+# Terminal file manager; zsh/.zshrc wraps it as `y`. Previews also use ffmpeg
+# (video), imagemagick (fonts, HEIC), p7zip (archives), jq, fd, ripgrep, and fzf
+brew "yazi"
+brew "poppler" # PDF previews
+brew "resvg" # SVG previews
+brew "zoxide" # `z` in the shell and in yazi, initialised in zsh/.zshrc
+
 # Git, SSH, and hardware keys
 brew "git"
 brew "git-crypt"

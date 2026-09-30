@@ -22,7 +22,7 @@ stow -D ghostty                       # uninstall a package
 
 ## Packages
 
-- **`zsh`** — `.zprofile` (login-shell environment: Homebrew's `shellenv`, `~/.local/bin`, and the Obsidian CLI on `PATH`, each guarded by an existence check) and `.zshrc` (no framework: native `compinit` completion, `direnv` hook, Starship prompt, vi keybindings) plus the optional modules it sources: `.fzf.zsh` and `.zshrc.custom` (not in this repo, machine-local)
+- **`zsh`** — `.zprofile` (login-shell environment: Homebrew's `shellenv`, `~/.local/bin`, and the Obsidian CLI on `PATH`, each guarded by an existence check) and `.zshrc` (no framework: native `compinit` completion, `direnv` and `zoxide` hooks, a `y` wrapper that runs yazi and cds to where it quit, Starship prompt, vi keybindings) plus the optional modules it sources: `.fzf.zsh` and `.zshrc.custom` (not in this repo, machine-local)
 - **`tmux`** — `.tmux.conf`; ANSI colours only, so it follows the terminal's palette
 - **`nvim`** — `.config/nvim/`, a LazyVim setup: plugins in `lua/plugins/`, config in `lua/config/`
 - **`ghostty`** — `.config/ghostty/config` (macOS only)
