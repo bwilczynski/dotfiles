@@ -1,4 +1,6 @@
-# Packages required by the configuration tracked in this repository.
+# Bootstrap packages: deployment, the shell and its prompt, mise, and the
+# terminal font. Brewfile.optional holds everything else, including the tools
+# the other tracked configurations use.
 
 # Deployment and shell
 brew "stow"

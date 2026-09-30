@@ -6,23 +6,23 @@ stow package per tool, so each machine installs only what it needs.
 
 ## Packages
 
-| Package    | Installs                                        | Platform |
-| ---------- | ----------------------------------------------- | -------- |
-| `git`      | `.gitconfig`, `.config/git/ignore`              | both     |
-| `zsh`      | `.zprofile`, `.zshrc`, `.fzf.zsh`               | macOS    |
-| `tmux`     | `.tmux.conf`                                    | macOS    |
-| `nvim`     | `.config/nvim/` (LazyVim)                       | macOS    |
-| `ghostty`  | `.config/ghostty/`                              | macOS    |
-| `starship` | `.config/starship.toml`                         | macOS    |
-| `jj`       | `.config/jj/`                                   | macOS    |
-| `herdr`    | `.config/herdr/`                                | macOS    |
-| `bat`      | `.config/bat/config`                            | macOS    |
-| `claude`   | `.claude/` settings and instructions            | both     |
-| `codex`    | `.codex/AGENTS.md` (agent instructions)         | both     |
-| `mise`     | `.config/mise/config.toml` (global tool list)   | both     |
-| `theme`    | `.config/theme/`, Claude's theme, `theme-set`   | macOS    |
-| `macos`    | `.config/macos/` and the keyremap LaunchAgent   | macOS    |
-| `omarchy`  | Hyprland/Omarchy overrides, `.XCompose`, `bin/` | Linux    |
+| Package    | Installs                                               | Platform |
+| ---------- | ------------------------------------------------------ | -------- |
+| `git`      | `.gitconfig`, `.config/git/ignore`                     | both     |
+| `zsh`      | `.zprofile`, `.zshrc`, `.fzf.zsh`                      | macOS    |
+| `tmux`     | `.tmux.conf`                                           | macOS    |
+| `nvim`     | `.config/nvim/` (LazyVim)                              | macOS    |
+| `ghostty`  | `.config/ghostty/`                                     | macOS    |
+| `starship` | `.config/starship.toml`                                | macOS    |
+| `jj`       | `.config/jj/`                                          | macOS    |
+| `herdr`    | `.config/herdr/`                                       | macOS    |
+| `bat`      | `.config/bat/config`                                   | macOS    |
+| `claude`   | `.claude/` settings and instructions                   | both     |
+| `codex`    | `.codex/AGENTS.md` (agent instructions)                | both     |
+| `mise`     | `.config/mise/config.toml` (global tool list)          | both     |
+| `theme`    | `.config/theme/`, Claude's theme, `theme-set`          | macOS    |
+| `macos`    | `.config/macos/` and the keyremap LaunchAgent          | macOS    |
+| `omarchy`  | Hyprland/Omarchy overrides, `.XCompose`, `.local/bin/` | Linux    |
 
 The macOS-only rows are not a portability limitation. Omarchy ships its own
 configuration for tmux, ghostty, starship, herdr, and Neovim, and re-renders
@@ -33,8 +33,8 @@ The `agents` package is the exception to the table: it holds the global agent
 instructions that `claude` and `codex` both symlink to, and is never stowed
 itself.
 
-Everything else at the repo root — `Brewfile`, `README.md`, `CLAUDE.md`,
-`docs/` — is repo-only and never symlinked.
+Everything else at the repo root — `Brewfile`, `Brewfile.optional`,
+`README.md`, `CLAUDE.md`, `docs/` — is repo-only and never symlinked.
 
 ## Installation — macOS
 
@@ -44,7 +44,8 @@ Install the Homebrew dependencies:
 brew bundle
 ```
 
-`Brewfile` contains only the bootstrap requirements. `Brewfile.optional` holds
+`Brewfile` contains only the bootstrap requirements: stow, the shell's
+dependencies, mise, and the terminal font. `Brewfile.optional` holds
 everything else Homebrew owns on the workstation: the tools the tracked configs
 use, general CLIs, and applications. Install it with:
 
@@ -70,22 +71,24 @@ stow --no-folding mise
 mise install
 ```
 
-`mise/.config/mise/config.toml` is the global tool list — the coding agents,
-`gh`, Node, Python, Go, and a few CLIs installed from npm or release binaries.
-Tools a single project needs belong in that project's own `mise.toml`. `.zshrc` activates mise only when the binary is on `PATH`, so a
-machine without it is unaffected. Upgrade with `mise up claude codex`. Claude
+`mise/.config/mise/config.toml` is the global tool list — the coding agents
+(Claude Code, Codex, opencode), Node, Python, Go, and CLIs such as `gh` and
+hunk installed from registries or release binaries. Tools a single project
+needs belong in that project's own `mise.toml`. `.zshrc` activates mise only
+when the binary is on `PATH`, so a machine without it is unaffected. Upgrade
+with `mise up`. Claude
 Code's own auto-updater is off (`autoUpdates: false` in
 `claude/.claude/settings.json`) so the running binary cannot drift away from the
 version mise installed.
 
 Stow the packages you want. The repo lives at `~/.dotfiles`, so stow's default
-target is `$HOME` and no flags are needed:
+target is `$HOME` and no `-t` flag is needed:
 
 ```sh
 stow git zsh tmux nvim starship            # minimal / remote box
 stow git zsh tmux nvim ghostty starship jj \
-     herdr bat macos                       # full macOS workstation, plus:
-stow --no-folding claude codex mise theme  # the tools write into these directories
+     herdr bat                             # full macOS workstation, plus:
+stow --no-folding claude codex mise theme macos  # directories shared with other writers
 ```
 
 Preview before committing to it with `stow -n -v <package>`, and remove a
@@ -102,59 +105,10 @@ theme-set                # list the themes, marking the current one
 theme-set tokyo-night    # switch
 ```
 
-A machine that stowed `theme` before `theme-set` existed needs one
-`stow -R --no-folding theme` to link it, and a new login shell to put
-`~/.local/bin` on `PATH`.
-
 Restart ghostty and Neovim to pick up the new palette. A Claude Code session
 already running will not retint until it is restarted either — its theme is
 reached through a symlink inside the repo rather than through a watched
 `~/.config` directory, so it has no way to notice the change while running.
-
-### Upgrading a machine that installed the agents from Homebrew
-
-The casks are gone from `Brewfile.optional`, and so is hunk, but `brew bundle`
-never removes anything, so a machine that installed them still has them — and
-`/opt/homebrew/bin/claude` shadows the mise shim on `PATH`. Drop them once mise
-has its own copies:
-
-```sh
-mise install
-brew uninstall --cask claude-code codex
-brew uninstall hunk && brew untap modem-dev/tap
-hash -r                    # or open a new shell
-which claude codex hunk    # → ~/.local/share/mise/shims/...
-```
-
-hunk is tracked as `aqua:modem-dev/hunk` because Omarchy installs it under that
-name and its `~/.local/bin/hunk` wrapper re-adds that exact entry to the global
-mise config on every run; any other spelling would end up listed twice.
-
-### Upgrading a machine that predates the theme package
-
-Two leftovers need clearing by hand; stow won't do either.
-
-The `lazygit` package is gone, so a machine that stowed it is left with a
-dangling `config.yml` symlink, and lazygit refuses to start against one
-(`config.yml: no such file or directory`). Unstow it *before* pulling, while
-the package still exists:
-
-```sh
-stow -D lazygit      # before pulling
-```
-
-If you have already pulled, delete the dangling link instead:
-
-```sh
-rm ~/Library/Application\ Support/lazygit/config.yml
-```
-
-The tmux config no longer uses plugins or TPM, but plugin clones from an older
-setup remain on disk. Remove the plugin directory:
-
-```sh
-rm -rf ~/.tmux/plugins
-```
 
 ### tmux and Herdr keybindings
 
@@ -171,6 +125,7 @@ also a secondary tmux prefix).
 | Resize pane | `Ctrl+Option+Shift+arrows` |
 | Create / rename / close window or tab | `prefix+c` / `prefix+r` / `prefix+k` |
 | Previous / next window or tab | `prefix+p` / `prefix+n` |
+| Move window or tab left / right | `prefix+Ctrl+p` / `prefix+Ctrl+n` |
 | Create / rename / close session or workspace | `prefix+Shift+c/r/k` |
 | Previous / next session or workspace | `prefix+Shift+p/n` |
 
@@ -209,10 +164,6 @@ that file instead of adding to it, silently dropping every tracked pattern. A
 pre-existing `~/.config/git/ignore` makes `stow git` conflict; fold its
 patterns into the tracked file and delete it first.
 
-Check for a stray `~/.config/git/config` too. Git reads it *before*
-`~/.gitconfig`, so an identity left there is shadowed by the tracked one and
-serves only to confuse; delete it once its contents are accounted for.
-
 ## Installation — Omarchy
 
 Stow is not part of the Omarchy base install:
@@ -242,8 +193,10 @@ fresh machine that makes `~/.config` itself a symlink into this repo, and every
 file Omarchy writes there afterwards (`omarchy/shell.json`, the active theme
 symlink, `current/`) lands in `git status`. Most macOS packages do not need the
 flag because each of them owns its directory outright; the exceptions are the
-ones whose tool also writes there (`claude`, `codex`, `mise`, and `theme`, which
-places files in `~/.claude/themes` and `~/.local/bin`).
+ones that share a directory with another writer: `claude`, `codex`, and `mise`,
+whose tools write there; `theme`, which places files in `~/.claude/themes` and
+`~/.local/bin`; and `macos`, whose LaunchAgent sits in `~/Library/LaunchAgents`
+beside other apps' agents.
 
 Then install the system half of the hibernation fix, which stow cannot place
 because it lives outside `$HOME`:
@@ -256,9 +209,10 @@ Dictation is not tracked here; restore it with `omarchy-voxtype-install`.
 
 ## macOS system settings
 
-`.config/macos/defaults.sh` and `keyremap.sh` are run by hand, not by stow.
-Stowing the `macos` package installs the `com.bwilczynski.keyremap` LaunchAgent
-that keeps the remapping applied across reboots.
+Stow does not apply system settings. Run `~/.config/macos/defaults.sh` by hand
+after stowing the `macos` package. `keyremap.sh` is run for you: the package
+also installs the `com.bwilczynski.keyremap` LaunchAgent, which runs it at every
+login so the remapping survives reboots.
 
 ## Omarchy
 

@@ -31,7 +31,7 @@ brew "forgejo-cli"
 brew "openssh" # FIDO2 key support that Apple's build lacks
 brew "ssh-copy-id"
 brew "gnupg"
-brew "pinentry-mac" # gpg-agent.conf points pinentry-program here
+brew "pinentry-mac" # for gpg-agent.conf's pinentry-program; that file is machine-local, not tracked
 brew "ykman"
 
 # General command-line tools

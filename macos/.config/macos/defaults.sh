@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # macOS system settings, as applied on a fresh machine.
 #
-# Run by hand after `stow .`:
+# Run by hand after `stow --no-folding macos`:
 #   ~/.config/macos/defaults.sh
 #
 # Idempotent — running it twice is a no-op. Keyboard remapping lives in

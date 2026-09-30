@@ -8,7 +8,6 @@
 claude = "latest"
 codex = "latest"
 opencode = "latest"
-gh = "latest"
 
 # Language runtimes
 node = "26.8.2"
@@ -16,9 +15,13 @@ python = "3.14"
 go = "latest"
 
 # CLIs published to a language registry or as release binaries
+gh = "latest"
 "npm:prettier" = "latest"
 "npm:@bitwarden/cli" = "latest"
 "aqua:grafana/loki/logcli" = "latest"
+# Spelled aqua:modem-dev/hunk because Omarchy installs it under that name and
+# its ~/.local/bin/hunk wrapper re-adds this exact entry on every run; any other
+# spelling would end up listed twice.
 "aqua:modem-dev/hunk" = "latest"
 "github:bwilczynski/homelab-cli" = "latest" # hlctl
 
