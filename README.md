@@ -10,12 +10,12 @@ stow package per tool, so each machine installs only what it needs.
 | ---------- | ------------------------------------------------------ | -------- |
 | `git`      | `.gitconfig`, `.config/git/ignore`                     | both     |
 | `zsh`      | `.zprofile`, `.zshrc`, `.fzf.zsh`                      | macOS    |
-| `tmux`     | `.tmux.conf`                                           | macOS    |
+| `tmux`     | `.config/tmux/tmux.conf`                               | both     |
 | `nvim`     | `.config/nvim/` (LazyVim)                              | macOS    |
 | `ghostty`  | `.config/ghostty/`                                     | macOS    |
 | `starship` | `.config/starship.toml`                                | macOS    |
 | `jj`       | `.config/jj/`                                          | macOS    |
-| `herdr`    | `.config/herdr/`                                       | macOS    |
+| `herdr`    | `.config/herdr/config.toml`                            | both     |
 | `bat`      | `.config/bat/config`                                   | macOS    |
 | `claude`   | `.claude/` settings and instructions                   | both     |
 | `codex`    | `.codex/AGENTS.md` (agent instructions)                | both     |
@@ -25,7 +25,7 @@ stow package per tool, so each machine installs only what it needs.
 | `omarchy`  | Hyprland/Omarchy overrides, `.XCompose`, `.local/bin/` | Linux    |
 
 The macOS-only rows are not a portability limitation. Omarchy ships its own
-configuration for tmux, ghostty, starship, herdr, and Neovim, and re-renders
+configuration for ghostty, starship, and Neovim, and re-renders
 several of them on `omarchy theme set`; stowing the macOS versions over them
 would break theme switching and Omarchy's menus. See "Omarchy" below.
 
@@ -112,8 +112,9 @@ reached through a symlink inside the repo rather than through a watched
 
 ### tmux and Herdr keybindings
 
-On macOS, tmux sessions map to Herdr workspaces, tmux windows to Herdr tabs,
-and panes to panes. Both tools use `Ctrl+Space` as their prefix (`Ctrl+B` is
+One tmux config and one Herdr config serve both macOS and Omarchy. tmux
+sessions map to Herdr workspaces, tmux windows to Herdr tabs, and panes to
+panes. Both tools use `Ctrl+Space` as their prefix (`Ctrl+B` is
 also a secondary tmux prefix).
 
 | Action | Binding |
@@ -139,13 +140,18 @@ sequences, because with Option in native mode the Alt would otherwise be
 dropped, and legacy encoding cannot tell `Ctrl+H` from Backspace or carry
 Shift on a letter.
 
-macOS deliberately keeps every Option-arrow chord for native word movement and
-selection, so it does not copy Omarchy's direct Alt-arrow navigation. Ghostty
-also keeps Option in native macOS mode, preserving Option-letter Polish
+On Omarchy, Option is Alt. The `omarchy` package tracks Omarchy's Ghostty
+config with the same CSI-u sequences added. fcitx5 binds Ctrl+Alt+H and Ctrl+Alt+J to word hints by default, so
+the package also clears those triggers in `.config/fcitx5/conf/keyboard.conf`.
+
+Neither tool binds Alt-arrows. macOS keeps every Option-arrow chord for native
+word movement and selection, so Omarchy's stock Alt-arrow window and session
+navigation is dropped on both platforms in favour of the prefix bindings above.
+Ghostty also keeps Option in native macOS mode, preserving Option-letter Polish
 characters. Pane, window/tab, and session/workspace close actions do not ask
-for confirmation, matching Omarchy. Omarchy continues to own its Linux configs
-and dynamic theming; do not stow the macOS `tmux`, `herdr`, or `ghostty`
-packages there.
+for confirmation, matching Omarchy. Both configs use ANSI colour names only, so
+they follow Omarchy's theme switching too; Omarchy keeps its Ghostty config, so
+do not stow the macOS `ghostty` package there.
 
 ### Git config layering
 

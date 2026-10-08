@@ -15,7 +15,7 @@ stow git zsh tmux nvim starship       # install a subset (macOS)
 stow --no-folding theme               # macOS: palettes, plus Claude Code's theme in ~/.claude
 stow --no-folding claude codex mise   # cross-platform: agent settings and instructions, tool versions
 stow --no-folding macos               # macOS: its LaunchAgent shares ~/Library/LaunchAgents
-stow --no-folding git claude codex mise omarchy # everything that applies on Omarchy
+stow --no-folding git claude codex mise tmux herdr omarchy # everything that applies on Omarchy
 stow -n -v nvim                       # dry run
 stow -D ghostty                       # uninstall a package
 ```
@@ -23,12 +23,12 @@ stow -D ghostty                       # uninstall a package
 ## Packages
 
 - **`zsh`** — `.zprofile` (login-shell environment: Homebrew's `shellenv`, `~/.local/bin`, and the Obsidian CLI on `PATH`, each guarded by an existence check) and `.zshrc` (no framework: native `compinit` completion, `direnv` and `zoxide` hooks, a `y` wrapper that runs yazi and cds to where it quit, Starship prompt, vi keybindings) plus the optional modules it sources: `.fzf.zsh` and `.zshrc.custom` (not in this repo, machine-local)
-- **`tmux`** — `.tmux.conf`; ANSI colours only, so it follows the terminal's palette
+- **`tmux`** — `.config/tmux/tmux.conf`; ANSI colours only, so it follows the terminal's palette; cross-platform
 - **`nvim`** — `.config/nvim/`, a LazyVim setup: plugins in `lua/plugins/`, config in `lua/config/`
 - **`ghostty`** — `.config/ghostty/config` (macOS only)
 - **`starship`** — `.config/starship.toml`
 - **`jj`** — `.config/jj/config.toml`
-- **`herdr`** — `.config/herdr/config.toml`
+- **`herdr`** — `.config/herdr/config.toml`, mirroring the tmux bindings; cross-platform
 - **`bat`** — `.config/bat/config`; `--theme=ansi`, so it follows the terminal's palette
 - **`claude`** — `.claude/settings.json` and a `CLAUDE.md` symlink into the
   `agents` package; no theme file, so it is cross-platform. `settings.json`
@@ -54,12 +54,12 @@ stow -D ghostty                       # uninstall a package
   the Bitwarden CLI, logcli, hunk, hlctl). Cross-platform;
   `zsh/.zshrc` activates mise when the binary is present, and Omarchy activates
   it itself
-- **`omarchy`** — Hyprland and Omarchy overrides plus `.XCompose`, and `.local/bin/omarchy-no-hibernate` (run by hand); Linux
+- **`omarchy`** — Hyprland and Omarchy overrides, a delta copy of Omarchy's Ghostty config (CSI-u for the hjkl pane chords), an fcitx5 `keyboard.conf` that frees Ctrl+Alt+H/J for them, plus `.XCompose`, and `.local/bin/omarchy-no-hibernate` (run by hand); Linux
 
-Everything else is macOS-only. `zsh`, `tmux`, `ghostty`, `starship`, `jj`,
-`herdr`, `bat`, `nvim`, and `theme` are **not** stowed on Omarchy — see the
-conventions below. `claude`, `codex`, and `mise` are cross-platform: none of
-them carries a theme or palette, so they apply wherever their tools run. `agents` is never
+Everything else is macOS-only. `zsh`, `ghostty`, `starship`, `jj`, `bat`,
+`nvim`, and `theme` are **not** stowed on Omarchy — see the conventions below.
+`claude`, `codex`, `mise`, `tmux`, and `herdr` are cross-platform: none of them
+carries a theme or palette, so they apply wherever their tools run. `agents` is never
 stowed anywhere.
 
 ## Conventions
@@ -83,7 +83,7 @@ stowed anywhere.
   no theme config at all. On Omarchy the theme is whatever `omarchy theme set`
   selects, and the repo does not fight it.
 - **Track deltas, not distro config.** Omarchy ships user-facing templates in `/usr/share/omarchy/config`, copies them into `~/.config`, keeps them current through `omarchy update` migrations, and re-renders several on `omarchy theme set`. The `omarchy` package tracks only files whose content differs from those templates. Before adding a Linux file, diff it against `/usr/share/omarchy/config/<path>`; if it matches, it does not belong here.
-- Omarchy's own configs for tmux, ghostty, starship, herdr, and neovim are theme-dynamic and menu-integrated. Do not stow the macOS packages over them.
+- Omarchy's own configs for ghostty, starship, and neovim are theme-dynamic and menu-integrated. Do not stow the macOS packages over them. tmux and Herdr are the exception: both use ANSI colours only, so one shared config serves both platforms. It omits Alt-arrow bindings because macOS keeps Option-arrows for word movement.
 - **One instruction file, many harnesses.** Global agent instructions live once in
   `agents/.agents/AGENTS.md`; `claude/.claude/CLAUDE.md` and `codex/.codex/AGENTS.md`
   are repo-internal symlinks to it, so Claude Code and Codex read the same text.

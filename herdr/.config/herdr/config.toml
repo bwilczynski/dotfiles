@@ -1,17 +1,19 @@
 onboarding = false
+# Shared by macOS and Omarchy. Mirrors tmux/.config/tmux/tmux.conf:
+# tmux session -> herdr workspace, tmux window -> herdr tab, tmux pane -> herdr pane
 
 [theme]
 # The terminal supplies the palette; herdr draws on ANSI colours, so this
-# follows whatever ~/.config/theme/current is set to.
+# follows the current theme on either platform.
 name = "terminal"
 
 [theme.custom]
 # The active tab is drawn as panel_bg text on an accent background, so panel_bg
-# has to be dark for it to read.
+# has to be dark for it to read - same colors as status-left's "#[fg=black,bg=blue]"
 panel_bg = "black"
 
 [terminal]
-# Match tmux's -c "#{pane_current_path}" behavior.
+# Matches -c "#{pane_current_path}" on every split, window, and session
 new_cwd = "follow"
 
 [keys]
@@ -37,12 +39,19 @@ focus_pane_down = "ctrl+alt+j"
 focus_pane_up = "ctrl+alt+k"
 focus_pane_right = "ctrl+alt+l"
 
+resize_mode = ["prefix+ctrl+left", "prefix+ctrl+down", "prefix+ctrl+up", "prefix+ctrl+right"]
+
+# Like resize-pane on C-M-S-hjkl
 resize_pane_left = "ctrl+alt+shift+h"
 resize_pane_down = "ctrl+alt+shift+j"
 resize_pane_up = "ctrl+alt+shift+k"
 resize_pane_right = "ctrl+alt+shift+l"
 
-# Tabs (tmux windows)
+# No tmux equivalent; herdr's default prefix+shift+p is taken by previous workspace
+rename_pane = "prefix+shift+o"
+
+# Tabs (tmux windows). No Alt-arrow chords: macOS keeps Option-arrows for word
+# movement, and Omarchy uses the same prefix bindings so both behave alike.
 new_tab = "prefix+c"
 rename_tab = "prefix+r"
 close_tab = "prefix+k"
@@ -62,9 +71,10 @@ next_workspace = "prefix+shift+n"
 [ui]
 accent = "blue"
 
-# Match Omarchy: create tabs immediately and close without confirmation.
-prompt_new_tab_name = false
+# kill-window and kill-session never ask; automatic-rename names windows
+# without prompting
 confirm_close = false
+prompt_new_tab_name = false
 
 # Single-line dividers between adjacent panes and no outer frame
 pane_gaps = false
@@ -72,6 +82,17 @@ pane_outer_borders = false
 
 # No scrollbar column beside the panes
 pane_scrollbars = false
+
+# set -g mouse on
+mouse_capture = true
+
+# status-right had the zoom flag followed by #h
+tab_bar_right = [{ type = "zoom" }, { type = "hostname" }]
+
+# set -g set-titles on / set -g set-titles-string '#h:#W'. This is what the
+# window manager shows as the window title, and it resolves on the server so
+# remote sessions name the remote host.
+window_title = "{hostname}: {workspace}"
 
 [ui.toast]
 delivery = "system"
