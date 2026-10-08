@@ -121,8 +121,8 @@ also a secondary tmux prefix).
 | Split top/bottom | `Option+Enter` or `prefix+h` |
 | Split side-by-side | `Option+Shift+Enter` or `prefix+v` |
 | Close pane | `Option+Escape` or `prefix+x` |
-| Focus pane | `Ctrl+Option+arrows` |
-| Resize pane | `Ctrl+Option+Shift+arrows` |
+| Focus pane | `Ctrl+Option+h/j/k/l` |
+| Resize pane | `Ctrl+Option+Shift+h/j/k/l` |
 | Create / rename / close window or tab | `prefix+c` / `prefix+r` / `prefix+k` |
 | Previous / next window or tab | `prefix+p` / `prefix+n` |
 | Move window or tab left / right | `prefix+Ctrl+p` / `prefix+Ctrl+n` |
@@ -133,6 +133,11 @@ also a secondary tmux prefix).
 directly and coexists with Polish Option-letter input. It binds physical digit
 keys, so if another layout ever makes it collide with symbol input, remove its
 Ghostty, tmux, and Herdr entries together.
+
+The pane focus and resize chords use vim's `hjkl`. Ghostty sends them as CSI-u
+sequences, because with Option in native mode the Alt would otherwise be
+dropped, and legacy encoding cannot tell `Ctrl+H` from Backspace or carry
+Shift on a letter.
 
 macOS deliberately keeps every Option-arrow chord for native word movement and
 selection, so it does not copy Omarchy's direct Alt-arrow navigation. Ghostty

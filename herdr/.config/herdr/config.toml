@@ -32,15 +32,15 @@ close_pane = ["prefix+x", "alt+esc"]
 zoom = "prefix+z"
 last_pane = "prefix+;"
 
-focus_pane_left = "ctrl+alt+left"
-focus_pane_down = "ctrl+alt+down"
-focus_pane_up = "ctrl+alt+up"
-focus_pane_right = "ctrl+alt+right"
+focus_pane_left = "ctrl+alt+h"
+focus_pane_down = "ctrl+alt+j"
+focus_pane_up = "ctrl+alt+k"
+focus_pane_right = "ctrl+alt+l"
 
-resize_pane_left = "ctrl+alt+shift+left"
-resize_pane_down = "ctrl+alt+shift+down"
-resize_pane_up = "ctrl+alt+shift+up"
-resize_pane_right = "ctrl+alt+shift+right"
+resize_pane_left = "ctrl+alt+shift+h"
+resize_pane_down = "ctrl+alt+shift+j"
+resize_pane_up = "ctrl+alt+shift+k"
+resize_pane_right = "ctrl+alt+shift+l"
 
 # Tabs (tmux windows)
 new_tab = "prefix+c"

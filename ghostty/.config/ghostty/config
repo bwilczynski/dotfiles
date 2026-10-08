@@ -11,6 +11,18 @@ keybind = alt+enter=csi:13;3u
 keybind = alt+shift+enter=csi:13;4u
 keybind = alt+escape=csi:27;3u
 
+# Pane focus (Ctrl+Alt+hjkl) and resize (Ctrl+Alt+Shift+hjkl). With Option not
+# acting as Alt, the Alt would be dropped, and legacy encoding cannot tell
+# Ctrl+H from Backspace or keep Shift, so send CSI-u explicitly.
+keybind = ctrl+alt+h=csi:104;7u
+keybind = ctrl+alt+j=csi:106;7u
+keybind = ctrl+alt+k=csi:107;7u
+keybind = ctrl+alt+l=csi:108;7u
+keybind = ctrl+alt+shift+h=csi:104;8u
+keybind = ctrl+alt+shift+j=csi:106;8u
+keybind = ctrl+alt+shift+k=csi:107;8u
+keybind = ctrl+alt+shift+l=csi:108;8u
+
 # Experimental direct window/tab selection. Use physical digit keys so the
 # active keyboard layout cannot change which keys trigger these bindings.
 keybind = alt+digit_1=text:\x1b1
