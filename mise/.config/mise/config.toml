@@ -26,5 +26,14 @@ gh = "latest"
 "github:bwilczynski/homelab-cli" = "latest" # hlctl
 "github:bwilczynski/unifictl" = "latest"
 
+[settings]
+# mise hides releases younger than minimum_release_age by default, a guard
+# against compromised upstream releases. My own tools need no such delay; the
+# excludes take exact names only, so each one is listed.
+minimum_release_age_excludes = [
+  "github:bwilczynski/homelab-cli",
+  "github:bwilczynski/unifictl",
+]
+
 [settings.upgrade]
 auto_prune = false
