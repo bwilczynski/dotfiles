@@ -24,6 +24,7 @@ gh = "latest"
 # spelling would end up listed twice.
 "aqua:modem-dev/hunk" = "latest"
 "github:bwilczynski/homelab-cli" = "latest" # hlctl
+"github:bwilczynski/unifictl" = "latest"
 
 [settings.upgrade]
 auto_prune = false
