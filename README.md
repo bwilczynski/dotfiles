@@ -9,7 +9,7 @@ stow package per tool, so each machine installs only what it needs.
 | Package    | Installs                                               | Platform |
 | ---------- | ------------------------------------------------------ | -------- |
 | `git`      | `.gitconfig`, `.config/git/ignore`                     | both     |
-| `zsh`      | `.zprofile`, `.zshrc`, `.fzf.zsh`                      | both     |
+| `zsh`      | `.zprofile`, `.zshrc`                                  | both     |
 | `tmux`     | `.config/tmux/tmux.conf`                               | both     |
 | `nvim`     | `.config/nvim/` (LazyVim)                              | macOS    |
 | `ghostty`  | `.config/ghostty/`                                     | macOS    |

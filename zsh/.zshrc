@@ -4,6 +4,19 @@ zstyle ':completion:*' menu select
 autoload -Uz compinit
 compinit
 
+# enable vi keybindings. Before fzf, since it resets the keymap and would drop
+# fzf's widgets.
+bindkey -v
+
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='nvim'
+fi
+
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
 if command -v mise >/dev/null 2>&1; then
   eval "$(mise activate zsh)"
 fi
@@ -20,6 +33,11 @@ if command -v zoxide >/dev/null 2>&1; then
   eval "$(zoxide init zsh)"
 fi
 
+# Setup fzf, including shell completion and key bindings.
+if command -v fzf >/dev/null 2>&1; then
+  source <(fzf --zsh)
+fi
+
 # Run yazi and cd to the directory it was in on quit.
 if command -v yazi >/dev/null 2>&1; then
   function y() {
@@ -31,19 +49,6 @@ if command -v yazi >/dev/null 2>&1; then
   }
 fi
 
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-else
-  export EDITOR='nvim'
-fi
-
-# enable vi keybindings
-bindkey -v
-
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 [ -f ~/.zshrc.custom ] && source ~/.zshrc.custom
 
 if command -v starship >/dev/null 2>&1; then
