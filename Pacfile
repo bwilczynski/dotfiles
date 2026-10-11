@@ -9,3 +9,4 @@ stow
 # Shell: zsh/.zshrc, shared with macOS
 zsh
 direnv
+yazi # zsh/.zshrc wraps it as `y`
