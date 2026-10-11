@@ -1,0 +1,11 @@
+# Arch packages this repo needs on top of Omarchy's base install. Only what
+# Omarchy does not already ship belongs here, the same rule the omarchy package
+# follows for config. Install with:
+#   omarchy pkg add $(grep -o '^[^#[:space:]]*' ~/.dotfiles/Pacfile)
+
+# Deployment
+stow
+
+# Shell: zsh/.zshrc, shared with macOS
+zsh
+direnv

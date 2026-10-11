@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a cross-platform dotfiles repository for macOS and [Omarchy](https://omarchy.org/) Linux, managed with [GNU Stow](https://www.gnu.org/software/stow/), organized as **one stow package per tool**. Each top-level package directory contains a home-relative tree; `stow <package>` symlinks it into `$HOME`. Because the repo lives at `~/.dotfiles`, stow's default target is already `$HOME`, so no `-t` flag is needed. `.stowrc` only ignores `.DS_Store`.
 
-Files at the repo root (`Brewfile`, `Brewfile.optional`, `README.md`, `CLAUDE.md`, `docs/`) sit outside every package and are never symlinked.
+Files at the repo root (`Brewfile`, `Brewfile.optional`, `Pacfile`, `README.md`, `CLAUDE.md`, `docs/`) sit outside every package and are never symlinked.
 
 ## Deployment
 
@@ -15,14 +15,14 @@ stow git zsh tmux nvim starship       # install a subset (macOS)
 stow --no-folding theme               # macOS: palettes, plus Claude Code's theme in ~/.claude
 stow --no-folding claude codex mise   # cross-platform: agent settings and instructions, tool versions
 stow --no-folding macos               # macOS: its LaunchAgent shares ~/Library/LaunchAgents
-stow --no-folding git claude codex mise tmux herdr omarchy # everything that applies on Omarchy
+stow --no-folding git zsh claude codex mise tmux herdr omarchy # everything that applies on Omarchy
 stow -n -v nvim                       # dry run
 stow -D ghostty                       # uninstall a package
 ```
 
 ## Packages
 
-- **`zsh`** — `.zprofile` (login-shell environment: Homebrew's `shellenv`, `~/.local/bin`, and the Obsidian CLI on `PATH`, each guarded by an existence check) and `.zshrc` (no framework: native `compinit` completion, `direnv` and `zoxide` hooks, a `y` wrapper that runs yazi and cds to where it quit, Starship prompt, vi keybindings) plus the optional modules it sources: `.fzf.zsh` and `.zshrc.custom` (not in this repo, machine-local)
+- **`zsh`** — `.zprofile` (login-shell environment: Homebrew's `shellenv`, `~/.local/bin`, and the Obsidian CLI on `PATH`, each guarded by an existence check) and `.zshrc` (no framework: native `compinit` completion, `direnv` and `zoxide` hooks, a `y` wrapper that runs yazi and cds to where it quit, Starship prompt, vi keybindings) plus the optional modules it sources: `.fzf.zsh` and `.zshrc.custom` (not in this repo, machine-local); cross-platform, and the login shell on both
 - **`tmux`** — `.config/tmux/tmux.conf`; ANSI colours only, so it follows the terminal's palette; cross-platform
 - **`nvim`** — `.config/nvim/`, a LazyVim setup: plugins in `lua/plugins/`, config in `lua/config/`
 - **`ghostty`** — `.config/ghostty/config` (macOS only)
@@ -56,9 +56,9 @@ stow -D ghostty                       # uninstall a package
   it itself
 - **`omarchy`** — Hyprland and Omarchy overrides, a delta copy of Omarchy's Ghostty config (CSI-u for the hjkl pane chords), an fcitx5 `keyboard.conf` that frees Ctrl+Alt+H/J for them, plus `.XCompose`, and `.local/bin/omarchy-no-hibernate` (run by hand); Linux
 
-Everything else is macOS-only. `zsh`, `ghostty`, `starship`, `jj`, `bat`,
+Everything else is macOS-only. `ghostty`, `starship`, `jj`, `bat`,
 `nvim`, and `theme` are **not** stowed on Omarchy — see the conventions below.
-`claude`, `codex`, `mise`, `tmux`, and `herdr` are cross-platform: none of them
+`zsh`, `claude`, `codex`, `mise`, `tmux`, and `herdr` are cross-platform: none of them
 carries a theme or palette, so they apply wherever their tools run. `agents` is never
 stowed anywhere.
 
@@ -102,4 +102,12 @@ stowed anywhere.
 - **Machine-local settings go in an untracked tail file**, sourced or included last so it wins: `zsh/.zshrc` sources `~/.zshrc.custom`, `git/.gitconfig` includes `~/.gitconfig.local`. Absolute paths and credentials belong there, never in a tracked file.
 - Files outside `$HOME` cannot be stowed. Install them from a hand-run script in the owning package, as `macos/.config/macos/defaults.sh` and `omarchy/.local/bin/omarchy-no-hibernate` do.
 - **Always stow the Linux packages with `--no-folding`.** Stow links a whole directory when the target does not exist, so on a fresh machine `stow omarchy` would make `~/.config` itself a symlink into this repo and pull Omarchy's own runtime state into `git status`. Folding is safe only where the repo owns the entire directory, which is true of every macOS package except `claude`, `codex`, `mise`, `theme`, and `macos` — Claude Code, Codex, and mise write into `~/.claude`, `~/.codex`, and `~/.config/mise`, `theme` places files in `~/.claude/themes` and `~/.local/bin`, and `macos` places its LaunchAgent in `~/Library/LaunchAgents` beside other apps' agents, so those five want `--no-folding` on macOS as well — and of none of the Linux ones.
+- **Arch packages Omarchy does not ship go in `Pacfile`**, one per line with a
+  comment saying why, installed with `omarchy pkg add`. It is the Linux
+  counterpart of the Brewfiles and follows the same delta rule as the `omarchy`
+  package: if Omarchy already installs it, it does not belong there.
+- **zsh is the same shell on both platforms.** Omarchy's bash aliases, functions,
+  and rc exports are bash-only and deliberately not ported, so zsh never behaves
+  differently on Linux; do not add Linux-only shell behaviour to `zsh/`. On
+  Omarchy it reads Omarchy's own `starship.toml`.
 - Repo-owned scripts do not go in distro-owned directories. `~/.config/omarchy/` belongs to Omarchy; `~/.local/bin` (on PATH via Omarchy's `default/bash/env-bootstrap`) belongs to us. An `omarchy-` prefix there is safe because the omarchy CLI dispatches to `$OMARCHY_BIN_DIR`, not PATH.

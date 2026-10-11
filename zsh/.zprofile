@@ -7,8 +7,10 @@ if [ -x /opt/homebrew/bin/brew ]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
-# Scripts stowed from this repo, such as theme-set.
-if [ -d "$HOME/.local/bin" ]; then
+# Scripts stowed from this repo, such as theme-set. Only when not already on
+# PATH: Omarchy's /etc/profile appends it after mise's shims, and its
+# ~/.local/bin holds install-on-demand wrappers that must not shadow them.
+if [ -d "$HOME/.local/bin" ] && [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
   export PATH="$HOME/.local/bin:$PATH"
 fi
 

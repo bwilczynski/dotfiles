@@ -9,7 +9,7 @@ stow package per tool, so each machine installs only what it needs.
 | Package    | Installs                                               | Platform |
 | ---------- | ------------------------------------------------------ | -------- |
 | `git`      | `.gitconfig`, `.config/git/ignore`                     | both     |
-| `zsh`      | `.zprofile`, `.zshrc`, `.fzf.zsh`                      | macOS    |
+| `zsh`      | `.zprofile`, `.zshrc`, `.fzf.zsh`                      | both     |
 | `tmux`     | `.config/tmux/tmux.conf`                               | both     |
 | `nvim`     | `.config/nvim/` (LazyVim)                              | macOS    |
 | `ghostty`  | `.config/ghostty/`                                     | macOS    |
@@ -34,7 +34,7 @@ instructions that `claude` and `codex` both symlink to, and is never stowed
 itself.
 
 Everything else at the repo root — `Brewfile`, `Brewfile.optional`,
-`README.md`, `CLAUDE.md`, `docs/` — is repo-only and never symlinked.
+`Pacfile`, `README.md`, `CLAUDE.md`, `docs/` — is repo-only and never symlinked.
 
 ## Installation — macOS
 
@@ -177,18 +177,38 @@ patterns into the tracked file and delete it first.
 
 ## Installation — Omarchy
 
-Stow is not part of the Omarchy base install:
+Omarchy installs and updates almost everything itself. `Pacfile` lists the
+few Arch packages this repo needs on top — stow, and zsh with the tools
+`.zshrc` hooks — one per line with a comment saying why. Install them with:
 
 ```sh
-omarchy pkg add stow
+omarchy pkg add $(grep -o '^[^#[:space:]]*' Pacfile)
 ```
 
-Omarchy installs and updates almost everything else itself, so only these
-packages apply:
+Only add a package that Omarchy does not already ship (`pacman -Q <pkg>` on a
+fresh install says). There is no cleanup counterpart to `brew bundle cleanup`:
+Omarchy owns most installed packages, so pruning against this list would remove
+them.
+
+Then stow the packages that apply:
 
 ```sh
-stow --no-folding git claude codex mise omarchy
+stow --no-folding git zsh claude codex mise tmux herdr omarchy
 ```
+
+and make zsh the login shell; terminals, tmux, and Herdr all start it from
+there, and it takes effect at the next login:
+
+```sh
+chsh -s /usr/bin/zsh
+```
+
+zsh behaves exactly as on macOS: Omarchy's bash aliases and functions (`ls` as
+eza, `cd` through zoxide, `g`, `ga`, `tdl`, …) are bash-only and deliberately
+not carried over, and neither are the variables its bash rc exports (`BROWSER`,
+`BAT_THEME`, `MANROFFOPT`). `PATH` still arrives through `/etc/profile` and the
+uwsm session. `bash` keeps Omarchy's setup untouched. Starship reads Omarchy's
+own theme-dynamic `starship.toml`, since the `starship` package stays macOS-only.
 
 `claude` carries no theme: Omarchy generates `~/.claude/themes/omarchy.json` on
 every `omarchy theme set`, and the tracked `settings.json` already selects it
