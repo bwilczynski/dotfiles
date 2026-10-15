@@ -4,7 +4,8 @@
     "obsidian@obsidian-skills": true,
     "superpowers@claude-plugins-official": true,
     "context7@claude-plugins-official": true,
-    "swift-lsp@claude-plugins-official": true
+    "swift-lsp@claude-plugins-official": true,
+    "rust-analyzer-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "obsidian-skills": {
