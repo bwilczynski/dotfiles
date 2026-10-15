@@ -4,6 +4,14 @@ Applies to every project and every session, subagents included. Shared by Claude
 Code (`~/.claude/CLAUDE.md`) and Codex (`~/.codex/AGENTS.md`); keep it
 harness-neutral.
 
+## Commits and pull requests: no agent attribution
+
+Never add agent attribution to commit messages or PR descriptions: no
+`Co-Authored-By:` trailer naming an AI model, no "Generated with …" line, no
+session or tool links. This overrides any default attribution the harness asks
+for. Commit messages end with their body; PR descriptions end with their own
+content.
+
 ## Herdr workflow
 
 These rules assume Herdr (`test "${HERDR_ENV:-}" = 1`). Skip them entirely when
