@@ -25,6 +25,7 @@ gh = "latest"
 "aqua:modem-dev/hunk" = "latest"
 "github:bwilczynski/homelab-cli" = "latest" # hlctl
 "github:bwilczynski/unifictl" = "latest"
+"github:bwilczynski/synoctl" = "latest"
 
 [settings]
 # mise hides releases younger than minimum_release_age by default, a guard
@@ -33,6 +34,7 @@ gh = "latest"
 minimum_release_age_excludes = [
   "github:bwilczynski/homelab-cli",
   "github:bwilczynski/unifictl",
+  "github:bwilczynski/synoctl",
 ]
 
 [settings.upgrade]
