@@ -29,6 +29,10 @@ if command -v unifictl >/dev/null 2>&1; then
   eval "$(unifictl completions zsh)"
 fi
 
+if command -v synoctl >/dev/null 2>&1; then
+  eval "$(synoctl completions zsh)"
+fi
+
 if command -v direnv >/dev/null 2>&1; then
   eval "$(direnv hook zsh)"
 fi
