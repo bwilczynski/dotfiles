@@ -21,6 +21,10 @@ if command -v mise >/dev/null 2>&1; then
   eval "$(mise activate zsh)"
 fi
 
+if command -v gh >/dev/null 2>&1; then
+  eval "$(gh completion -s zsh)"
+fi
+
 if command -v unifictl >/dev/null 2>&1; then
   eval "$(unifictl completions zsh)"
 fi
