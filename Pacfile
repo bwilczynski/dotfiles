@@ -10,3 +10,7 @@ stow
 zsh
 direnv
 yazi # zsh/.zshrc wraps it as `y`
+
+# Unofficial Bitwarden CLI with an agent that caches the unlocked vault;
+# Brewfile.optional installs it on macOS
+rbw
