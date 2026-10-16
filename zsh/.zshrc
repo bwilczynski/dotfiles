@@ -17,6 +17,10 @@ fi
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
+# Tell gpg-agent which terminal to prompt on; a curses pinentry fails without it
+# when gpg's stdin is a pipe. zsh's $TTY saves forking tty(1).
+export GPG_TTY=$TTY
+
 if command -v mise >/dev/null 2>&1; then
   eval "$(mise activate zsh)"
 fi
