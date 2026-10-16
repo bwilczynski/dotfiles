@@ -39,7 +39,7 @@ brew "forgejo-cli"
 brew "openssh" # FIDO2 key support that Apple's build lacks
 brew "gnupg"
 brew "pinentry-mac" # for gpg-agent.conf's pinentry-program; that file is machine-local, not tracked
-brew "rbw" # unofficial Bitwarden CLI with an agent that caches the unlocked vault
+brew "pass" # see docs/pass.md
 brew "ykman"
 
 # General command-line tools
