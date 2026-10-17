@@ -15,7 +15,7 @@ stow git zsh tmux nvim starship       # install a subset (macOS)
 stow --no-folding theme               # macOS: palettes, plus Claude Code's theme in ~/.claude
 stow --no-folding claude codex mise   # cross-platform: agent settings and instructions, tool versions
 stow --no-folding macos               # macOS: its LaunchAgent shares ~/Library/LaunchAgents
-stow --no-folding git zsh claude codex mise tmux herdr omarchy # everything that applies on Omarchy
+stow --no-folding git zsh claude codex mise tmux herdr synoctl unifictl omarchy # everything that applies on Omarchy
 stow -n -v nvim                       # dry run
 stow -D ghostty                       # uninstall a package
 ```
@@ -29,6 +29,8 @@ stow -D ghostty                       # uninstall a package
 - **`starship`** — `.config/starship.toml`
 - **`jj`** — `.config/jj/config.toml`
 - **`herdr`** — `.config/herdr/config.toml`, mirroring the tmux bindings; cross-platform
+- **`synoctl`** — `.config/synoctl/config.toml`: NAS host and user; the password comes from `pass` via `password_command`, so nothing secret is tracked; cross-platform
+- **`unifictl`** — `.config/unifictl/config.toml`: controller host and site; the API key comes from `pass` via `api_key_command`; cross-platform
 - **`bat`** — `.config/bat/config`; `--theme=ansi`, so it follows the terminal's palette
 - **`claude`** — `.claude/settings.json` and a `CLAUDE.md` symlink into the
   `agents` package; no theme file, so it is cross-platform. `settings.json`
@@ -58,7 +60,7 @@ stow -D ghostty                       # uninstall a package
 
 Everything else is macOS-only. `ghostty`, `starship`, `jj`, `bat`,
 `nvim`, and `theme` are **not** stowed on Omarchy — see the conventions below.
-`zsh`, `claude`, `codex`, `mise`, `tmux`, and `herdr` are cross-platform: none of them
+`zsh`, `claude`, `codex`, `mise`, `tmux`, `herdr`, `synoctl`, and `unifictl` are cross-platform: none of them
 carries a theme or palette, so they apply wherever their tools run. `agents` is never
 stowed anywhere.
 

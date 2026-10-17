@@ -1,0 +1,3 @@
+host = "unifi.home.bwilczynski.com"
+api_key_command = "pass show homelab/unifictl"
+site = "default"

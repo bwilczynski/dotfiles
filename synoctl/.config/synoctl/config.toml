@@ -1,0 +1,13 @@
+host = "buffalo.home.bwilczynski.com"
+username = "synoctl"
+password_command = "pass show homelab/synoctl"
+
+[updates]
+# Images without an org.opencontainers.image.source label.
+[[updates.sources]]
+image = "grafana/loki"
+source = "grafana/loki"
+
+[[updates.sources]]
+image = "gcr.io/cadvisor/cadvisor"
+source = "google/cadvisor"
