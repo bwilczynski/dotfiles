@@ -263,6 +263,9 @@ everything else:
   AltGr. It repeats `kb_options` because the override replaces Omarchy's
   defaults wholesale rather than merging with them.
 - `.config/hypr/monitors.lua` — monitor scale pinned to 1.6 instead of `auto`.
+- `.config/hypr/bindings.lua` — vim-style window focus on Super+Shift+hjkl and
+  swap on Super+Shift+Alt+hjkl, alongside Omarchy's arrow-key bindings. The
+  Shift layer leaves Omarchy's Super+J/K/L bindings intact.
 - `.config/omarchy/extensions/omarchy-menu.jsonc` — hides the Hibernate row.
 - `.XCompose` — name and email compose sequences, on top of Omarchy's defaults.
 - `.local/bin/omarchy-no-hibernate` — run by hand, not by stow. Installs
