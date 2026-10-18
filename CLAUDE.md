@@ -56,7 +56,7 @@ stow -D ghostty                       # uninstall a package
   the Bitwarden CLI, logcli, hunk, hlctl). Cross-platform;
   `zsh/.zshrc` activates mise when the binary is present, and Omarchy activates
   it itself
-- **`omarchy`** — Hyprland and Omarchy overrides, a delta copy of Omarchy's Ghostty config (CSI-u for the hjkl pane chords), an fcitx5 `keyboard.conf` that frees Ctrl+Alt+H/J for them, plus `.XCompose`, and `.local/bin/omarchy-no-hibernate` (run by hand); Linux
+- **`omarchy`** — Hyprland and Omarchy overrides, a delta copy of Omarchy's Ghostty config (CSI-u for the hjkl pane chords), an fcitx5 `keyboard.conf` that frees Ctrl+Alt+H/J for them, plus `.XCompose`, and `.local/bin/omarchy-no-hibernate` and `.local/bin/omarchy-nuphy-udev` (both run by hand); Linux
 
 Everything else is macOS-only. `ghostty`, `starship`, `jj`, `bat`,
 `nvim`, and `theme` are **not** stowed on Omarchy — see the conventions below.
@@ -102,7 +102,7 @@ stowed anywhere.
   has to be off, which is what `"autoUpdates": false` does in
   `claude/.claude/settings.json`.
 - **Machine-local settings go in an untracked tail file**, sourced or included last so it wins: `zsh/.zshrc` sources `~/.zshrc.custom`, `git/.gitconfig` includes `~/.gitconfig.local`. Absolute paths and credentials belong there, never in a tracked file.
-- Files outside `$HOME` cannot be stowed. Install them from a hand-run script in the owning package, as `macos/.config/macos/defaults.sh` and `omarchy/.local/bin/omarchy-no-hibernate` do.
+- Files outside `$HOME` cannot be stowed. Install them from a hand-run script in the owning package, as `macos/.config/macos/defaults.sh`, `omarchy/.local/bin/omarchy-no-hibernate`, and `omarchy/.local/bin/omarchy-nuphy-udev` do.
 - **Always stow the Linux packages with `--no-folding`.** Stow links a whole directory when the target does not exist, so on a fresh machine `stow omarchy` would make `~/.config` itself a symlink into this repo and pull Omarchy's own runtime state into `git status`. Folding is safe only where the repo owns the entire directory, which is true of every macOS package except `claude`, `codex`, `mise`, `theme`, and `macos` — Claude Code, Codex, and mise write into `~/.claude`, `~/.codex`, and `~/.config/mise`, `theme` places files in `~/.claude/themes` and `~/.local/bin`, and `macos` places its LaunchAgent in `~/Library/LaunchAgents` beside other apps' agents, so those five want `--no-folding` on macOS as well — and of none of the Linux ones.
 - **Arch packages Omarchy does not ship go in `Pacfile`**, one per line with a
   comment saying why, installed with `omarchy pkg add`. It is the Linux

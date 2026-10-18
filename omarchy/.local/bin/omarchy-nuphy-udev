@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+# Let the logged-in user reach NuPhy keyboards over raw HID.
+#
+# Run by hand after `stow --no-folding omarchy`, from anywhere on PATH:
+#   sudo omarchy-nuphy-udev install
+#
+# The NuPhy web configurator (nuphy.io) and VIA talk to the keyboard through
+# WebHID, which opens /dev/hidraw*. Those nodes are root-only (0600) by default,
+# so the browser fails with "Unable to get device authorization". The rule this
+# installs tags NuPhy's hidraw nodes with uaccess, which grants the active seat
+# user an ACL instead of opening the device to everyone.
+#
+# Stow only targets $HOME, so it cannot place the rule in /etc/udev/rules.d.
+#
+# Idempotent — running it twice is a no-op.
+
+set -euo pipefail
+
+RULE=/etc/udev/rules.d/70-nuphy.rules
+
+require_root() {
+  if [[ $EUID -ne 0 ]]; then
+    echo "Needs root: sudo $0 ${1:-install}" >&2
+    exit 1
+  fi
+}
+
+reload() {
+  udevadm control --reload-rules
+  udevadm trigger --subsystem-match=hidraw
+}
+
+install() {
+  require_root install
+  cat >"$RULE" <<'RULE_EOF'
+# NuPhy keyboards (USB vendor 19f5): let the logged-in user open their raw HID
+# nodes, which the nuphy.io and VIA web configurators need for WebHID.
+#
+# The 70- prefix is load-bearing: uaccess tags are applied by systemd's
+# 73-seat-late.rules, so a rule sorting after it (e.g. 99-) tags too late and
+# no ACL is granted.
+#
+# Installed by omarchy-nuphy-udev from ~/.dotfiles. To revoke, delete this file.
+
+KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="19f5", TAG+="uaccess"
+RULE_EOF
+  reload
+  echo "Installed $RULE"
+  echo "Verify with: getfacl /dev/hidraw* 2>/dev/null | grep -B3 \"user:\$USER\""
+}
+
+uninstall() {
+  require_root uninstall
+  rm -f "$RULE"
+  reload
+  echo "Removed $RULE — NuPhy hidraw nodes are root-only again."
+}
+
+case "${1:-}" in
+  install) install ;;
+  uninstall) uninstall ;;
+  *)
+    echo "Usage: $(basename "$0") install|uninstall" >&2
+    exit 1
+    ;;
+esac

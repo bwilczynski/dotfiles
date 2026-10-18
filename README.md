@@ -238,6 +238,12 @@ because it lives outside `$HOME`:
 sudo omarchy-no-hibernate install
 ```
 
+and the udev rule that lets the NuPhy web configurator reach the keyboard:
+
+```sh
+sudo omarchy-nuphy-udev install
+```
+
 Dictation is not tracked here; restore it with `omarchy-voxtype-install`.
 
 ## macOS system settings
@@ -263,6 +269,10 @@ everything else:
   `/etc/systemd/sleep.conf.d/99-no-hibernate-t2.conf`, which is what actually
   blocks S4 on this Apple T2 machine; the menu entry above only hides the row.
   The file it writes carries the full diagnosis.
+- `.local/bin/omarchy-nuphy-udev` — run by hand, not by stow. Installs
+  `/etc/udev/rules.d/70-nuphy.rules`, which grants the logged-in user access to
+  NuPhy keyboards' raw HID nodes so nuphy.io and VIA can configure them over
+  WebHID.
 
 Because these are symlinks, `omarchy refresh config` and update migrations write
 through them into this repository. That is deliberate: a migration that replaces
