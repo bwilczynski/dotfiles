@@ -1,0 +1,1 @@
+../../../../../nvim/.config/nvim/lua/plugins/markdownlint.lua

@@ -1,0 +1,21 @@
+# Default markdownlint rules for files outside a project with its own config.
+# Relaxes the rules that fight modern Markdown: soft-wrapped prose, GFM/MDX
+# HTML, and docs that start with frontmatter instead of an H1.
+default: true
+
+# Line length: editors and renderers wrap; hard 80-col wrapping is legacy.
+MD013: false
+# Inline HTML: <details>, <kbd>, <br>, <img width> are normal in GFM.
+MD033: false
+# First line need not be an H1 (frontmatter, badges, Obsidian notes).
+MD041: false
+# Duplicate headings are fine under different parents ("Usage" per section).
+MD024:
+  siblings_only: true
+# Bare URLs render as links on GitHub and Obsidian.
+MD034: false
+# Consistent list markers, but "-" by preference, matching prettier.
+MD004:
+  style: dash
+# Ordered lists may use 1. 1. 1. or 1. 2. 3.
+MD029: false

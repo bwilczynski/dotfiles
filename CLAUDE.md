@@ -56,7 +56,7 @@ stow -D ghostty                       # uninstall a package
   the Bitwarden CLI, logcli, hunk, hlctl). Cross-platform;
   `zsh/.zshrc` activates mise when the binary is present, and Omarchy activates
   it itself
-- **`omarchy`** — Hyprland and Omarchy overrides, a delta copy of Omarchy's Ghostty config (CSI-u for the hjkl pane chords), an fcitx5 `keyboard.conf` that frees Ctrl+Alt+H/J for them, plus `.XCompose`, and `.local/bin/omarchy-no-hibernate` and `.local/bin/omarchy-nuphy-udev` (both run by hand); Linux
+- **`omarchy`** — Hyprland and Omarchy overrides, a delta copy of Omarchy's Ghostty config (CSI-u for the hjkl pane chords), an fcitx5 `keyboard.conf` that frees Ctrl+Alt+H/J for them, plus `.XCompose`, and `.local/bin/omarchy-no-hibernate` and `.local/bin/omarchy-nuphy-udev` (both run by hand), and the markdownlint rules and plugin spec dropped into Omarchy's `~/.config/nvim` as repo-internal symlinks into the `nvim` package; Linux
 
 Everything else is macOS-only. `ghostty`, `starship`, `jj`, `bat`,
 `nvim`, and `theme` are **not** stowed on Omarchy — see the conventions below.
