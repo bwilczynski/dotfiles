@@ -1,0 +1,10 @@
+[Unit]
+Description=Twydo background sync, production account (tdo sync --background)
+
+[Service]
+Type=oneshot
+# tdo installed by mise; the shim resolves the version from the global mise config.
+ExecStart=%h/.local/share/mise/shims/tdo sync --background
+# Exit 1: the run worked but something waits for you (conflict, emptied list, backed-off
+# failure; see `tdo status`). Exit 2 (configuration or IO error) still marks the unit failed.
+SuccessExitStatus=1

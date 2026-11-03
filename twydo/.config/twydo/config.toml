@@ -13,6 +13,7 @@ vdir = "~/.local/share/twydo/vdir"
 # here: that mode is for the test account only.
 mode = "verified"
 
-# Sync is off until vdirsyncer is set up for the production CalDAV account
-# (docs/sync.md). Then add:
-# [sync]
+# vdirsyncer pair for the production CalDAV account (~/.config/vdirsyncer/config).
+[sync]
+pair = "twydo_prod"
+local_storage = "twydo_prod_local"
