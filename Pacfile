@@ -13,3 +13,6 @@ yazi # zsh/.zshrc wraps it as `y`
 
 # Password store; see docs/pass.md. Brewfile.optional installs it on macOS
 pass
+
+# CalDAV sync for tdo (twydo package); Brewfile.optional on macOS
+vdirsyncer

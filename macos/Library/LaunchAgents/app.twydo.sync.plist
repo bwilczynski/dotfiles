@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>app.twydo.sync</string>
+	<!-- Twydo background sync (twydo package). launchd expands neither ~ nor the login
+	     PATH, so the shell sets PATH for tdo (mise shim), vdirsyncer and pass (Homebrew). -->
+	<key>ProgramArguments</key>
+	<array>
+		<string>/bin/sh</string>
+		<string>-c</string>
+		<string>export PATH="$HOME/.local/share/mise/shims:/opt/homebrew/bin:/usr/bin:/bin"; exec tdo sync --background 2>>"$HOME/Library/Logs/twydo-sync.log"</string>
+	</array>
+	<key>StartInterval</key>
+	<integer>60</integer>
+	<key>RunAtLoad</key>
+	<true/>
+</dict>
+</plist>
