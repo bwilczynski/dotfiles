@@ -22,6 +22,7 @@ stow package per tool, so each machine installs only what it needs.
 | `mise`     | `.config/mise/config.toml` (global tool list)          | both     |
 | `synoctl`  | `.config/synoctl/config.toml` (Synology NAS CLI)       | both     |
 | `unifictl` | `.config/unifictl/config.toml` (UniFi CLI)             | both     |
+| `twydo`    | `.config/twydo/config.toml` (`tdo` task app)           | both     |
 | `theme`    | `.config/theme/`, Claude's theme, `theme-set`          | macOS    |
 | `macos`    | `.config/macos/` and the keyremap LaunchAgent          | macOS    |
 | `omarchy`  | Hyprland/Omarchy overrides, `.XCompose`, `.local/bin/` | Linux    |
@@ -89,7 +90,7 @@ target is `$HOME` and no `-t` flag is needed:
 ```sh
 stow git zsh tmux nvim starship            # minimal / remote box
 stow git zsh tmux nvim ghostty starship jj \
-     herdr bat synoctl unifictl            # full macOS workstation, plus:
+     herdr bat synoctl unifictl twydo      # full macOS workstation, plus:
 stow --no-folding claude codex mise theme macos  # directories shared with other writers
 ```
 
@@ -195,7 +196,7 @@ them.
 Then stow the packages that apply:
 
 ```sh
-stow --no-folding git zsh claude codex mise tmux herdr synoctl unifictl omarchy
+stow --no-folding git zsh claude codex mise tmux herdr synoctl unifictl twydo omarchy
 ```
 
 and make zsh the login shell; terminals, tmux, and Herdr all start it from

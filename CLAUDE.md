@@ -15,7 +15,7 @@ stow git zsh tmux nvim starship       # install a subset (macOS)
 stow --no-folding theme               # macOS: palettes, plus Claude Code's theme in ~/.claude
 stow --no-folding claude codex mise   # cross-platform: agent settings and instructions, tool versions
 stow --no-folding macos               # macOS: its LaunchAgent shares ~/Library/LaunchAgents
-stow --no-folding git zsh claude codex mise tmux herdr synoctl unifictl omarchy # everything that applies on Omarchy
+stow --no-folding git zsh claude codex mise tmux herdr synoctl unifictl twydo omarchy # everything that applies on Omarchy
 stow -n -v nvim                       # dry run
 stow -D ghostty                       # uninstall a package
 ```
@@ -31,6 +31,7 @@ stow -D ghostty                       # uninstall a package
 - **`herdr`** — `.config/herdr/config.toml`, mirroring the tmux bindings; cross-platform
 - **`synoctl`** — `.config/synoctl/config.toml`: NAS host and user; the password comes from `pass` via `password_command`, so nothing secret is tracked; cross-platform
 - **`unifictl`** — `.config/unifictl/config.toml`: controller host and site; the API key comes from `pass` via `api_key_command`; cross-platform
+- **`twydo`** — `.config/twydo/config.toml`: `tdo`'s real setup, a vdir under `~/.local/share/twydo/vdir` in `verified` write mode; sync stays off until vdirsyncer is set up for the production CalDAV account. Testing uses a separate config (`XDG_CONFIG_HOME` set for `tdo` only), so the two never share a vdir or state; cross-platform
 - **`bat`** — `.config/bat/config`; `--theme=ansi`, so it follows the terminal's palette
 - **`claude`** — `.claude/settings.json` and a `CLAUDE.md` symlink into the
   `agents` package; no theme file, so it is cross-platform. `settings.json`
@@ -53,14 +54,14 @@ stow -D ghostty                       # uninstall a package
 - **`mise`** — `.config/mise/config.toml`, the global tool list: the coding
   agents (Claude Code, Codex, opencode), the language runtimes (Node, Python,
   Go), and CLIs installed from registries or release binaries (`gh`, prettier,
-  the Bitwarden CLI, logcli, hunk, hlctl). Cross-platform;
+  the Bitwarden CLI, logcli, hunk, hlctl, and my unifictl, synoctl and tdo). Cross-platform;
   `zsh/.zshrc` activates mise when the binary is present, and Omarchy activates
   it itself
 - **`omarchy`** — Hyprland and Omarchy overrides, a delta copy of Omarchy's Ghostty config (CSI-u for the hjkl pane chords), an fcitx5 `keyboard.conf` that frees Ctrl+Alt+H/J for them, plus `.XCompose`, and `.local/bin/omarchy-no-hibernate` and `.local/bin/omarchy-nuphy-udev` (both run by hand), and the markdownlint rules and plugin spec dropped into Omarchy's `~/.config/nvim` as repo-internal symlinks into the `nvim` package; Linux
 
 Everything else is macOS-only. `ghostty`, `starship`, `jj`, `bat`,
 `nvim`, and `theme` are **not** stowed on Omarchy — see the conventions below.
-`zsh`, `claude`, `codex`, `mise`, `tmux`, `herdr`, `synoctl`, and `unifictl` are cross-platform: none of them
+`zsh`, `claude`, `codex`, `mise`, `tmux`, `herdr`, `synoctl`, `unifictl`, and `twydo` are cross-platform: none of them
 carries a theme or palette, so they apply wherever their tools run. `agents` is never
 stowed anywhere.
 

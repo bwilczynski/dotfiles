@@ -26,6 +26,7 @@ gh = "latest"
 "github:bwilczynski/homelab-cli" = "latest" # hlctl
 "github:bwilczynski/unifictl" = "latest"
 "github:bwilczynski/synoctl" = "latest"
+"github:bwilczynski/twydo" = "latest" # tdo
 
 [settings]
 # mise hides releases younger than minimum_release_age by default, a guard
@@ -35,6 +36,7 @@ minimum_release_age_excludes = [
   "github:bwilczynski/homelab-cli",
   "github:bwilczynski/unifictl",
   "github:bwilczynski/synoctl",
+  "github:bwilczynski/twydo",
 ]
 
 [settings.upgrade]

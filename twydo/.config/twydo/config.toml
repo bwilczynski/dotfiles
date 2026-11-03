@@ -1,0 +1,18 @@
+# Twydo (tdo): terminal task app sharing its tasks with 2Do.
+# Keys: https://github.com/bwilczynski/twydo/blob/main/docs/config.md
+#
+# This is the real setup. Testing runs against a separate test account with its
+# own config, vdir and state (XDG_CONFIG_HOME set for tdo only), so nothing
+# here is shared with it.
+
+# One subdirectory per list, one .ics per task; filled by vdirsyncer.
+vdir = "~/.local/share/twydo/vdir"
+
+[writes]
+# Only operations the compatibility matrix verifies against 2Do. Never "test"
+# here: that mode is for the test account only.
+mode = "verified"
+
+# Sync is off until vdirsyncer is set up for the production CalDAV account
+# (docs/sync.md). Then add:
+# [sync]
