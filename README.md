@@ -22,9 +22,9 @@ stow package per tool, so each machine installs only what it needs.
 | `mise`     | `.config/mise/config.toml` (global tool list)          | both     |
 | `synoctl`  | `.config/synoctl/config.toml` (Synology NAS CLI)       | both     |
 | `unifictl` | `.config/unifictl/config.toml` (UniFi CLI)             | both     |
-| `twydo`    | `tdo` config, vdirsyncer config, systemd sync timer    | both     |
+| `twydo`    | `tdo` + vdirsyncer config, Linux systemd sync timer    | both     |
 | `theme`    | `.config/theme/`, Claude's theme, `theme-set`          | macOS    |
-| `macos`    | `.config/macos/`, keyremap and twydo sync LaunchAgents | macOS    |
+| `macos`    | `.config/macos/` and the keyremap LaunchAgent          | macOS    |
 | `omarchy`  | Hyprland/Omarchy overrides, `.XCompose`, `.local/bin/` | Linux    |
 
 The macOS-only rows are not a portability limitation. Omarchy ships its own
@@ -253,18 +253,6 @@ Stow does not apply system settings. Run `~/.config/macos/defaults.sh` by hand
 after stowing the `macos` package. `keyremap.sh` is run for you: the package
 also installs the `com.bwilczynski.keyremap` LaunchAgent, which runs it at every
 login so the remapping survives reboots.
-
-The `app.twydo.sync` LaunchAgent runs `tdo sync --background` every minute
-(log: `~/Library/Logs/twydo-sync.log`). It needs the `twydo` package, the
-`homelab/twydo` pass entry and, once, `vdirsyncer discover twydo_prod`. launchd
-loads it at the next login; to start it now:
-
-```sh
-launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/app.twydo.sync.plist
-```
-
-On Linux the `twydo` package carries the equivalent systemd timer instead:
-`systemctl --user enable --now twydo-prod-sync.timer`.
 
 ## Omarchy
 
