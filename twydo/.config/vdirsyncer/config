@@ -1,0 +1,26 @@
+# vdirsyncer for Twydo (tdo): the production CalDAV account only.
+# The test account has its own config outside dotfiles (tdo's [sync] vdirsyncer_config).
+# Twydo runs this pair itself (`tdo sync`); see https://github.com/bwilczynski/twydo/blob/main/docs/sync.md
+
+[general]
+status_path = "~/.local/share/vdirsyncer/status/"
+
+[pair twydo_prod]
+a = "twydo_prod_remote"
+b = "twydo_prod_local"
+collections = ["from a", "from b"]
+metadata = ["displayname", "color"]
+# Twydo conflict hook: keeps both versions until you choose (tdo conflicts resolve).
+# `tdo` must be on PATH for whatever runs vdirsyncer (the systemd unit sets it).
+conflict_resolution = ["command", "tdo", "conflicts", "hook"]
+
+[storage twydo_prod_local]
+type = "filesystem"
+path = "~/.local/share/twydo/vdir/"
+fileext = ".ics"
+
+[storage twydo_prod_remote]
+type = "caldav"
+url = "https://buffalo.home.bwilczynski.com/caldav/twydo/"
+username = "twydo"
+password.fetch = ["command", "pass", "show", "homelab/twydo"]
