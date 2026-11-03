@@ -22,7 +22,7 @@ stow package per tool, so each machine installs only what it needs.
 | `mise`     | `.config/mise/config.toml` (global tool list)          | both     |
 | `synoctl`  | `.config/synoctl/config.toml` (Synology NAS CLI)       | both     |
 | `unifictl` | `.config/unifictl/config.toml` (UniFi CLI)             | both     |
-| `twydo`    | `tdo` + vdirsyncer config, Linux systemd sync timer    | both     |
+| `twydo`    | `tdo` + vdirsyncer config, Linux sync timer (off)      | both     |
 | `theme`    | `.config/theme/`, Claude's theme, `theme-set`          | macOS    |
 | `macos`    | `.config/macos/` and the keyremap LaunchAgent          | macOS    |
 | `omarchy`  | Hyprland/Omarchy overrides, `.XCompose`, `.local/bin/` | Linux    |
@@ -198,6 +198,18 @@ Then stow the packages that apply:
 ```sh
 stow --no-folding git zsh claude codex mise tmux herdr synoctl unifictl twydo omarchy
 ```
+
+`tdo` syncs by hand for now (`tdo sync`, or `:sync` in its TUI), so the
+`twydo-prod-sync` timer the `twydo` package installs is left disabled. To turn
+background sync on:
+
+```sh
+systemctl --user enable --now twydo-prod-sync.timer
+```
+
+`systemctl --user disable` on these units also deletes their stow symlinks
+(systemd treats them as linked units); run `stow --no-folding twydo` again
+afterwards.
 
 and make zsh the login shell; terminals, tmux, and Herdr all start it from
 there, and it takes effect at the next login:
