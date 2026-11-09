@@ -16,6 +16,7 @@ stow package per tool, so each machine installs only what it needs.
 | `starship` | `.config/starship.toml`                                | macOS    |
 | `jj`       | `.config/jj/`                                          | macOS    |
 | `herdr`    | `.config/herdr/config.toml`                            | both     |
+| `herdr-core` | `.config/herdr-core/templates/` (`hc` agent templates) | both   |
 | `bat`      | `.config/bat/config`                                   | macOS    |
 | `claude`   | `.claude/` settings and instructions                   | both     |
 | `codex`    | `.codex/AGENTS.md` (agent instructions)                | both     |
@@ -91,7 +92,7 @@ target is `$HOME` and no `-t` flag is needed:
 stow git zsh tmux nvim starship            # minimal / remote box
 stow git zsh tmux nvim ghostty starship jj \
      herdr bat synoctl unifictl            # full macOS workstation, plus:
-stow --no-folding claude codex mise theme macos twydo  # directories shared with other writers
+stow --no-folding claude codex mise herdr-core theme macos twydo  # directories shared with other writers
 ```
 
 Preview before committing to it with `stow -n -v <package>`, and remove a
@@ -196,7 +197,7 @@ them.
 Then stow the packages that apply:
 
 ```sh
-stow --no-folding git zsh claude codex mise tmux herdr synoctl unifictl twydo omarchy
+stow --no-folding git zsh claude codex mise tmux herdr herdr-core synoctl unifictl twydo omarchy
 ```
 
 `tdo` syncs by hand for now (`tdo sync`, or `:sync` in its TUI), so the
@@ -239,8 +240,8 @@ fresh machine that makes `~/.config` itself a symlink into this repo, and every
 file Omarchy writes there afterwards (`omarchy/shell.json`, the active theme
 symlink, `current/`) lands in `git status`. Most macOS packages do not need the
 flag because each of them owns its directory outright; the exceptions are the
-ones that share a directory with another writer: `claude`, `codex`, and `mise`,
-whose tools write there; `theme`, which places files in `~/.claude/themes` and
+ones that share a directory with another writer: `claude`, `codex`, `mise`, and
+`herdr-core`, whose tools write there; `theme`, which places files in `~/.claude/themes` and
 `~/.local/bin`; and `macos`, whose LaunchAgent sits in `~/Library/LaunchAgents`
 beside other apps' agents.
 
