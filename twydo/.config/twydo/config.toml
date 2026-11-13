@@ -5,7 +5,7 @@
 # own config, vdir and state (XDG_CONFIG_HOME set for tdo only), so nothing
 # here is shared with it.
 
-# One subdirectory per list, one .ics per task; filled by vdirsyncer.
+# One subdirectory per list, one .ics per task; filled by sync.
 vdir = "~/.local/share/twydo/vdir"
 
 [writes]
@@ -13,7 +13,10 @@ vdir = "~/.local/share/twydo/vdir"
 # here: that mode is for the test account only.
 mode = "verified"
 
-# vdirsyncer pair for the production CalDAV account (~/.config/vdirsyncer/config).
+# The production CalDAV account. tdo generates the vdirsyncer config from these
+# keys and its daemon syncs in the background (`tdo daemon install` to start it
+# at login); see https://github.com/bwilczynski/twydo/blob/main/docs/sync.md
 [sync]
-pair = "twydo_prod"
-local_storage = "twydo_prod_local"
+url = "https://buffalo.home.bwilczynski.com/caldav/twydo/"
+username = "twydo"
+password_command = ["pass", "show", "homelab/twydo"]
