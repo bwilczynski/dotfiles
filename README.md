@@ -17,6 +17,7 @@ stow package per tool, so each machine installs only what it needs.
 | `jj`       | `.config/jj/`                                          | macOS    |
 | `herdr`    | `.config/herdr/config.toml`                            | both     |
 | `herdr-core` | `.config/herdr-core/templates/` (`hc` agent templates) | both   |
+| `herdr-app` | `.config/herdr-app/keys.json` (Herdr app keybindings)  | both     |
 | `bat`      | `.config/bat/config`                                   | macOS    |
 | `claude`   | `.claude/` settings and instructions                   | both     |
 | `codex`    | `.codex/AGENTS.md` (agent instructions)                | both     |
@@ -92,7 +93,7 @@ target is `$HOME` and no `-t` flag is needed:
 stow git zsh tmux nvim starship            # minimal / remote box
 stow git zsh tmux nvim ghostty starship jj \
      herdr bat synoctl unifictl            # full macOS workstation, plus:
-stow --no-folding claude codex mise herdr-core theme macos twydo  # directories shared with other writers
+stow --no-folding claude codex mise herdr-core herdr-app theme macos twydo  # directories shared with other writers
 ```
 
 Preview before committing to it with `stow -n -v <package>`, and remove a
@@ -116,10 +117,12 @@ reached through a symlink inside the repo rather than through a watched
 
 ### tmux and Herdr keybindings
 
-One tmux config and one Herdr config serve both macOS and Omarchy. tmux
-sessions map to Herdr workspaces, tmux windows to Herdr tabs, and panes to
-panes. Both tools use `Ctrl+Space` as their prefix (`Ctrl+B` is
-also a secondary tmux prefix).
+One tmux config, one Herdr config, and one Herdr app `keys.json` serve both
+macOS and Omarchy. tmux sessions map to Herdr workspaces (Herdr app spaces),
+tmux windows to tabs, and panes to panes. All three use `Ctrl+Space` as their
+prefix (`Ctrl+B` is also a secondary tmux prefix); the Herdr app spells it as
+a key sequence, `"ctrl-space c"`, and `prefix+Ctrl+Space` sends a literal
+`Ctrl+Space` to the program.
 
 | Action | Binding |
 | ------ | ------- |
@@ -133,6 +136,20 @@ also a secondary tmux prefix).
 | Move window or tab left / right | `prefix+Ctrl+p` / `prefix+Ctrl+n` |
 | Create / rename / close session or workspace | `prefix+Shift+c/r/k` |
 | Previous / next session or workspace | `prefix+Shift+p/n` |
+
+The Herdr app follows the table with these differences, because it has no
+command for them: resize, `prefix+Ctrl+p/n` (move tab), `prefix+;` (last pane),
+`prefix+Shift+o` (rename pane), `prefix+q` (it reloads files on save), and
+`prefix+d` are unbound. `Ctrl+Option+Shift+h/j/k/l` swaps the pane with its
+neighbour instead of resizing; drag the divider to resize. `prefix+[` opens
+find in the terminal (its scrollback is searchable, there is no copy mode).
+It adds `prefix+?` (keys), `prefix+:` (command palette), `prefix+s` (space
+picker), `prefix+b` (sidebar), `prefix+Tab` / `prefix+Shift+Tab` (next /
+previous agent), and `prefix+=`, `prefix+-`, `prefix+0` (zoom).
+Clipboard keys stay native: `Cmd+C/V/F` on macOS, `Ctrl+Shift+C/V/F` and
+`Ctrl+Insert` / `Shift+Insert` (Omarchy's `Super+C/V`) on Linux; each platform
+ignores the other's. Its default `Cmd`-based bindings are dropped, so the app
+behaves the same on both.
 
 `prefix+1..9` always selects a window or tab. `Option+1..9` does the same
 directly and coexists with Polish Option-letter input. It binds physical digit
@@ -197,7 +214,7 @@ them.
 Then stow the packages that apply:
 
 ```sh
-stow --no-folding git zsh claude codex mise tmux herdr herdr-core synoctl unifictl twydo omarchy
+stow --no-folding git zsh claude codex mise tmux herdr herdr-core herdr-app synoctl unifictl twydo omarchy
 ```
 
 `tdo` generates its own vdirsyncer config from `[sync]` and syncs from its
