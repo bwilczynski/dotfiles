@@ -13,9 +13,9 @@ Files at the repo root (`Brewfile`, `Brewfile.optional`, `Pacfile`, `README.md`,
 ```sh
 stow git zsh tmux nvim starship       # install a subset (macOS)
 stow --no-folding theme               # macOS: palettes, plus Claude Code's theme in ~/.claude
-stow --no-folding claude codex mise herdr-core # cross-platform: agent settings and instructions, tool versions, hc templates
+stow --no-folding claude codex mise herdr-core herdr-app # cross-platform: agent settings and instructions, tool versions, hc templates
 stow --no-folding macos               # macOS: its LaunchAgent shares ~/Library/LaunchAgents
-stow --no-folding git zsh claude codex mise tmux herdr herdr-core synoctl unifictl twydo omarchy # everything that applies on Omarchy
+stow --no-folding git zsh claude codex mise tmux herdr herdr-core herdr-app synoctl unifictl twydo omarchy # everything that applies on Omarchy
 stow -n -v nvim                       # dry run
 stow -D ghostty                       # uninstall a package
 ```
@@ -30,6 +30,7 @@ stow -D ghostty                       # uninstall a package
 - **`jj`** — `.config/jj/config.toml`
 - **`herdr`** — `.config/herdr/config.toml`, mirroring the tmux bindings; cross-platform
 - **`herdr-core`** — `.config/herdr-core/templates/`, the `hc` agent templates: `reviewer.md`, the Codex reviewer the global agent instructions launch after a change; `codex` is found on `PATH`, so the template carries no absolute path. `hc` keeps its own `config.toml` beside them; cross-platform
+- **`herdr-app`** — `.config/herdr-app/keys.json`, the Herdr app's keybindings, mirroring `herdr` and `tmux` (prefix bindings as `"ctrl-space <key>"` sequences). Only this file is tracked: the app writes everything else in that directory (its guide, type files, shipped layouts and mods, state), so stow it with `--no-folding`. Any edit makes the file the user's and the app stops upgrading it, so new upstream defaults have to be added by hand. Keep it one file for both platforms: use ctrl/alt chords and the prefix, and add a platform's native clipboard keys side by side (`cmd-*` is ignored on Linux, which Hyprland grabs as Super anyway); cross-platform
 - **`synoctl`** — `.config/synoctl/config.toml`: NAS host and user; the password comes from `pass` via `password_command`, so nothing secret is tracked; cross-platform
 - **`unifictl`** — `.config/unifictl/config.toml`: controller host and site; the API key comes from `pass` via `api_key_command`; cross-platform
 - **`twydo`** — `.config/twydo/config.toml`: `tdo`'s real setup, a vdir under `~/.local/share/twydo/vdir` in `verified` write mode, syncing with the production CalDAV account; the password comes from `pass` via `password_command`. `tdo` generates the vdirsyncer config itself and its daemon syncs in the background, so the package tracks no vdirsyncer config or timer; `tdo daemon install` writes the login unit, untracked. Testing uses a separate config (`XDG_CONFIG_HOME` set for `tdo` only), so the two never share a vdir or state; cross-platform
@@ -62,7 +63,7 @@ stow -D ghostty                       # uninstall a package
 
 Everything else is macOS-only. `ghostty`, `starship`, `jj`, `bat`,
 `nvim`, and `theme` are **not** stowed on Omarchy — see the conventions below.
-`zsh`, `claude`, `codex`, `mise`, `tmux`, `herdr`, `herdr-core`, `synoctl`, `unifictl`, and `twydo` are cross-platform: none of them
+`zsh`, `claude`, `codex`, `mise`, `tmux`, `herdr`, `herdr-core`, `herdr-app`, `synoctl`, `unifictl`, and `twydo` are cross-platform: none of them
 carries a theme or palette, so they apply wherever their tools run. `agents` is never
 stowed anywhere.
 
@@ -105,7 +106,7 @@ stowed anywhere.
   `claude/.claude/settings.json`.
 - **Machine-local settings go in an untracked tail file**, sourced or included last so it wins: `zsh/.zshrc` sources `~/.zshrc.custom`, `git/.gitconfig` includes `~/.gitconfig.local`. Absolute paths and credentials belong there, never in a tracked file.
 - Files outside `$HOME` cannot be stowed. Install them from a hand-run script in the owning package, as `macos/.config/macos/defaults.sh`, `omarchy/.local/bin/omarchy-no-hibernate`, and `omarchy/.local/bin/omarchy-nuphy-udev` do.
-- **Always stow the Linux packages with `--no-folding`.** Stow links a whole directory when the target does not exist, so on a fresh machine `stow omarchy` would make `~/.config` itself a symlink into this repo and pull Omarchy's own runtime state into `git status`. Folding is safe only where the repo owns the entire directory, which is true of every macOS package except `claude`, `codex`, `mise`, `herdr-core`, `theme`, and `macos` — Claude Code, Codex, mise, and `hc` write into `~/.claude`, `~/.codex`, `~/.config/mise`, and `~/.config/herdr-core`, `theme` places files in `~/.claude/themes` and `~/.local/bin`, and `macos` places its LaunchAgent in `~/Library/LaunchAgents` beside other apps' agents, so those six want `--no-folding` on macOS as well — and of none of the Linux ones.
+- **Always stow the Linux packages with `--no-folding`.** Stow links a whole directory when the target does not exist, so on a fresh machine `stow omarchy` would make `~/.config` itself a symlink into this repo and pull Omarchy's own runtime state into `git status`. Folding is safe only where the repo owns the entire directory, which is true of every macOS package except `claude`, `codex`, `mise`, `herdr-core`, `herdr-app`, `theme`, and `macos` — Claude Code, Codex, mise, `hc`, and the Herdr app write into `~/.claude`, `~/.codex`, `~/.config/mise`, `~/.config/herdr-core`, and `~/.config/herdr-app`, `theme` places files in `~/.claude/themes` and `~/.local/bin`, and `macos` places its LaunchAgent in `~/Library/LaunchAgents` beside other apps' agents, so those seven want `--no-folding` on macOS as well — and of none of the Linux ones.
 - **Arch packages Omarchy does not ship go in `Pacfile`**, one per line with a
   comment saying why, installed with `omarchy pkg add`. It is the Linux
   counterpart of the Brewfiles and follows the same delta rule as the `omarchy`
