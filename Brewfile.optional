@@ -41,6 +41,7 @@ brew "gnupg"
 brew "pinentry-mac" # for gpg-agent.conf's pinentry-program; that file is machine-local, not tracked
 brew "pass" # see docs/pass.md
 brew "vdirsyncer" # tdo runs it for CalDAV sync (twydo package)
+brew "terminal-notifier" # tdo (mise package) sends its notifications through it
 brew "ykman"
 
 # General command-line tools
