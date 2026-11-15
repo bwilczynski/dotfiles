@@ -13,6 +13,9 @@ opencode = "latest"
 node = "26.13.0"
 python = "3.14"
 go = "latest"
+# rust-analyzer comes from rustup, not Mason: LazyVim's rust extra expects it
+# on PATH, and the toolchain only ships it when the component is requested.
+rust = { version = "stable", components = "rust-analyzer,clippy,rustfmt" }
 
 # CLIs published to a language registry or as release binaries
 gh = "latest"
