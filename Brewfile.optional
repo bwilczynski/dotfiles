@@ -41,6 +41,9 @@ brew "gnupg"
 brew "pinentry-mac" # for gpg-agent.conf's pinentry-program; that file is machine-local, not tracked
 brew "pass" # see docs/pass.md
 brew "vdirsyncer" # tdo runs it for CalDAV sync (twydo package)
+# Missing from System Settings > Notifications until its .app is registered with Launch Services; repeat after each upgrade:
+#   lsregister -f "$(brew --prefix)/opt/terminal-notifier/terminal-notifier.app"
+# (lsregister lives in /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/)
 brew "terminal-notifier" # tdo (mise package) sends its notifications through it
 brew "ykman"
 
